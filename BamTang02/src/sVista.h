@@ -1,46 +1,23 @@
 /*========================================================================*\
-|* cLog.h
+|* sVista.h
 \*========================================================================*/
 
 #pragma once
 //--------------------------------------------------------------------------
 // Include
 //--------------------------------------------------------------------------
-#include <stdio.h>
-#include <stdarg.h>
-#include <string>
-//--------------------------------------------------------------------------
-//#include <string>
-//#include "cFile.h"
-//#include "../Procesos/cCSeccion.h"
-//#include "../Util/cString.h"
-//#include "../Listas/tLista.h"
 //--------------------------------------------------------------------------
 
 
 //--------------------------------------------------------------------------
-// Class
+// Struct
 //--------------------------------------------------------------------------
-class cLog
+struct sLaberinto;
+//--------------------------------------------------------------------------
+struct sVista
 {
-    static int escribeLista(va_list pstList, const char* pcFormat);
-
-    static  int     open(void);
-    static  int     close(void);
-
-public:
-
-    cLog();
-    ~cLog();
-
-    static FILE* m_pFile;
-    static std::string m_pPathLog;
-
-    static  int print(const char* pcFormat, ...);
-    static  int log(const char* pcFormat, ...);
-    static  int error(const char* pcFormat, ...);
-
-    static int openLog(const char* pcFormat);
+    virtual int inicia() = 0;
+    virtual int dibuja(sLaberinto* lab) = 0;
 };
 //--------------------------------------------------------------------------
 

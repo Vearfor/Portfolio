@@ -42,9 +42,9 @@ int main(int iArgc, char * vcArgv[])
 #else
     cConsola::setModo(eModConsola::eMOD_CONSOLA);
     cConsola::SetActiva(true);
-#endif // _MYWINDOWS_
+#endif // _WINDOWS_
 
-    cConsola::setNombreProceso("Laberinto");
+    cConsola::setNombreProceso("Laberinto 2D");
     cLog log;
 
     miError(parametros(iArgc, vcArgv));
@@ -54,30 +54,24 @@ int main(int iArgc, char * vcArgv[])
     cConio::SetColor(eTextColor::eTexCeleste);
     cConio::Cls();
     cLog::print("\n");
-    cLog::print(" LABERINTO:     Construimos un laberinto de %d\n", g_iDim);
-    cLog::print("                Funcion: ");
+    cLog::print(" LABERINTO 2D:  Construimos un laberinto de %d\n", g_iDim);
+    cLog::print("                Funcion:  ");
+    cConio::SetColor(eTextColor::eTexBlanco);
+    cLog::print("drawMaze2D()");
+    cConio::SetColor(eTextColor::eTexCeleste);
+    cLog::print("\n");
+    cLog::print("                (utilizamos la funcion anterior:  ");
     cConio::SetColor(eTextColor::eTexBlanco);
     cLog::print("createMaze2D(int n)");
     cConio::SetColor(eTextColor::eTexCeleste);
-    cLog::print("   siendo n la dimension %d\n", g_iDim);
     cLog::print("\n");
-    cConio::SetColor(eTextColor::eTexAmarillo);
-    cLog::print(" 0 - He desempolvado codigo antiguo que tenia que sigue compilando y funcionando.\n");
     cLog::print("\n");
     cConio::SetColor(eTextColor::eTexCeleste);
-    cLog::print(" 1 - Parseamos los parametros necesarios\n");
-    cLog::print("     Obligando a que sean mayores que 3 e impar.\n");
-    cLog::print("     Y no se si aplicar un limite, se nos saldrian de la pantalla\n");
-    cLog::print("     Un solo camino entre A y B. No puede haber mas de uno.\n");
-    cLog::print("     'A' estara en en el primer hueco de la esquina superior izquierda. Lo traduzco a la posicion (2.2)\n");
-    cLog::print("     'B' al final de ese camino mas largo.\n");
-    cLog::print("     Los caminos no pueden ser diagonales\n");
-    cLog::print("\n");
-    cLog::print(" 2 - Utilizando los parametros generariamos una estructura de datos en tabla para contener\n");
-    cLog::print("     el laberinto.\n");
-    cLog::print("     Veremos de meter esos agujeros aleatorios\n");
-    cLog::print("\n");
-    cLog::print(" 3 - y mostraremos la representacion por pantalla\n");
+    cLog::print(" 1 - Partimos de lo que se hizo en el anterior\n");
+    cLog::print("     En esta nos centraremos en el dibujado, en principio con SDL, dejaré entonces a mano\n");
+    cLog::print("     el acceso a la libreria y a los includes en la solucion final\n");
+    cLog::print("     Haremos una clase sVista abstracta y de ahí se diferenciaran las distintas vistas\n");
+    cLog::print("     sea para consola, o sea para libreria grafica\n");
     cLog::print("\n");
     cConsola::PulsaTecla(" Pulsa tecla para continuar ");
     //----------------------------------------------------------------------
@@ -184,6 +178,18 @@ int drawMaze2D()
 
     g_pVista->inicia();
     g_pVista->dibuja(g_pLaberinto);
+
+    //cLog::print("\n");
+    //for (int i = 128; i < 255; i++)
+    //{
+    //    char car = char(i);
+    //    cLog::print(" %3d [%c]\n", i, i);
+    //    //if (std::isprint(i))
+    //    //    cLog::print(" %3d [%c]\n", i, i);
+    //    //else
+    //    //    cLog::print(" %3d [...]\n", i);
+    //}
+    //cLog::print("\n");
 
     return 0;
 }

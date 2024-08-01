@@ -10,32 +10,32 @@
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Source\src">
-      <UniqueIdentifier>{64ea000d-b2e6-42a7-81cd-441ade4d0188}</UniqueIdentifier>
+      <UniqueIdentifier>{f3dacbef-b348-4b6f-a5e5-f8c5514de4a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source\src</Filter>
-    </ClCompile>
     <ClCompile Include="src\cConio.cpp">
-      <Filter>Source\src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\cLog.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
     <ClCompile Include="src\cConsola.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\sLaberinto_2.cpp">
+    <ClCompile Include="src\cLog.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
     <ClCompile Include="src\cRandom.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\sLaberinto_1.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
     <ClCompile Include="src\sLaberinto.cpp">
+      <Filter>Source\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sLaberinto_1.cpp">
+      <Filter>Source\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sLaberinto_2.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
     <ClCompile Include="src\sVistaConsola.cpp">
@@ -46,31 +46,31 @@
     <ClInclude Include="src\cConio.h">
       <Filter>Source\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\cConsola.h">
+      <Filter>Source\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cLog.h">
+      <Filter>Source\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cRandom.hpp">
+      <Filter>Source\src</Filter>
+    </ClInclude>
     <ClInclude Include="src\nComun.h">
       <Filter>Source\src</Filter>
     </ClInclude>
     <ClInclude Include="src\nExport.h">
       <Filter>Source\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\cLog.h">
+    <ClInclude Include="src\sLaberinto.h">
       <Filter>Source\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\cConsola.h">
+    <ClInclude Include="src\sLaberinto_1.h">
       <Filter>Source\src</Filter>
     </ClInclude>
     <ClInclude Include="src\sLaberinto_2.h">
       <Filter>Source\src</Filter>
     </ClInclude>
     <ClInclude Include="src\sPos.h">
-      <Filter>Source\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\cRandom.hpp">
-      <Filter>Source\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sLaberinto_1.h">
-      <Filter>Source\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sLaberinto.h">
       <Filter>Source\src</Filter>
     </ClInclude>
     <ClInclude Include="src\sVista.h">
