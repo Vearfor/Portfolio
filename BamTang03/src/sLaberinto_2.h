@@ -43,19 +43,19 @@ struct sLaberinto_2
     sLaberinto_2();
     ~sLaberinto_2();
 
-private:
-
     virtual int creaLaberinto() override;
+    virtual int calculaCaminoMasLargo() override;
+
+private:
 
     void removeWall(sCoord cur, int ancho_celda, int alto_celda);
     void ramdomize(int* array, int n);
     bool isValidPosition(sCoord cur, int alto, int ancho);
-    void copyRow(int row_src, int row_dest, int ancho);
-    void copyCol(int col_src, int col_dest, int alto);
-    void copyValidRowsAndCols(int alto, int ancho);
 
-    sPos calculaCaminoMasLargo();
-    void quitarElemento(std::unordered_map<int, sPos>& mapPos, int index);
+    // Para el calculo del camino mas largo:
+    std::vector<sPos> m_vecPos;
+    sPos m_current{ 1, 1 };
+    sPos m_last{ 1, 1 };
 };
 
 

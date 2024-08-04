@@ -23,10 +23,10 @@ sLaberinto_2::~sLaberinto_2()
 
 sPos vDir[4] =
 {
-    { -1,  0, eSentido::eTop    , "Arriba"      , 0 , false },
-    {  0,  1, eSentido::eRight  , "Derecha"     , 1 , false },
-    {  1,  0, eSentido::eBot    , "Abajo"       , 2 , false },
-    {  0, -1, eSentido::eLeft   , "Izquierda"   , 3 , false },
+    { -1,  0, eSentido::eTop    , "Arriba"      , 0 , false, 0 },
+    {  0,  1, eSentido::eRight  , "Derecha"     , 1 , false, 0 },
+    {  1,  0, eSentido::eBot    , "Abajo"       , 2 , false, 0 },
+    {  0, -1, eSentido::eLeft   , "Izquierda"   , 3 , false, 0 },
 };
 
 
@@ -57,7 +57,7 @@ int sLaberinto_2::creaLaberinto()
         if (m_matriz[fila][columna] != kMuro)
             continue;
 
-        // Elmina la pared entre dos posiciones validad
+        // Elmina la pared entre dos posiciones validas
         if (cur.sentido != eSentido::eNone)
         {
             int dx = vDir[static_cast<int>(cur.sentido)].m_fila;
@@ -105,94 +105,111 @@ int sLaberinto_2::creaLaberinto()
 
     delete [] lab;
 
-    // El primero se marca como inicio A.
+    // Empezamos en inicio: 'A':
+    m_current = { 1, 1, eSentido::eNone, "Inicio", 0, false, 0 };
+    m_vecPos.push_back(m_current);
+    while (m_vecPos.size() > 0)
+    {
+        calculaCaminoMasLargo();
+    }
+
+    for (int fila = 0; fila < m_size; fila++)
+    {
+        for (int columna = 0; columna < m_size; columna++)
+        {
+            if (m_matriz[fila][columna] != kMuro)
+                m_matriz[fila][columna] = kVacio;
+        }
+    }
+
+    // El primero se marca como inicio 'A'.
     m_matriz[1][1] = kInicio;
-    // El camino mas largo sera la salida/final del laberinto y se marca con kFin
-    // Nos recorremos el 'lab' para calcular cual es la celda con el camino mas largo desde kInicio:
-    sPos last = calculaCaminoMasLargo();
-    m_matriz[last.m_fila][last.m_columna] = kFin;
+
+    //m_last.m_fila = m_size - 2;
+    //m_last.m_columna = m_size - 2;
+    m_matriz[m_last.m_fila][m_last.m_columna] = kFin;
 
     return 0;
 }
 
 
-sPos sLaberinto_2::calculaCaminoMasLargo()
+int sLaberinto_2::calculaCaminoMasLargo()
 {
-    sPos last(m_size - 2, m_size - 2);
-    return last;
-
-    //sCoord cur{ 1, 1, -1 };
-    std::unordered_map<int, sPos> mapPos;
-
-    int index = 0, key = 0;
-    sPos cur(1, 1);
-    cur.m_index = 0;
-    mapPos[0] = cur;
-
-    for (size_t size = mapPos.size(); size > 0; size = mapPos.size())
+    if (m_vecPos.size() > 0)
     {
-        do
+        int len = sizeof(vDir) / sizeof(sPos);
+        int hayCamino = 0;
+        sPos cur = m_current;
+        for (int dir = 0; dir < len; dir++)
         {
-            cur = mapPos[index];
-            index = cur.m_index;
-            cLog::print(
-                " [%3d] %3d   x: %2d y: %2d  [%s]\n", 
-                size, index, cur.m_fila, cur.m_columna,
-                (cur.m_visitada ? "visitada. Cambio de camino" : "no visitada"));
-            if (cur.m_visitada)
+            int fila = cur.m_fila + vDir[dir].m_fila;
+            int columna = cur.m_columna + vDir[dir].m_columna;
+            char valor = m_matriz[fila][columna];
+            if (valor == kVacio || valor == kFin)
             {
-                index++;
-            }
-        } while (cur.m_visitada);
+                hayCamino++;
 
-        bool hayNext = false;
-        sPos primerCur;
-        int len = sizeof(vDir)/sizeof(sPos);
-        key = index + 1;
-        for (int i = 0; i < len; i++)
-        {
-            // Miro si hay hueco en:
-            int fila = cur.m_fila + vDir[i].m_fila;
-            int columna = cur.m_columna + vDir[i].m_columna;
-            int car = m_matriz[fila][columna];
-            if (car == kVacio)
-            {
-                // Insertamos en la lista de vacios
-                sPos nextPos(fila, columna);
-                nextPos.m_sentido = vDir[i].m_sentido;
-                nextPos.m_nombre = vDir[i].m_nombre;
-                nextPos.m_index = key;
-                mapPos[nextPos.m_index] = nextPos;
-                if (!hayNext)
+                // Siguiente camino vacio lo marcamos:
+                m_matriz[fila][columna] = kNulo;
+
+                if (hayCamino > 1)
                 {
-                    primerCur = nextPos;
+                    // Hay mas de un camino, lo reservamos para mirar cuando se nos agote el current.
+                    sPos next(fila, columna);
+                    next.m_index = static_cast<int>(m_vecPos.size());
+                    next.m_num_pasos = m_current.m_num_pasos + 1;
+                    m_vecPos.push_back(next);
+
+                    //cLog::print(" Bifurcacion:   [ %2d, %2d ]   pasos: %d\n",
+                    //    next.m_fila, next.m_columna,
+                    //    next.m_num_pasos);
+
+                    m_matriz[fila][columna] = kInicio;
                 }
-                hayNext = true;
+                else
+                {
+                    // Todavia solo es un solo camino, continuamos en este.
+                    m_current.m_fila = fila;
+                    m_current.m_columna = columna;
+                    m_current.m_num_pasos++;
+                }
             }
         }
-        if (hayNext)
+
+        if (!hayCamino)
         {
-            cur.m_visitada = true;
-            cur = primerCur;
-            index = cur.m_index;
-        }
-        else
-        {
-            quitarElemento(mapPos, cur.m_index);
-            index++;
+            if (m_last.m_num_pasos < m_current.m_num_pasos)
+                m_last = m_current;
+
+            //cLog::print(" Fin de camino:   %d pasos  [ %2d, %2d ]\n",
+            //    m_current.m_num_pasos,
+            //    m_current.m_fila, m_current.m_columna
+            //);
+
+            if (m_vecPos.size() > 0)
+            {
+                // Hay que quitar el primero:
+                m_vecPos.erase(m_vecPos.begin());
+                if (m_vecPos.size() > 0)
+                {
+                    // Y quedarnos con el siguiente
+                    m_current = m_vecPos.front();
+                    //cLog::print("    %d [ %2d, %2d ]\n", m_current.m_index, m_current.m_fila, m_current.m_columna);
+                }
+                else
+                {
+                    //cLog::print(" Hemos terminado: last [ %2d, %2d ]  pasos: %d\n", m_last.m_fila, m_last.m_columna, m_last.m_num_pasos);
+                    m_matriz[m_last.m_fila][m_last.m_columna] = kFin;
+                }
+            }
+            else
+            {
+                //cLog::print(" Hemos terminado: Este print no sale\n");
+            }
         }
     }
-    return last;
-}
 
-
-void sLaberinto_2::quitarElemento(std::unordered_map<int, sPos>& mapPos, int index)
-{
-    auto it = mapPos.find(index);
-    if (it != mapPos.end())
-    {
-        mapPos.erase(it);
-    }
+    return 0;
 }
 
 
@@ -222,42 +239,6 @@ void sLaberinto_2::removeWall(sCoord cur, int ancho_celda, int alto_celda)
         {
             m_matriz[cur.fila + i][cur.columna + j] = kVacio;
         }
-    }
-}
-
-
-void sLaberinto_2::copyRow(int row_src, int row_dest, int ancho)
-{
-    for (int j = 0; j < ancho; j++)
-    {
-        m_matriz[row_dest][j] = m_matriz[row_src][j];
-    }
-}
-
-
-void sLaberinto_2::copyCol(int col_src, int col_dest, int alto)
-{
-    for (int i = 0; i < alto; i++)
-    {
-        m_matriz[i][col_dest] = m_matriz[i][col_src];
-    }
-}
-
-void sLaberinto_2::copyValidRowsAndCols(int alto, int ancho)
-{
-    int i = alto - 2;
-    while (i >= 0 && m_matriz[i][1] == kMuro) --i;
-    while (i < alto - 2)
-    {
-        copyRow(i, i + 1, ancho);
-        i++;
-    }
-    int j = ancho - 2;
-    while (j >= 0 && m_matriz[1][j] == kMuro) --j;
-    while (j<ancho-2)
-    {
-        copyCol(j, j + 1, alto);
-        j++;
     }
 }
 

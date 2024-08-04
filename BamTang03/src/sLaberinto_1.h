@@ -41,9 +41,10 @@ struct sLaberinto_1
     sLaberinto_1();
     ~sLaberinto_1();
 
-private:
-
     virtual int creaLaberinto() override;
+    virtual int calculaCaminoMasLargo() override;
+
+private:
 
     void removeWall(sCoord cur, int ancho_celda, int alto_celda);
     void ramdomize(int* array, int n);

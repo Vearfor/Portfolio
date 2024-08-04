@@ -12,6 +12,9 @@
     <Filter Include="Source\src">
       <UniqueIdentifier>{f3dacbef-b348-4b6f-a5e5-f8c5514de4a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cmd">
+      <UniqueIdentifier>{0033ac12-4e19-40a1-897a-5e66413a2698}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\cConio.cpp">
@@ -39,6 +42,15 @@
       <Filter>Source\src</Filter>
     </ClCompile>
     <ClCompile Include="src\sVistaConsola.cpp">
+      <Filter>Source\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sVisualSDL.cpp">
+      <Filter>Source\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cTextura.cpp">
+      <Filter>Source\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sRenderObject.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -79,5 +91,36 @@
     <ClInclude Include="src\sVistaConsola.h">
       <Filter>Source\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\sVistaSDL.h">
+      <Filter>Source\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cTextura.h">
+      <Filter>Source\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sRenderObject.h">
+      <Filter>Source\src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\comun\cmd\PostLinkDll.bat">
+      <Filter>cmd</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="recursos\letraA.png">
+      <Filter>Recursos</Filter>
+    </Image>
+    <Image Include="recursos\letraB.png">
+      <Filter>Recursos</Filter>
+    </Image>
+    <Image Include="recursos\muro.png">
+      <Filter>Recursos</Filter>
+    </Image>
+    <Image Include="recursos\negro.png">
+      <Filter>Recursos</Filter>
+    </Image>
+    <Image Include="recursos\punto.png">
+      <Filter>Recursos</Filter>
+    </Image>
   </ItemGroup>
 </Project>

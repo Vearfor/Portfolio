@@ -16,7 +16,7 @@
 // Constantes
 //--------------------------------------------------------------------------
 const int kMin = 3;
-#ifdef _WINDOWS_
+#ifdef _MYWINDOWS_
 const int kLim = 41;
 #else
 const int kLim = 25;
@@ -57,6 +57,12 @@ struct sLaberinto
     char** getMatriz() const { return m_matriz; }
     int getSize() { return m_size; }
 
+    virtual int creaLaberinto() = 0;
+    virtual int calculaCaminoMasLargo() = 0;
+
+    static void destruyeMatriz(char** matriz, int size);
+    static char** getCopiaMatriz(char** src_matriz, int size);
+
 protected:
 
     std::string m_quienSoy{ "" };
@@ -76,9 +82,6 @@ protected:
     cRandom m_motor;
 
     int creaMatriz(int size);
-    void destruyeMatriz();
-
-    virtual int creaLaberinto() = 0;
 };
 
 

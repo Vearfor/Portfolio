@@ -15,20 +15,40 @@ sVistaConsola::sVistaConsola()
 
 sVistaConsola::~sVistaConsola()
 {
+    sLaberinto::destruyeMatriz(m_matrizMuros, m_size);
 }
 //--------------------------------------------------------------------------
 
 
 //--------------------------------------------------------------------------
-int sVistaConsola::inicia()
+int sVistaConsola::inicia(sLaberinto* lab)
+{
+    m_size = lab->getSize();
+    m_matrizMuros = transformarMuros(lab->getMatriz(), m_size);
+
+    return 0;
+}
+
+int sVistaConsola::update()
 {
     return 0;
 }
 
 int sVistaConsola::dibuja(sLaberinto * lab)
 {
-    char** matrizCopia = transformarMuros(lab->getMatriz(), lab->getSize());
-    mostrar_2(lab->getMatriz(), matrizCopia, lab->getSize());
+    mostrar_2(lab->getMatriz(), m_matrizMuros, m_size);
+    return 0;
+}
+
+int sVistaConsola::mainLoop(sLaberinto* lab)
+{
+    // para cuando tengamos un mainLoop de verdad dibujando con consola
+    // ahora, lo mismo de siempre:
+    miError(
+        inicia(lab) ||
+        update() ||
+        dibuja(lab)
+    );
 
     return 0;
 }

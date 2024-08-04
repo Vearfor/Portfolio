@@ -20,7 +20,7 @@ sLaberinto::sLaberinto(const char* pcSoy)
 
 sLaberinto::~sLaberinto()
 {
-    destruyeMatriz();
+    destruyeMatriz(m_matriz, m_size);
 }
 
 
@@ -45,20 +45,20 @@ int sLaberinto::creaMatriz(int size)
     return 0;
 }
 
-void sLaberinto::destruyeMatriz()
+void sLaberinto::destruyeMatriz(char ** matriz, int size)
 {
-    if (m_matriz)
+    if (matriz)
     {
-        for (int fila = 0; fila < m_size; fila++)
+        for (int fila = 0; fila < size; fila++)
         {
-            if (m_matriz[fila])
+            if (matriz[fila])
             {
-                delete[] m_matriz[fila];
-                m_matriz[fila] = nullptr;
+                delete[] matriz[fila];
+                matriz[fila] = nullptr;
             }
         }
-        delete[] m_matriz;
-        m_matriz = nullptr;
+        delete[] matriz;
+        matriz = nullptr;
     }
 }
 
@@ -70,12 +70,27 @@ int sLaberinto::createMaze2D(int size)
         cLog::error(" sLaberinto::createMaze2D Error: creaMatriz: en la creación de la matriz del laberinto");
         return -1;
     }
-    if (creaLaberinto())
-    {
-        cLog::error(" sLaberinto::createMaze2D Error: creaLaberinto: en la construccion del laberinto");
-        return -1;
-    }
+    //if (creaLaberinto())
+    //{
+    //    cLog::error(" sLaberinto::createMaze2D Error: creaLaberinto: en la construccion del laberinto");
+    //    return -1;
+    //}
     return 0;
+}
+
+
+char** sLaberinto::getCopiaMatriz(char** src_matriz, int size)
+{
+    char** src_copia = new char* [size];
+    for (int i = 0; i < size; i++)
+    {
+        src_copia[i] = new char[size];
+        for (int j = 0; j < size; j++)
+        {
+            src_copia[i][j] = src_matriz[i][j];
+        }
+    }
+    return src_copia;
 }
 
 

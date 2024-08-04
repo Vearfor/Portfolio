@@ -26,7 +26,13 @@ int sLaberinto_1::creaLaberinto()
 }
 
 
-void sLaberinto_1::ramdomize(int* array, int n) 
+int sLaberinto_1::calculaCaminoMasLargo()
+{
+    return 0;
+}
+
+
+void sLaberinto_1::ramdomize(int* array, int n)
 {
     for (int i = n - 1; i > 0; --i)
     {

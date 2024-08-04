@@ -226,42 +226,6 @@ void sLaberinto_2::removeWall(sCoord cur, int ancho_celda, int alto_celda)
 }
 
 
-void sLaberinto_2::copyRow(int row_src, int row_dest, int ancho)
-{
-    for (int j = 0; j < ancho; j++)
-    {
-        m_matriz[row_dest][j] = m_matriz[row_src][j];
-    }
-}
-
-
-void sLaberinto_2::copyCol(int col_src, int col_dest, int alto)
-{
-    for (int i = 0; i < alto; i++)
-    {
-        m_matriz[i][col_dest] = m_matriz[i][col_src];
-    }
-}
-
-void sLaberinto_2::copyValidRowsAndCols(int alto, int ancho)
-{
-    int i = alto - 2;
-    while (i >= 0 && m_matriz[i][1] == kMuro) --i;
-    while (i < alto - 2)
-    {
-        copyRow(i, i + 1, ancho);
-        i++;
-    }
-    int j = ancho - 2;
-    while (j >= 0 && m_matriz[1][j] == kMuro) --j;
-    while (j<ancho-2)
-    {
-        copyCol(j, j + 1, alto);
-        j++;
-    }
-}
-
-
 /*========================================================================*\
 |* Fin de sLaberinto_2.cpp
 \*========================================================================*/
