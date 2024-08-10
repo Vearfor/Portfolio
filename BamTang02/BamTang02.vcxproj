@@ -157,8 +157,7 @@
     <ClCompile Include="src\cRandom.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\sLaberinto.cpp" />
-    <ClCompile Include="src\sLaberinto_2.cpp" />
-    <ClCompile Include="src\sLaberinto_1.cpp" />
+    <ClCompile Include="src\sMyMaze.cpp" />
     <ClCompile Include="src\sVistaConsola.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -166,11 +165,10 @@
     <ClInclude Include="src\cConsola.h" />
     <ClInclude Include="src\cRandom.hpp" />
     <ClInclude Include="src\sLaberinto.h" />
-    <ClInclude Include="src\sLaberinto_2.h" />
     <ClInclude Include="src\cLog.h" />
     <ClInclude Include="src\nComun.h" />
     <ClInclude Include="src\nExport.h" />
-    <ClInclude Include="src\sLaberinto_1.h" />
+    <ClInclude Include="src\sMyMaze.h" />
     <ClInclude Include="src\sPos.h" />
     <ClInclude Include="src\sVista.h" />
     <ClInclude Include="src\sVistaConsola.h" />

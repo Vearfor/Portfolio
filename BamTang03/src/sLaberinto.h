@@ -31,17 +31,6 @@ const char kVacio = 32;     // El blanco ' '.
 const char kNulo = 0;       // Pendiente de definir.
 //--------------------------------------------------------------------------
 
-//--------------------------------------------------------------------------
-// Struct
-//--------------------------------------------------------------------------
-struct sCoord
-{
-    int fila{ 0 };
-    int columna{ 0 };
-    eSentido sentido{ eSentido::eNone };
-};
-//--------------------------------------------------------------------------
-
 //
 // Una estructura en c++ es simplemente una clase con sus elementos publicos
 // Así que meteremos en la parte privada aquello que no queremos que se
@@ -59,6 +48,8 @@ struct sLaberinto
 
     virtual int creaLaberinto() = 0;
     virtual int calculaCaminoMasLargo() = 0;
+
+    virtual int creaLaberintoFrame() = 0;
 
     static void destruyeMatriz(char** matriz, int size);
     static char** getCopiaMatriz(char** src_matriz, int size);

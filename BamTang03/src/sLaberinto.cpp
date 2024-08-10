@@ -70,11 +70,11 @@ int sLaberinto::createMaze2D(int size)
         cLog::error(" sLaberinto::createMaze2D Error: creaMatriz: en la creación de la matriz del laberinto");
         return -1;
     }
-    //if (creaLaberinto())
-    //{
-    //    cLog::error(" sLaberinto::createMaze2D Error: creaLaberinto: en la construccion del laberinto");
-    //    return -1;
-    //}
+    if (creaLaberinto())
+    {
+        cLog::error(" sLaberinto::createMaze2D Error: creaLaberinto: en la construccion del laberinto");
+        return -1;
+    }
     return 0;
 }
 

@@ -5,8 +5,7 @@
 #include "cConio.h"
 #include "cConsola.h"
 #include "cLog.h"
-#include "sLaberinto_1.h"
-#include "sLaberinto_2.h"
+#include "sMyMaze.h"
 #include "sVistaConsola.h"
 #include "sVistaSDL.h"
 #include <stdio.h>
@@ -22,20 +21,25 @@
 //--------------------------------------------------------------------------
 int parametros(int argc, char* argv[]);
 int ayuda(const char* pcFormat, ...);
+int preinicio();
+int presentacion();
 //--------------------------------------------------------------------------
 // Las funciones que realmente nos piden
 //--------------------------------------------------------------------------
-int preinicio();
-int presentacion();
 int createMaze2D(int n);
 int drawMaze2D();
 //--------------------------------------------------------------------------
 
-int g_iDim = 5;
 
+//--------------------------------------------------------------------------
+// Globales
+//--------------------------------------------------------------------------
+int g_iDim = 5;
 sLaberinto* g_pLaberinto = nullptr;
 sVista* g_pVista = nullptr;
 sVistaSDL* g_pVistaSDL = nullptr;
+//--------------------------------------------------------------------------
+
 
 int main(int iArgc, char * vcArgv[])
 {
@@ -52,8 +56,8 @@ int main(int iArgc, char * vcArgv[])
     //----------------------------------------------------------------------
     cConio::SetColor(eTextColor::eTexNormal);
 
-    delete g_pVistaSDL;
-    delete g_pVista;
+    delete g_pVistaSDL;     
+    delete g_pVista;        // En realidad es g_pVistaConsola
     delete g_pLaberinto;
 
     return 0;
@@ -133,10 +137,13 @@ int ayuda(const char * pcFormat, ...)
 //==========================================================================
 // Las funciones que debemos construir:
 //==========================================================================
+//--------------------------------------------------------------------------
+// Creamos el laberinto
+//--------------------------------------------------------------------------
 int createMaze2D(int n)
 {
-    // sLaberinto_1* pLaberinto = new sLaberinto_1();
-    sLaberinto_2* pLaberinto = new sLaberinto_2();
+     sMyMaze* pLaberinto = new sMyMaze();
+    //sLaberinto_1* pLaberinto = new sLaberinto_1();
 
     if (!pLaberinto)
     {
@@ -151,6 +158,9 @@ int createMaze2D(int n)
 }
 
 
+//--------------------------------------------------------------------------
+// Dibujamos el laberinto
+//--------------------------------------------------------------------------
 int drawMaze2D()
 {
     sVistaConsola* pVistaConsola = new sVistaConsola();
@@ -164,7 +174,11 @@ int drawMaze2D()
     // Mientras aqui utilizamos la variable global de vista
     g_pVista = pVistaConsola;
 
-    miError(g_pVista->mainLoop(g_pLaberinto));
+    miError(
+        g_pVista->inicia(g_pLaberinto) ||
+        g_pVista->update() ||
+        g_pVista->dibuja(g_pLaberinto)
+    );
 
     // Aqui podemos compartir las dos vistas, ejecutando la de SDL:
     // Y para poder borrarlas luego sin problemas utilizo la vista de SDL
@@ -183,9 +197,12 @@ int drawMaze2D()
 }
 
 
+//--------------------------------------------------------------------------
+// Presentacion de lo que vamos a hacer
+//--------------------------------------------------------------------------
 int presentacion()
 {
-    word normalColor = cConio::GetNormalColor();
+    //word normalColor = cConio::GetNormalColor();
     cConio::SetColor(eTextColor::eTexCeleste);
     cConio::Cls();
     cLog::print("\n");

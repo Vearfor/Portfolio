@@ -1,5 +1,5 @@
 /*========================================================================*\
-|* sLaberinto_2.h
+|* sMyMaze.h
 \*========================================================================*/
 
 #pragma once
@@ -19,11 +19,11 @@
 // Así que meteremos en la parte privada aquello que no queremos que se
 // tenga acceso.
 //--------------------------------------------------------------------------
-struct sLaberinto_2
+struct sMyMaze
     : public sLaberinto
 {
-    sLaberinto_2();
-    ~sLaberinto_2();
+    sMyMaze();
+    ~sMyMaze();
 
     virtual int creaLaberinto() override;
     virtual int calculaCaminoMasLargo() override;
@@ -52,5 +52,5 @@ private:
 
 
 /*========================================================================*\
-|* Fin de sLaberinto_2.h
+|* Fin de sMyMaze.h
 \*========================================================================*/

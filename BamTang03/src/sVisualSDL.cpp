@@ -7,8 +7,7 @@
 #include "cLog.h"
 #include "cConsola.h"
 #include "cTextura.h"
-#include "sLaberinto_1.h"
-#include "sLaberinto_2.h"
+#include "sMyMaze.h"
 #include "sRenderObject.h"
 #include <SDL3/SDL.h>
 
@@ -202,7 +201,8 @@ bool sVistaSDL::eventos()
                         break;
 
                     case SDLK_SPACE:
-                        m_sLaberinto->calculaCaminoMasLargo();
+                        m_sLaberinto->creaLaberintoFrame();
+                        //m_sLaberinto->calculaCaminoMasLargo();
                         break;
 
                     default:
@@ -230,13 +230,41 @@ bool sVistaSDL::eventos()
 
 void sVistaSDL::laVentanaGanaFoco()
 {
-    cLog::print(" ganamos el foco\n");
+    int size = 0;
+    if (m_sLaberinto)
+        size = m_sLaberinto->getSize();
+
+    char vcSize[8];
+    sprintf_s(vcSize, sizeof(vcSize) - 1, "%2d", size);
+
+    std::string nombre = cConsola::getNombreProceso();
+    nombre += "    Size: ";
+    nombre += vcSize;
+    nombre += "    Pulsa Esc para salir. A,W,S,D para moverse.";
+
+    // cLog::print(" ganamos el foco: \n");
+
+    SDL_SetWindowTitle(m_pWindow, nombre.c_str());
 }
 
 
 void sVistaSDL::laVentanaPierdeFoco()
 {
-    cLog::print(" perdemos el foco\n");
+    int size = 0;
+    if (m_sLaberinto)
+        size = m_sLaberinto->getSize();
+
+    char vcSize[8];
+    sprintf_s(vcSize, sizeof(vcSize) - 1, "%2d", size);
+
+    std::string nombre = cConsola::getNombreProceso();
+    nombre += "    Size: ";
+    nombre += vcSize;
+    nombre += "    Toca la ventana para darle el foco";
+
+    // cLog::print(" perdemos el foco: \n");
+
+    SDL_SetWindowTitle(m_pWindow, nombre.c_str());
 }
 
 

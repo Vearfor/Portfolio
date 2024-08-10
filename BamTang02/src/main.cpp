@@ -5,8 +5,7 @@
 #include "cConio.h"
 #include "cConsola.h"
 #include "cLog.h"
-#include "sLaberinto_1.h"
-#include "sLaberinto_2.h"
+#include "sMyMaze.h"
 #include "sVistaConsola.h"
 #include <stdio.h>
 #include <string>
@@ -142,7 +141,7 @@ int ayuda(const char * pcFormat, ...)
 int createMaze2D(int n)
 {
     // sLaberinto_1* pLaberinto = new sLaberinto_1();
-    sLaberinto_2* pLaberinto = new sLaberinto_2();
+    sMyMaze* pLaberinto = new sMyMaze();
 
     if (!pLaberinto)
     {

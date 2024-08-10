@@ -1,22 +1,21 @@
 /*========================================================================*\
-|* sLaberinto_2.cpp
+|* sMyMaze.cpp
 \*========================================================================*/
 
-#include "sLaberinto_2.h"
+#include "sMyMaze.h"
 #include "cLog.h"
 #include "nComun.h"
 #include <cstring>
 #include <cctype>
-#include <unordered_map>
 
 
-sLaberinto_2::sLaberinto_2()
+sMyMaze::sMyMaze()
     : sLaberinto("Laberinto 2")
 {
     cLog::print(" quien: %s\n", m_quienSoy.c_str());
 }
 
-sLaberinto_2::~sLaberinto_2()
+sMyMaze::~sMyMaze()
 {
 }
 
@@ -30,83 +29,38 @@ sPos vDir[4] =
 };
 
 
-int sLaberinto_2::creaLaberinto()
+int sMyMaze::creaLaberinto()
 {
     sPos posInicial(1, 1);
     sPos posFinal(m_size - 2, m_size - 2);
 
-    int ancho_celda = 1;
-    int alto_celda = 1;
+    m_ancho_celda = 1;
+    m_alto_celda = 1;
 
     int sizeTotal = m_size * m_size;
+    m_vPos = new sPos[sizeTotal];
 
-    sCoord* lab = new sCoord[sizeTotal];
-    int xoffset = 1 + ancho_celda;
-    int yoffset = 1 + alto_celda;
+    // El offset viene del ancho que hay enttre las celdas:
+    m_xoffset = 1 + m_ancho_celda;
+    m_yoffset = 1 + m_alto_celda;
 
-    int index = 0;
-    sCoord start = { 1, 1, eSentido::eNone };
+    m_index = 0;
+    sPos start = { 1, 1, eSentido::eNone, "Inicio", 0, false, 0 };
+    m_vecPos.clear();
+    m_vecPos.push_back(start);
 
-    lab[index++] = start;
+    m_vPos[m_index++] = start;
 
-    while (index)
+    while (m_index)
     {
-        sCoord cur = lab[--index];
-        int fila = cur.fila;
-        int columna = cur.columna;
-        if (m_matriz[fila][columna] != kMuro)
-            continue;
-
-        // Elmina la pared entre dos posiciones validas
-        if (cur.sentido != eSentido::eNone)
-        {
-            int dx = vDir[static_cast<int>(cur.sentido)].m_fila;
-            int dy = vDir[static_cast<int>(cur.sentido)].m_columna;
-            if (
-                    cur.sentido == eSentido::eLeft ||     // 3
-                    cur.sentido == eSentido::eTop         // 0
-               )
-            {
-                dx *= (xoffset - 1);
-                dy *= (yoffset - 1);
-            }
-            removeWall({ fila - dx, columna - dy }, 1, 1);
-        }
-        removeWall(cur, 1, 1);
-
-        int idx[4] = { int(eSentido::eTop), int(eSentido::eRight), int(eSentido::eBot), int(eSentido::eLeft) };
-        ramdomize(idx, 4);
-
-        for (int k = 0; k < 4; k++)
-        {
-            int dx = vDir[idx[k]].m_fila;
-            int dy = vDir[idx[k]].m_columna;
-            int nx = fila + xoffset * dx;
-            int ny = columna + yoffset * dy;
-
-            sCoord ul, lr;
-            ul = { min(fila,nx), min(columna, ny) };
-            lr =
-            {
-                max(fila,nx) + alto_celda - 1,
-                min(columna, ny) + ancho_celda -1
-            };
-
-            if (
-                    isValidPosition(ul, m_size, m_size) &&
-                    isValidPosition(lr, m_size, m_size) &&
-                    m_matriz[nx][ny] == kMuro
-               )
-            {
-                lab[index++] = { nx, ny,  static_cast<eSentido>(idx[k]) };
-            }
-        }
+        creaLaberintoFrame();
     }
 
-    delete [] lab;
+    delete[] m_vPos;
 
     // Empezamos en inicio: 'A':
     m_current = { 1, 1, eSentido::eNone, "Inicio", 0, false, 0 };
+    m_vecPos.clear();
     m_vecPos.push_back(m_current);
     while (m_vecPos.size() > 0)
     {
@@ -124,16 +78,63 @@ int sLaberinto_2::creaLaberinto()
 
     // El primero se marca como inicio 'A'.
     m_matriz[1][1] = kInicio;
-
-    //m_last.m_fila = m_size - 2;
-    //m_last.m_columna = m_size - 2;
+    // El ultimo se marca como inicio 'B'
     m_matriz[m_last.m_fila][m_last.m_columna] = kFin;
 
     return 0;
 }
 
 
-int sLaberinto_2::calculaCaminoMasLargo()
+int sMyMaze::creaLaberintoFrame()
+{
+    if (m_index)
+    {
+        int idx[4];
+        sPos cur = m_vPos[--m_index];
+        int fila = cur.m_fila;
+        int columna = cur.m_columna;
+        if (m_matriz[fila][columna] != kMuro)
+        {
+            return 0;
+        }
+
+        // Elmina la pared entre dos posiciones validas
+        if (cur.m_sentido != eSentido::eNone)
+        {
+            int dx = vDir[static_cast<int>(cur.m_sentido)].m_fila;
+            int dy = vDir[static_cast<int>(cur.m_sentido)].m_columna;
+            setHole({ fila - dx, columna - dy });
+        }
+        setHole(cur);
+
+        ordenRandom(idx, 4);
+
+        for (int k = 0; k < 4; k++)
+        {
+            std::string sentido = vDir[static_cast<int>(idx[k])].m_nombre;
+            int dx = vDir[idx[k]].m_fila;
+            int dy = vDir[idx[k]].m_columna;
+            int nx = fila + (m_xoffset * dx);
+            int ny = columna + (m_yoffset * dy);
+
+            sPos npos{ nx, ny };
+
+            if (isValidPosition(npos, m_size, m_size) && m_matriz[nx][ny] == kMuro)
+            {
+                char vcNext[16];
+                mInicio(vcNext);
+                sprintf_s(vcNext, sizeof(vcNext) - 1, "next %2d", m_index);
+
+                m_vPos[m_index++] = { nx, ny,  static_cast<eSentido>(idx[k]), vcNext, m_index-1, false, 0 };
+            }
+        }
+        return 1;
+    }
+    return 0;
+}
+
+
+int sMyMaze::calculaCaminoMasLargo()
 {
     if (m_vecPos.size() > 0)
     {
@@ -159,11 +160,6 @@ int sLaberinto_2::calculaCaminoMasLargo()
                     next.m_index = static_cast<int>(m_vecPos.size());
                     next.m_num_pasos = m_current.m_num_pasos + 1;
                     m_vecPos.push_back(next);
-
-                    //cLog::print(" Bifurcacion:   [ %2d, %2d ]   pasos: %d\n",
-                    //    next.m_fila, next.m_columna,
-                    //    next.m_num_pasos);
-
                     m_matriz[fila][columna] = kInicio;
                 }
                 else
@@ -181,11 +177,6 @@ int sLaberinto_2::calculaCaminoMasLargo()
             if (m_last.m_num_pasos < m_current.m_num_pasos)
                 m_last = m_current;
 
-            //cLog::print(" Fin de camino:   %d pasos  [ %2d, %2d ]\n",
-            //    m_current.m_num_pasos,
-            //    m_current.m_fila, m_current.m_columna
-            //);
-
             if (m_vecPos.size() > 0)
             {
                 // Hay que quitar el primero:
@@ -194,18 +185,16 @@ int sLaberinto_2::calculaCaminoMasLargo()
                 {
                     // Y quedarnos con el siguiente
                     m_current = m_vecPos.front();
-                    //cLog::print("    %d [ %2d, %2d ]\n", m_current.m_index, m_current.m_fila, m_current.m_columna);
                 }
                 else
                 {
-                    //cLog::print(" Hemos terminado: last [ %2d, %2d ]  pasos: %d\n", m_last.m_fila, m_last.m_columna, m_last.m_num_pasos);
                     m_matriz[m_last.m_fila][m_last.m_columna] = kFin;
                 }
             }
-            else
-            {
-                //cLog::print(" Hemos terminado: Este print no sale\n");
-            }
+            //else
+            //{
+            //    //cLog::print(" Hemos terminado: Este print no sale\n");
+            //}
         }
     }
 
@@ -213,8 +202,14 @@ int sLaberinto_2::calculaCaminoMasLargo()
 }
 
 
-void sLaberinto_2::ramdomize(int* array, int n)
+// Decide en que orden(aleatorio) se quedan los siguientes alrededor de nosotros:
+void sMyMaze::ordenRandom(int* array, int n)
 {
+    array[0] = static_cast<int>(eSentido::eTop);
+    array[1] = static_cast<int>(eSentido::eRight);
+    array[2] = static_cast<int>(eSentido::eBot);
+    array[3] = static_cast<int>(eSentido::eLeft);
+
     for (int i = n - 1; i > 0; --i)
     {
         int j = rand() % (i + 1);
@@ -224,25 +219,31 @@ void sLaberinto_2::ramdomize(int* array, int n)
     }
 }
 
-bool sLaberinto_2::isValidPosition(sCoord cur, int alto, int ancho)
+
+bool sMyMaze::isValidPosition(sPos pos, int alto, int ancho)
 {
     // no se consideran loa bordes
-    return cur.fila >= 1 && cur.columna >= 1 && cur.fila < alto - 1 && cur.columna < ancho - 1;
+    return pos.m_fila >= 1 && pos.m_columna >= 1 && pos.m_fila < alto - 1 && pos.m_columna < ancho - 1;
 }
 
 
-void sLaberinto_2::removeWall(sCoord cur, int ancho_celda, int alto_celda)
+void sMyMaze::setHole(sPos pos)
 {
-    for (int i = 0; i < alto_celda; i++)
+    //----------------------------------------------------------------------
+    // Si la celda/pos del laberinto es mayor de 1, mejor con un for
+    // con uno, nos valdria con una unica sentencia:
+    // m_matriz[pos.m_fila + 0][pos.m_columna + 0] = kVacio;
+    //----------------------------------------------------------------------
+    for (int i = 0; i < m_alto_celda; i++)
     {
-        for (int j = 0; j < ancho_celda; j++)
+        for (int j = 0; j < m_ancho_celda; j++)
         {
-            m_matriz[cur.fila + i][cur.columna + j] = kVacio;
+            m_matriz[pos.m_fila + i][pos.m_columna + j] = kVacio;
         }
     }
 }
 
 
 /*========================================================================*\
-|* Fin de sLaberinto_2.cpp
+|* Fin de sMyMaze.cpp
 \*========================================================================*/

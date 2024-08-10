@@ -26,19 +26,16 @@
     <ClCompile Include="src\cConsola.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\sLaberinto_2.cpp">
-      <Filter>Source\src</Filter>
-    </ClCompile>
     <ClCompile Include="src\cRandom.cpp">
-      <Filter>Source\src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sLaberinto_1.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
     <ClCompile Include="src\sLaberinto.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
     <ClCompile Include="src\sVistaConsola.cpp">
+      <Filter>Source\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sMyMaze.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -58,16 +55,10 @@
     <ClInclude Include="src\cConsola.h">
       <Filter>Source\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\sLaberinto_2.h">
-      <Filter>Source\src</Filter>
-    </ClInclude>
     <ClInclude Include="src\sPos.h">
       <Filter>Source\src</Filter>
     </ClInclude>
     <ClInclude Include="src\cRandom.hpp">
-      <Filter>Source\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sLaberinto_1.h">
       <Filter>Source\src</Filter>
     </ClInclude>
     <ClInclude Include="src\sLaberinto.h">
@@ -77,6 +68,9 @@
       <Filter>Source\src</Filter>
     </ClInclude>
     <ClInclude Include="src\sVistaConsola.h">
+      <Filter>Source\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sMyMaze.h">
       <Filter>Source\src</Filter>
     </ClInclude>
   </ItemGroup>

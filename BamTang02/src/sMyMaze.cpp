@@ -1,21 +1,21 @@
 /*========================================================================*\
-|* sLaberinto_2.cpp
+|* sMyMaze.cpp
 \*========================================================================*/
 
-#include "sLaberinto_2.h"
+#include "sMyMaze.h"
 #include "cLog.h"
 #include "nComun.h"
 #include <cstring>
 #include <cctype>
 
 
-sLaberinto_2::sLaberinto_2()
+sMyMaze::sMyMaze()
     : sLaberinto("Laberinto 2")
 {
     cLog::print(" quien: %s\n", m_quienSoy.c_str());
 }
 
-sLaberinto_2::~sLaberinto_2()
+sMyMaze::~sMyMaze()
 {
 }
 
@@ -29,7 +29,7 @@ sPos vDir[4] =
 };
 
 
-int sLaberinto_2::creaLaberinto()
+int sMyMaze::creaLaberinto()
 {
     sPos posInicial(1, 1);
     sPos posFinal(m_size - 2, m_size - 2);
@@ -85,7 +85,7 @@ int sLaberinto_2::creaLaberinto()
 }
 
 
-int sLaberinto_2::creaLaberintoFrame()
+int sMyMaze::creaLaberintoFrame()
 {
     if (m_index)
     {
@@ -134,7 +134,7 @@ int sLaberinto_2::creaLaberintoFrame()
 }
 
 
-int sLaberinto_2::calculaCaminoMasLargo()
+int sMyMaze::calculaCaminoMasLargo()
 {
     if (m_vecPos.size() > 0)
     {
@@ -203,7 +203,7 @@ int sLaberinto_2::calculaCaminoMasLargo()
 
 
 // Decide en que orden(aleatorio) se quedan los siguientes alrededor de nosotros:
-void sLaberinto_2::ordenRandom(int* array, int n)
+void sMyMaze::ordenRandom(int* array, int n)
 {
     array[0] = static_cast<int>(eSentido::eTop);
     array[1] = static_cast<int>(eSentido::eRight);
@@ -220,14 +220,14 @@ void sLaberinto_2::ordenRandom(int* array, int n)
 }
 
 
-bool sLaberinto_2::isValidPosition(sPos pos, int alto, int ancho)
+bool sMyMaze::isValidPosition(sPos pos, int alto, int ancho)
 {
     // no se consideran loa bordes
     return pos.m_fila >= 1 && pos.m_columna >= 1 && pos.m_fila < alto - 1 && pos.m_columna < ancho - 1;
 }
 
 
-void sLaberinto_2::setHole(sPos pos)
+void sMyMaze::setHole(sPos pos)
 {
     //----------------------------------------------------------------------
     // Si la celda/pos del laberinto es mayor de 1, mejor con un for
@@ -245,5 +245,5 @@ void sLaberinto_2::setHole(sPos pos)
 
 
 /*========================================================================*\
-|* Fin de sLaberinto_2.cpp
+|* Fin de sMyMaze.cpp
 \*========================================================================*/
