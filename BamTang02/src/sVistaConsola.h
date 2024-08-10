@@ -19,8 +19,10 @@ struct sVistaConsola
     sVistaConsola();
     ~sVistaConsola();
 
-    virtual int inicia() override;
+    virtual int inicia(sLaberinto* lab) override;
+    virtual int update() override;
     virtual int dibuja(sLaberinto* lab) override;
+    //virtual int mainLoop(sLaberinto* lab) override;
 
     char** transformarMuros(char**, int size);
 
@@ -28,6 +30,9 @@ struct sVistaConsola
     void mostrar_1(char** matriz, int size);
     void mostrar_2(char** matriz1, char** matriz2, int size);
     void copia(char* vcCopia, char* src, int size);
+
+    char** m_matrizMuros{ nullptr };
+    int m_size{ 0 };
 
     const int kLVertical = 179;
     const int kLHorizontal = 196;

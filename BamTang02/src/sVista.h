@@ -16,8 +16,13 @@ struct sLaberinto;
 //--------------------------------------------------------------------------
 struct sVista
 {
-    virtual int inicia() = 0;
+    // En origen pense que solo estas
+    virtual int inicia(sLaberinto* lab) = 0;
+    virtual int update() = 0;
     virtual int dibuja(sLaberinto* lab) = 0;
+
+    // Pero al final necesito un mainloop
+    //virtual int mainLoop(sLaberinto* lab) = 0;
 };
 //--------------------------------------------------------------------------
 

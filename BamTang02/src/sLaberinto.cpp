@@ -20,7 +20,7 @@ sLaberinto::sLaberinto(const char* pcSoy)
 
 sLaberinto::~sLaberinto()
 {
-    destruyeMatriz();
+    destruyeMatriz(m_matriz, m_size);
 }
 
 
@@ -45,20 +45,20 @@ int sLaberinto::creaMatriz(int size)
     return 0;
 }
 
-void sLaberinto::destruyeMatriz()
+void sLaberinto::destruyeMatriz(char ** matriz, int size)
 {
-    if (m_matriz)
+    if (matriz)
     {
-        for (int fila = 0; fila < m_size; fila++)
+        for (int fila = 0; fila < size; fila++)
         {
-            if (m_matriz[fila])
+            if (matriz[fila])
             {
-                delete[] m_matriz[fila];
-                m_matriz[fila] = nullptr;
+                delete[] matriz[fila];
+                matriz[fila] = nullptr;
             }
         }
-        delete[] m_matriz;
-        m_matriz = nullptr;
+        delete[] matriz;
+        matriz = nullptr;
     }
 }
 

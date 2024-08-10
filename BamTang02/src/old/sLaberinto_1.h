@@ -1,5 +1,5 @@
 /*========================================================================*\
-|* sLaberinto_2.h
+|* sLaberinto_1.h
 \*========================================================================*/
 
 #pragma once
@@ -7,8 +7,6 @@
 // Include
 //--------------------------------------------------------------------------
 #include "sLaberinto.h"
-#include "sPos.h"
-#include <unordered_map>
 //--------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------
@@ -30,32 +28,32 @@
 //--------------------------------------------------------------------------
 // Struct
 //--------------------------------------------------------------------------
-//--------------------------------------------------------------------------
-
-//
-// Una estructura en c++ es simplemente una clase con sus elementos publicos
-// Así que meteremos en la parte privada aquello que no queremos que se
-// tenga acceso.
-//
-struct sLaberinto_2
+struct sLaberinto_1
     : public sLaberinto
 {
-    sLaberinto_2();
-    ~sLaberinto_2();
+    sLaberinto_1();
+    ~sLaberinto_1();
+
+    virtual int creaLaberinto() override;
+    virtual int calculaCaminoMasLargo() override;
+    virtual int creaLaberintoFrame() override;
 
 private:
 
-    virtual int creaLaberinto() override;
-
-    void removeWall(sCoord cur, int ancho_celda, int alto_celda);
+    void setHole(sPos pos);
     void ramdomize(int* array, int n);
-    bool isValidPosition(sCoord cur, int alto, int ancho);
+    bool isValidPosition(sPos pos, int alto, int ancho);
 
-    sPos calculaCaminoMasLargo();
-    void quitarElemento(std::unordered_map<int, sPos>& mapPos, int index);
+    // Para la creacion del laberinto:
+    int m_index{ 0 };
+    sPos* m_vPos{ nullptr };
+    int m_xoffset{ 0 };
+    int m_yoffset{ 0 };
+    int m_ancho_celda{ 1 };
+    int m_alto_celda{ 1 };
 };
 
 
 /*========================================================================*\
-|* Fin de sLaberinto_2.h
+|* Fin de sLaberinto_1.h
 \*========================================================================*/

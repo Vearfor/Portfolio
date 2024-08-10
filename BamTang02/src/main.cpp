@@ -21,6 +21,8 @@
 //--------------------------------------------------------------------------
 int parametros(int argc, char* argv[]);
 int ayuda(const char* pcFormat, ...);
+int preinicio();
+int presentacion();
 //--------------------------------------------------------------------------
 // Las funciones que realmente nos piden
 //--------------------------------------------------------------------------
@@ -28,13 +30,45 @@ int createMaze2D(int n);
 int drawMaze2D();
 //--------------------------------------------------------------------------
 
-int g_iDim = 5;
 
+//--------------------------------------------------------------------------
+// Globales
+//--------------------------------------------------------------------------
+int g_iDim = 5;
 sLaberinto* g_pLaberinto = nullptr;
 sVista* g_pVista = nullptr;
+//--------------------------------------------------------------------------
 
 
 int main(int iArgc, char * vcArgv[])
+{
+    cLog log;
+    preinicio();
+
+    miError(parametros(iArgc, vcArgv));
+
+    //----------------------------------------------------------------------
+    presentacion();
+    //----------------------------------------------------------------------
+    createMaze2D(g_iDim);
+    drawMaze2D();
+    cLog::print("\n");
+    cConsola::PulsaTecla(" Pulsa tecla para terminar ");
+    cLog::print("\n");
+    cConio::SetColor(eTextColor::eTexNormal);
+    //----------------------------------------------------------------------
+
+    delete g_pVista;
+    delete g_pLaberinto;
+
+    return 0;
+}
+
+
+//--------------------------------------------------------------------------
+// preinicio: elementos preparatorios
+//--------------------------------------------------------------------------
+int preinicio()
 {
 #ifdef _MYWINDOWS_
     cConsola::setModo(eModConsola::eMOD_WINDOWS);
@@ -45,53 +79,6 @@ int main(int iArgc, char * vcArgv[])
 #endif // _MYWINDOWS_
 
     cConsola::setNombreProceso("Laberinto");
-    cLog log;
-
-    miError(parametros(iArgc, vcArgv));
-
-    //----------------------------------------------------------------------
-    word normalColor = cConio::GetNormalColor();
-    cConio::SetColor(eTextColor::eTexCeleste);
-    cConio::Cls();
-    cLog::print("\n");
-    cLog::print(" LABERINTO:     Construimos un laberinto de %d\n", g_iDim);
-    cLog::print("                Funcion: ");
-    cConio::SetColor(eTextColor::eTexBlanco);
-    cLog::print("createMaze2D(int n)");
-    cConio::SetColor(eTextColor::eTexCeleste);
-    cLog::print("   siendo n la dimension %d\n", g_iDim);
-    cLog::print("\n");
-    cConio::SetColor(eTextColor::eTexAmarillo);
-    cLog::print(" 0 - He desempolvado codigo antiguo que tenia que sigue compilando y funcionando.\n");
-    cLog::print("\n");
-    cConio::SetColor(eTextColor::eTexCeleste);
-    cLog::print(" 1 - Parseamos los parametros necesarios\n");
-    cLog::print("     Obligando a que sean mayores que 3 e impar.\n");
-    cLog::print("     Y no se si aplicar un limite, se nos saldrian de la pantalla\n");
-    cLog::print("     Un solo camino entre A y B. No puede haber mas de uno.\n");
-    cLog::print("     'A' estara en en el primer hueco de la esquina superior izquierda. Lo traduzco a la posicion (2.2)\n");
-    cLog::print("     'B' al final de ese camino mas largo.\n");
-    cLog::print("     Los caminos no pueden ser diagonales\n");
-    cLog::print("\n");
-    cLog::print(" 2 - Utilizando los parametros generariamos una estructura de datos en tabla para contener\n");
-    cLog::print("     el laberinto.\n");
-    cLog::print("     Veremos de meter esos agujeros aleatorios\n");
-    cLog::print("\n");
-    cLog::print(" 3 - y mostraremos la representacion por pantalla\n");
-    cLog::print("\n");
-    cConsola::PulsaTecla(" Pulsa tecla para continuar ");
-    //----------------------------------------------------------------------
-    cConio::Cls();
-    createMaze2D(g_iDim);
-    drawMaze2D();
-    cLog::print("\n");
-    cConsola::PulsaTecla(" Pulsa tecla para terminar ");
-    //----------------------------------------------------------------------
-    cLog::print("\n");
-    cConio::SetColor(eTextColor::eTexNormal);
-
-    delete g_pVista;
-    delete g_pLaberinto;
 
     return 0;
 }
@@ -182,9 +169,49 @@ int drawMaze2D()
 
     g_pVista = pVistaConsola;
 
-    g_pVista->inicia();
+    g_pVista->inicia(g_pLaberinto);
     g_pVista->dibuja(g_pLaberinto);
 
+    return 0;
+}
+
+
+//--------------------------------------------------------------------------
+// Presentacion de lo que vamos a hacer
+//--------------------------------------------------------------------------
+int presentacion()
+{
+    // word normalColor = cConio::GetNormalColor();
+    cConio::SetColor(eTextColor::eTexCeleste);
+    cConio::Cls();
+    cLog::print("\n");
+    cLog::print(" LABERINTO:     Construimos un laberinto de %d\n", g_iDim);
+    cLog::print("                Funcion: ");
+    cConio::SetColor(eTextColor::eTexBlanco);
+    cLog::print("createMaze2D(int n)");
+    cConio::SetColor(eTextColor::eTexCeleste);
+    cLog::print("   siendo n la dimension %d\n", g_iDim);
+    cLog::print("\n");
+    cConio::SetColor(eTextColor::eTexAmarillo);
+    cLog::print(" 0 - He desempolvado codigo antiguo que tenia que sigue compilando y funcionando.\n");
+    cLog::print("\n");
+    cConio::SetColor(eTextColor::eTexCeleste);
+    cLog::print(" 1 - Parseamos los parametros necesarios\n");
+    cLog::print("     Obligando a que sean mayores que 3 e impar.\n");
+    cLog::print("     Y no se si aplicar un limite, se nos saldrian de la pantalla\n");
+    cLog::print("     Un solo camino entre A y B. No puede haber mas de uno.\n");
+    cLog::print("     'A' estara en en el primer hueco de la esquina superior izquierda. Lo traduzco a la posicion (2.2)\n");
+    cLog::print("     'B' al final de ese camino mas largo.\n");
+    cLog::print("     Los caminos no pueden ser diagonales\n");
+    cLog::print("\n");
+    cLog::print(" 2 - Utilizando los parametros generariamos una estructura de datos en tabla para contener\n");
+    cLog::print("     el laberinto.\n");
+    cLog::print("     Y para visualizarlos mejor generamos otra matriz con caracteres de las lineas.\n");
+    cLog::print("\n");
+    cLog::print(" 3 - y mostraremos la representacion por pantalla\n");
+    cLog::print("\n");
+    cConsola::PulsaTecla(" Pulsa tecla para continuar ");
+    cConio::Cls();
     return 0;
 }
 
