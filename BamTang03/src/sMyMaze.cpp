@@ -10,7 +10,7 @@
 
 
 sMyMaze::sMyMaze()
-    : sLaberinto("Laberinto 2")
+    : sLaberinto("My Maze")
 {
     cLog::print(" quien: %s\n", m_quienSoy.c_str());
 }
@@ -20,6 +20,10 @@ sMyMaze::~sMyMaze()
 }
 
 
+/*========================================================================*\
+|* Array en el que guardamos las posiciones de direccion:
+|* filas y columnas
+\*========================================================================*/
 sPos vDir[4] =
 {
     { -1,  0, eSentido::eTop    , "Arriba"      , 0 , false, 0 },
@@ -29,11 +33,14 @@ sPos vDir[4] =
 };
 
 
+//--------------------------------------------------------------------------
+// Creacion del laberinto
+//--------------------------------------------------------------------------
 int sMyMaze::creaLaberinto()
 {
-    sPos posInicial(1, 1);
-    sPos posFinal(m_size - 2, m_size - 2);
-
+    /*====================================================================*\
+    |* Prepara el bucle de creacion del laberinto
+    \*====================================================================*/
     m_ancho_celda = 1;
     m_alto_celda = 1;
 
@@ -46,9 +53,6 @@ int sMyMaze::creaLaberinto()
 
     m_index = 0;
     sPos start = { 1, 1, eSentido::eNone, "Inicio", 0, false, 0 };
-    m_vecPos.clear();
-    m_vecPos.push_back(start);
-
     m_vPos[m_index++] = start;
 
     while (m_index)
@@ -58,6 +62,9 @@ int sMyMaze::creaLaberinto()
 
     delete[] m_vPos;
 
+    /*====================================================================*\
+    |* Prepara el bucle de busqueda del camino mas largo
+    \*====================================================================*/
     // Empezamos en inicio: 'A':
     m_current = { 1, 1, eSentido::eNone, "Inicio", 0, false, 0 };
     m_vecPos.clear();
@@ -67,6 +74,9 @@ int sMyMaze::creaLaberinto()
         calculaCaminoMasLargo();
     }
 
+    /*====================================================================*\
+    |* limpio marcas del calculo  del camino mas largo
+    \*====================================================================*/
     for (int fila = 0; fila < m_size; fila++)
     {
         for (int columna = 0; columna < m_size; columna++)
@@ -78,6 +88,7 @@ int sMyMaze::creaLaberinto()
 
     // El primero se marca como inicio 'A'.
     m_matriz[1][1] = kInicio;
+
     // El ultimo se marca como inicio 'B'
     m_matriz[m_last.m_fila][m_last.m_columna] = kFin;
 
@@ -85,9 +96,21 @@ int sMyMaze::creaLaberinto()
 }
 
 
+//--------------------------------------------------------------------------
+// Creacion del laberinto
+// - guardamos las variables como miembros de la clase para poder ver como
+//   creabamos el laberinto frame a frame
+// 
+// int m_index{ 0 };
+// sPos* m_vPos{ nullptr };
+// int m_xoffset{ 0 };
+// int m_yoffset{ 0 };
+// int m_ancho_celda{ 1 };
+// int m_alto_celda{ 1 };
+//--------------------------------------------------------------------------
 int sMyMaze::creaLaberintoFrame()
 {
-    if (m_index)
+    if (m_index>0)
     {
         int idx[4];
         sPos cur = m_vPos[--m_index];
@@ -109,11 +132,13 @@ int sMyMaze::creaLaberintoFrame()
 
         ordenRandom(idx, 4);
 
+        /*================================================================*\
+        |* determina que idx(direccion) alrededor de nosotros es valida
+        \*================================================================*/
         for (int k = 0; k < 4; k++)
         {
-            std::string sentido = vDir[static_cast<int>(idx[k])].m_nombre;
-            int dx = vDir[idx[k]].m_fila;
-            int dy = vDir[idx[k]].m_columna;
+            int dx = vDir[static_cast<int>(idx[k])].m_fila;
+            int dy = vDir[static_cast<int>(idx[k])].m_columna;
             int nx = fila + (m_xoffset * dx);
             int ny = columna + (m_yoffset * dy);
 
@@ -125,15 +150,27 @@ int sMyMaze::creaLaberintoFrame()
                 mInicio(vcNext);
                 sprintf_s(vcNext, sizeof(vcNext) - 1, "next %2d", m_index);
 
+                // Guardamos la nueva posicion valida
                 m_vPos[m_index++] = { nx, ny,  static_cast<eSentido>(idx[k]), vcNext, m_index-1, false, 0 };
             }
         }
+        /*================================================================*/
         return 1;
     }
     return 0;
 }
 
 
+//--------------------------------------------------------------------------
+// Recorre el laberinto para contabilizar los camninos, que marcamos con
+// kNulo
+// - tambien guardamos las variables como miembros de la clase para poder
+//  ver como contamos los caminos frame a frame
+// 
+// std::vector<sPos> m_vecPos;
+// sPos m_current{ 1, 1 };
+// sPos m_last{ 1, 1 };
+//--------------------------------------------------------------------------
 int sMyMaze::calculaCaminoMasLargo()
 {
     if (m_vecPos.size() > 0)
@@ -202,7 +239,12 @@ int sMyMaze::calculaCaminoMasLargo()
 }
 
 
-// Decide en que orden(aleatorio) se quedan los siguientes alrededor de nosotros:
+//--------------------------------------------------------------------------
+// como una coctelera cambia los valores del array para cambiar el orden
+// de los valores
+// Decide en que orden(aleatorio) se quedan los siguientes alrededor de
+// nosotros:
+//--------------------------------------------------------------------------
 void sMyMaze::ordenRandom(int* array, int n)
 {
     array[0] = static_cast<int>(eSentido::eTop);
@@ -220,6 +262,9 @@ void sMyMaze::ordenRandom(int* array, int n)
 }
 
 
+//--------------------------------------------------------------------------
+// Determina si sPos es una posicion valida
+//--------------------------------------------------------------------------
 bool sMyMaze::isValidPosition(sPos pos, int alto, int ancho)
 {
     // no se consideran loa bordes
@@ -227,6 +272,9 @@ bool sMyMaze::isValidPosition(sPos pos, int alto, int ancho)
 }
 
 
+//--------------------------------------------------------------------------
+// Establece el valor vacio para la pos dada
+//--------------------------------------------------------------------------
 void sMyMaze::setHole(sPos pos)
 {
     //----------------------------------------------------------------------

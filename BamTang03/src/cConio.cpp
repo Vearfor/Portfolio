@@ -14,13 +14,6 @@
 #include "cConio.h"
 #include "cLog.h"
 
-//#include "../Consola/cShell.h"
-//#include "../Consola/cConsola.h"
-//#ifndef _SIN_cError
-//#include "../Util/cError.h"
-//#endif
-//#include "../Memoria/fMemoria.h"
-
 
 //--------------------------------------------------------------------------
 // Variables
@@ -31,6 +24,7 @@ static struct termios oldconsola,consola;
 bool    cConio::m_bIniciado = false;
 HANDLE  cConio::m_hInHandle = NULL;
 HANDLE  cConio::m_hOutHandle = NULL;
+HANDLE  cConio::m_hErrHandle = NULL;
 
 CONSOLE_SCREEN_BUFFER_INFO	cConio::m_csbi;
 
@@ -94,13 +88,21 @@ int	cConio::open	( void )
 		// printf(" - Consola de teclado iniciado.\n");
 #endif
         m_bIniciado = true;
-        // Lo mismo nos sobra
+        //--------------------------------------------------------------
+        m_hErrHandle = GetStdHandle(STD_ERROR_HANDLE);
+        if (m_hErrHandle == INVALID_HANDLE_VALUE)
+        {
+#ifndef _SIN_cError
+            fprintf(stderr, "cConio::open: Error: GetStdHandle STD_ERROR_HANDLE\n");
+            return -1;
+#endif // _SIN_cError
+        }
         //--------------------------------------------------------------
         m_hOutHandle = GetStdHandle(STD_OUTPUT_HANDLE);
         if (m_hOutHandle == INVALID_HANDLE_VALUE)
         {
 #ifndef _SIN_cError
-            cLog::error("cConio::open: Error: GetStdHandle STD_OUTPUT_HANDLE\n");
+            fprintf(stderr, "cConio::open: Error: GetStdHandle STD_OUTPUT_HANDLE\n");
             return -1;
 #endif // _SIN_cError
         }
@@ -109,12 +111,11 @@ int	cConio::open	( void )
         if (m_hInHandle == INVALID_HANDLE_VALUE)
         {
 #ifndef _SIN_cError
-            cLog::error("cConio::open: Error: GetStdHandle STD_INPUT_HANDLE\n");
+            fprintf(stderr, "cConio::open: Error: GetStdHandle STD_INPUT_HANDLE\n");
             return -1;
 #endif // _SIN_cError
         }
         //--------------------------------------------------------------
-// #ifdef _WINMAIN_
         memset(m_tRecord, 0, sizeof(m_tRecord));   // 1024/8 = 128
         m_iCar          = 0;
         m_iVKey         = 0;
@@ -122,7 +123,6 @@ int	cConio::open	( void )
         m_l             = 0;
         m_lNumLeidos    = 0;
         m_plNumLeidos   = &m_lNumLeidos;
-// #endif
         SetColor(m_wColor);
 	}
 
@@ -148,6 +148,7 @@ int	cConio::close	( void )
 		m_bIniciado = false;
         m_hInHandle = NULL;
         m_hOutHandle = NULL;
+        m_hErrHandle = NULL;
     }
 
 	return 0;

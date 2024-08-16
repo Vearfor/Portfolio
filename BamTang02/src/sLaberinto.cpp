@@ -79,6 +79,21 @@ int sLaberinto::createMaze2D(int size)
 }
 
 
+char** sLaberinto::getCopiaMatriz(char** src_matriz, int size)
+{
+    char** src_copia = new char* [size];
+    for (int i = 0; i < size; i++)
+    {
+        src_copia[i] = new char[size];
+        for (int j = 0; j < size; j++)
+        {
+            src_copia[i][j] = src_matriz[i][j];
+        }
+    }
+    return src_copia;
+}
+
+
 /*========================================================================*\
 |* Fin de sLaberinto.h
 \*========================================================================*/

@@ -140,7 +140,6 @@ int ayuda(const char * pcFormat, ...)
 //==========================================================================
 int createMaze2D(int n)
 {
-    // sLaberinto_1* pLaberinto = new sLaberinto_1();
     sMyMaze* pLaberinto = new sMyMaze();
 
     if (!pLaberinto)
@@ -182,6 +181,7 @@ int presentacion()
 {
     // word normalColor = cConio::GetNormalColor();
     cConio::SetColor(eTextColor::eTexCeleste);
+    cLog::print(" ");
     cConio::Cls();
     cLog::print("\n");
     cLog::print(" LABERINTO:     Construimos un laberinto de %d\n", g_iDim);

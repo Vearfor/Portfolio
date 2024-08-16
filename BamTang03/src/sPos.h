@@ -16,9 +16,9 @@
 enum class eSentido : int8_t
 {
     eNone   = -1,
-    eTop    = 0,
-    eRight  = 1,
-    eBot    = 2,
+    eTop    = 0,        //                   top                        //
+    eRight  = 1,        //   left            +              right       //
+    eBot    = 2,        //                   bottom                     //
     eLeft   = 3
 };
 //--------------------------------------------------------------------------
@@ -51,7 +51,7 @@ struct sPos
     int m_fila{ 0 };
     int m_columna{ 0 };
     eSentido m_sentido{ eSentido::eTop };
-    std::string m_nombre{"Arriba"};
+    std::string m_nombre{ "Arriba" };
     int m_index{ 0 };
     bool m_visitada{ false };
     int m_num_pasos{ 0 };

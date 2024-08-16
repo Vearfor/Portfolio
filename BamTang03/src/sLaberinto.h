@@ -31,11 +31,13 @@ const char kVacio = 32;     // El blanco ' '.
 const char kNulo = 0;       // Pendiente de definir.
 //--------------------------------------------------------------------------
 
-//
+//--------------------------------------------------------------------------
+// Struct
+//--------------------------------------------------------------------------
 // Una estructura en c++ es simplemente una clase con sus elementos publicos
 // Así que meteremos en la parte privada aquello que no queremos que se
 // tenga acceso.
-//
+//--------------------------------------------------------------------------
 struct sLaberinto
 {
     sLaberinto(const char * pcSoy);

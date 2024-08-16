@@ -53,7 +53,7 @@ void sRenderObject::izquierda()
         if (valor == kVacio || valor == kFin || valor == kInicio)
         {
             m_columna--;
-            cLog::print(" izquierda:  [ %2d, %2d]\n", m_fila, m_columna);
+            //cLog::print(" izquierda:  [ %2d, %2d]\n", m_fila, m_columna);
         }
     }
 }
@@ -69,7 +69,7 @@ void sRenderObject::derecha()
         if (valor == kVacio || valor == kFin || valor == kInicio)
         {
             m_columna++;
-            cLog::print(" derecha:    [ %2d, %2d]\n", m_fila, m_columna);
+            //cLog::print(" derecha:    [ %2d, %2d]\n", m_fila, m_columna);
         }
     }
 }
@@ -85,7 +85,7 @@ void sRenderObject::arriba()
         if (valor == kVacio || valor == kFin || valor == kInicio)
         {
             m_fila--;
-            cLog::print(" arriba:     [ %2d, %2d]\n", m_fila, m_columna);
+            //cLog::print(" arriba:     [ %2d, %2d]\n", m_fila, m_columna);
         }
     }
 }
@@ -100,7 +100,7 @@ void sRenderObject::abajo()
         if (valor == kVacio || valor == kFin || valor == kInicio)
         {
             m_fila++;
-            cLog::print(" abajo:      [ %2d, %2d]\n", m_fila, m_columna);
+            //cLog::print(" abajo:      [ %2d, %2d]\n", m_fila, m_columna);
         }
     }
 }

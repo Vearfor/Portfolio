@@ -5,6 +5,8 @@
 #include "sVistaConsola.h"
 #include "sLaberinto.h"
 #include "cLog.h"
+#include "cConio.h"
+#include "cConsola.h"
 #include "nComun.h"
 
 
@@ -36,6 +38,9 @@ int sVistaConsola::update()
 
 int sVistaConsola::dibuja(sLaberinto * lab)
 {
+    mostrar_1(lab->getMatriz(), lab->getSize());
+    cConsola::PulsaTecla(" Pulsa tecla para continuar ");
+    cConio::Cls();
     mostrar_2(lab->getMatriz(), m_matrizMuros, m_size);
     return 0;
 }
@@ -57,8 +62,11 @@ int sVistaConsola::mainLoop(sLaberinto* lab)
 void sVistaConsola::mostrar_1(char** matriz, int size)
 {
     cLog::print("\n");
+    cLog::print(" La que nos han pedido:\n");
+    cLog::print("\n");
     for (int fila = 0; fila < size; fila++)
     {
+        cLog::print(" ");
         for (int columna = 0; columna < size; columna++)
         {
             int iValor = matriz[fila][columna];
@@ -76,6 +84,9 @@ void sVistaConsola::mostrar_2(char** matriz1, char** matriz2, int size)
 {
     char vcLinea1[LON_BUFF / 8];
     char vcLinea2[LON_BUFF / 8];
+
+    cLog::print("\n");
+    cLog::print(" Para visualizarla mejor:\n");
     cLog::print("\n");
     for (int fila = 0; fila < size; fila++)
     {

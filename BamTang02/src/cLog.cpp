@@ -21,6 +21,7 @@
 \*========================================================================*/
 FILE* cLog::m_pFile = nullptr;
 std::string cLog::m_pPathLog = "";
+cLog::eTraza cLog::m_eNivelTraza = cLog::eTraza::nor;
 /*========================================================================*/
 
 
@@ -42,10 +43,32 @@ cLog::~cLog()
 }
 
 
-int cLog::escribeLista(va_list pstList, const char* pcFormat)
+int cLog::escribeLista(cLog::eTraza eNivel, cLog::eOut output, va_list pstList, const char* pcFormat)
 {
-    return cConsola::escribeLista(pstList, pcFormat);
+    if (eNivel<=m_eNivelTraza)
+        return cConsola::escribeLista(output, pstList, pcFormat);
+    return 0;
 }
+
+
+//--------------------------------------------------------------------------
+// Escritura directa en la salida estandar de log
+//--------------------------------------------------------------------------
+int cLog::traza(cLog::eTraza eNivel, const char* pcFormat, ...)
+{
+    if (mNoVacia(pcFormat))
+    {
+        va_list stList;
+
+        va_start(stList, pcFormat);
+        //------
+        escribeLista(eNivel, cLog::eOut::std, stList, pcFormat);
+        //------
+        va_end(stList);
+    }
+    return 0;
+}
+
 
 //--------------------------------------------------------------------------
 // Escritura directa en la salida estandar de log
@@ -58,7 +81,8 @@ int cLog::print(const char * pcFormat, ...)
 
         va_start(stList, pcFormat);
         //------
-        escribeLista(stList, pcFormat);
+        // Falta por diferenciar la salida a stdout: no esta hecho
+        escribeLista(cLog::eTraza::min, cLog::eOut::std, stList, pcFormat);
         //------
         va_end(stList);
     }
@@ -77,7 +101,9 @@ int cLog::log(const char* pcFormat, ...)
 
         va_start(stList, pcFormat);
         //------
-        escribeLista(stList, pcFormat);
+        // Falta por diferenciar la salida a m_pFile: no esta hecho
+        // No esta hecha todavia la salida a fichero de log
+        escribeLista(cLog::eTraza::min, cLog::eOut::fil, stList, pcFormat);
         //------
         va_end(stList);
     }
@@ -85,8 +111,10 @@ int cLog::log(const char* pcFormat, ...)
 }
 
 
+//--------------------------------------------------------------------------
 // Se diferencia de la anterior en que la salida a Consola, si la tiene,
 // sera con colores de error:
+//--------------------------------------------------------------------------
 int cLog::error(const char * pcFormat, ...)
 {
     if (mNoVacia(pcFormat))
@@ -95,7 +123,8 @@ int cLog::error(const char * pcFormat, ...)
         va_start(stList, pcFormat);
         //------
         cConio::SetColor(cConio::GetErrorColor());
-        escribeLista(stList, pcFormat);
+        // Falta por diferenciar la salida a stderr: no esta hecho
+        escribeLista(cLog::eTraza::min, cLog::eOut::err, stList, pcFormat);
         cConio::SetColor(cConio::GetNormalColor());
         //------
         va_end(stList);
@@ -104,6 +133,9 @@ int cLog::error(const char * pcFormat, ...)
 }
 
 
+//--------------------------------------------------------------------------
+// Apertura de fichero de log
+//--------------------------------------------------------------------------
 int cLog::openLog(const char* pcPathFile)
 {
     fopen_s(&m_pFile, pcPathFile, "w");

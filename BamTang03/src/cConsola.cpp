@@ -138,7 +138,7 @@ int cConsola::PulsaTecla(const char * pcFormat, ...)
             va_list stList;
 
             va_start(stList, pcFormat);
-            escribeLista(stList, pcFormat);
+            escribeLista(cLog::eOut::std, stList, pcFormat);
             va_end(stList);
         }
 
@@ -165,7 +165,7 @@ int cConsola::error(const char * pcFormat, ...)
         word actualColor = cConio::GetColor();
         cConio::SetColor(cConio::GetErrorColor());
         //----------------------------------------------------------------------
-        iRes = escribeLista(stList, pcFormat);
+        iRes = escribeLista(cLog::eOut::err, stList, pcFormat);
         //----------------------------------------------------------------------
         cConio::SetColor(actualColor);
         //----------------------------------------------------------------------
@@ -186,7 +186,7 @@ int cConsola::escribe(const char * pcFormat, ...)
         //----------------------------------------------------------------------
         // Intentemos que la salida a pantalla sea la misma
         //----------------------------------------------------------------------
-        iRes = escribeLista(stList, pcFormat);
+        iRes = escribeLista(cLog::eOut::fil, stList, pcFormat);
         //----------------------------------------------------------------------
         va_end(stList);
     }
@@ -289,7 +289,7 @@ int cConsola::escribe(const char * pcFormat, ...)
 //}
 
 
-int cConsola::escribeLista(va_list pstList, const char * pcFormat)
+int cConsola::escribeLista(cLog::eOut output, va_list pstList, const char * pcFormat)
 {
     int iRes = 0;   // No hay cadena de salida en consola
 
@@ -309,6 +309,7 @@ int cConsola::escribeLista(va_list pstList, const char * pcFormat)
                 char * pcBuffer;
                 if (lonFinal > LON_BUFF)
                 {
+                    // Si no tenemos espacio suficiente en vcMensaje.
                     pcBuffer = (char *) malloc(lonFinal + 1);
                 }
                 else

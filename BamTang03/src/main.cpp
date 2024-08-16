@@ -55,9 +55,10 @@ int main(int iArgc, char * vcArgv[])
     drawMaze2D();
     //----------------------------------------------------------------------
     cConio::SetColor(eTextColor::eTexNormal);
+    //----------------------------------------------------------------------
 
-    delete g_pVistaSDL;     
-    delete g_pVista;        // En realidad es g_pVistaConsola
+    delete g_pVistaSDL;
+    delete g_pVista;        // En Realidad es g_pVistaConsola
     delete g_pLaberinto;
 
     return 0;
@@ -75,7 +76,7 @@ int preinicio()
 #else
     cConsola::setModo(eModConsola::eMOD_CONSOLA);
     cConsola::SetActiva(true);
-#endif // _WINDOWS_
+#endif // _MYWINDOWS_
     cConsola::setNombreProceso("Laberinto 2D");
     return 0;
 }
@@ -142,8 +143,7 @@ int ayuda(const char * pcFormat, ...)
 //--------------------------------------------------------------------------
 int createMaze2D(int n)
 {
-     sMyMaze* pLaberinto = new sMyMaze();
-    //sLaberinto_1* pLaberinto = new sLaberinto_1();
+    sMyMaze* pLaberinto = new sMyMaze();
 
     if (!pLaberinto)
     {
@@ -202,12 +202,13 @@ int drawMaze2D()
 //--------------------------------------------------------------------------
 int presentacion()
 {
-    //word normalColor = cConio::GetNormalColor();
+    // word normalColor = cConio::GetNormalColor();
     cConio::SetColor(eTextColor::eTexCeleste);
+    cLog::print(" ");
     cConio::Cls();
     cLog::print("\n");
-    cLog::print(" LABERINTO 2D:  Construimos un laberinto de %d\n", g_iDim);
-    cLog::print("                Funcion:  ");
+    cLog::print(" LABERINTO 2D:     Construimos un laberinto de %d\n", g_iDim);
+    cLog::print("                Funcion: ");
     cConio::SetColor(eTextColor::eTexBlanco);
     cLog::print("drawMaze2D()");
     cConio::SetColor(eTextColor::eTexCeleste);
@@ -216,7 +217,6 @@ int presentacion()
     cConio::SetColor(eTextColor::eTexBlanco);
     cLog::print("createMaze2D(int n)");
     cConio::SetColor(eTextColor::eTexCeleste);
-    cLog::print("\n");
     cLog::print("\n");
     cConio::SetColor(eTextColor::eTexCeleste);
     cLog::print(" 1 - Partimos de lo que se hizo en el anterior\n");

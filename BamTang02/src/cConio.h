@@ -50,6 +50,7 @@ class _mExport cConio
 	static  bool    m_bIniciado;
     static  HANDLE  m_hInHandle;
     static  HANDLE  m_hOutHandle;
+    static  HANDLE  m_hErrHandle;
 
 	static	CONSOLE_SCREEN_BUFFER_INFO	m_csbi;
 

@@ -12,6 +12,7 @@
 // Includes
 //--------------------------------------------------------------------------
 #include "nComun.h"
+#include "cLog.h"
 #include <string.h>
 //--------------------------------------------------------------------------
 
@@ -102,7 +103,7 @@ public:
     static int error(const char * pcFormat, ...);
 
     static int escribeListaXY(int x, int y, va_list pstList, const char * pcFormat);
-    static int escribeLista(va_list pstList, const char * pcFormat);
+    static int escribeLista(cLog::eOut output, va_list pstList, const char * pcFormat);
 	static int cls(int iTraza = 0);
     static int setTituloConsola(const char * pcFormato, ...);
     static int resetTituloConsola(const char * pcTitulo = NULL);
