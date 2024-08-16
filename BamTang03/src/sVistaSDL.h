@@ -18,12 +18,14 @@ const uint16_t kWidth = 800;                // 1024;
 const uint16_t kHeight = 600;               // 768;
 const uint16_t kCelda = 25;                 //
 //--------------------------------------------------------------------------
+// const std::string kPathLetraA = "../BamTang03/recursos/letraA_negro.png";
+//--------------------------------------------------------------------------
 const std::string kPathLetraA = "../BamTang03/recursos/letraA_negro.png";
 const std::string kPathLetraB = "../BamTang03/recursos/letraB_negro.png";
 const std::string kPathMuro = "../BamTang03/recursos/muro.png";
 const std::string kPathVacio = "../BamTang03/recursos/negro.png";
 const std::string kPathPunto = "../BamTang03/recursos/punto_negro.png";
-const std::string kPathPuntoAzul = "../BamTang03/recursos/punto_marca.png";
+const std::string kPathPuntoAmarillo = "../BamTang03/recursos/marca_circulo.png";
 //--------------------------------------------------------------------------
 
 

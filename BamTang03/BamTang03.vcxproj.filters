@@ -116,5 +116,8 @@
     <Image Include="recursos\punto.png">
       <Filter>Recursos</Filter>
     </Image>
+    <Image Include="recursos\letraA_transparente.png">
+      <Filter>Recursos</Filter>
+    </Image>
   </ItemGroup>
 </Project>

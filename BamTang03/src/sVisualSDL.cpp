@@ -35,10 +35,10 @@ int sVistaSDL::inicia(sLaberinto* lab)
     m_pLetraB   = new cTextura(kPathLetraB.c_str());
     m_pMuro     = new cTextura(kPathMuro.c_str());
     m_pVacio    = new cTextura(kPathVacio.c_str());
-    m_pMarca    = new cTextura(kPathPuntoAzul.c_str());
+    m_pMarca    = new cTextura(kPathPunto.c_str());
 
     // Y el render object no debe pertenecer a la vista:
-    m_pPunto  = new sRenderObject(kPathPunto.c_str());
+    m_pPunto  = new sRenderObject(kPathPuntoAmarillo.c_str());
 
     // No es el sitio: lo reorganizaremos de otra manera, pero metemos las condiciones del Laberinto aqui para que el 'punto'
     // sepa las condiciones del laberinto.

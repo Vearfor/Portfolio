@@ -220,6 +220,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="recursos\letraA.png" />
+    <Image Include="recursos\letraA_transparente.png" />
     <Image Include="recursos\letraB.png" />
     <Image Include="recursos\muro.png" />
     <Image Include="recursos\negro.png" />
