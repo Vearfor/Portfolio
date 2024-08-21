@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Recursos">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="cmd">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source\src">
+      <UniqueIdentifier>{5a7011bf-1e30-4493-923a-1763af83d2aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\src\tool">
+      <UniqueIdentifier>{3fb00bd3-6a9f-40b6-a909-ec182e540278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\src\tool\consola">
+      <UniqueIdentifier>{6765a81b-26f2-4914-ac57-2cb8114ef7c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\src\laberinto">
+      <UniqueIdentifier>{11491836-1464-4d6b-a2bd-d1e827017823}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\src\vistas">
+      <UniqueIdentifier>{97ca85ed-3497-4bb6-a1ab-cd0f5c68f29b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\src\texturas">
+      <UniqueIdentifier>{0e19b883-e932-4400-b684-058d0a7d4dc2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\comun\cmd\PostLinkDll.bat">
+      <Filter>cmd</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\cTextura.cpp">
+      <Filter>Source\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sRenderObject.cpp">
+      <Filter>Source\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cGame.cpp">
+      <Filter>Source\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tool\consola\cConio.cpp">
+      <Filter>Source\src\tool\consola</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tool\consola\cConsola.cpp">
+      <Filter>Source\src\tool\consola</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tool\cLog.cpp">
+      <Filter>Source\src\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tool\cRandom.cpp">
+      <Filter>Source\src\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tool\cTime.cpp">
+      <Filter>Source\src\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="src\laberinto\sLaberinto.cpp">
+      <Filter>Source\src\laberinto</Filter>
+    </ClCompile>
+    <ClCompile Include="src\laberinto\sMyMaze.cpp">
+      <Filter>Source\src\laberinto</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vistas\sVistaConsola.cpp">
+      <Filter>Source\src\vistas</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vistas\sVistaSDL.cpp">
+      <Filter>Source\src\vistas</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sGlobal.cpp">
+      <Filter>Source\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vistas\sVista3D.cpp">
+      <Filter>Source\src\vistas</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\cTextura.h">
+      <Filter>Source\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sRenderObject.h">
+      <Filter>Source\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cGame.h">
+      <Filter>Source\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tool\consola\cConio.h">
+      <Filter>Source\src\tool\consola</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tool\consola\cConsola.h">
+      <Filter>Source\src\tool\consola</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tool\cLog.h">
+      <Filter>Source\src\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tool\cRandom.hpp">
+      <Filter>Source\src\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tool\cTime.h">
+      <Filter>Source\src\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tool\nComun.h">
+      <Filter>Source\src\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tool\nExport.h">
+      <Filter>Source\src\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="src\laberinto\sLaberinto.h">
+      <Filter>Source\src\laberinto</Filter>
+    </ClInclude>
+    <ClInclude Include="src\laberinto\sMyMaze.h">
+      <Filter>Source\src\laberinto</Filter>
+    </ClInclude>
+    <ClInclude Include="src\laberinto\sPos.h">
+      <Filter>Source\src\laberinto</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vistas\sVista.h">
+      <Filter>Source\src\vistas</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vistas\sVistaConsola.h">
+      <Filter>Source\src\vistas</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vistas\sVistaSDL.h">
+      <Filter>Source\src\vistas</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sGlobal.h">
+      <Filter>Source\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vistas\sVista3D.h">
+      <Filter>Source\src\vistas</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
