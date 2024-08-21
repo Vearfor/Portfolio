@@ -228,10 +228,6 @@ int sMyMaze::calculaCaminoMasLargo()
                     m_matriz[m_last.m_fila][m_last.m_columna] = kFin;
                 }
             }
-            //else
-            //{
-            //    //cLog::print(" Hemos terminado: Este print no sale\n");
-            //}
         }
     }
 
@@ -254,7 +250,7 @@ void sMyMaze::ordenRandom(int* array, int n)
 
     for (int i = n - 1; i > 0; --i)
     {
-        int j = rand() % (i + 1);
+        int j = int(m_motor.aleatorio(0, double(i + 1)));
         int tmp = array[i];
         array[i] = array[j];
         array[j] = tmp;
@@ -267,7 +263,6 @@ void sMyMaze::ordenRandom(int* array, int n)
 //--------------------------------------------------------------------------
 bool sMyMaze::isValidPosition(sPos pos, int alto, int ancho)
 {
-    // no se consideran loa bordes
     return pos.m_fila >= 1 && pos.m_columna >= 1 && pos.m_fila < alto - 1 && pos.m_columna < ancho - 1;
 }
 
