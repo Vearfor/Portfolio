@@ -6,9 +6,9 @@
 #include "../tool/nComun.h"
 #include "../tool/cLog.h"
 #include "../tool/consola/cConsola.h"
-#include "../cTextura.h"
+// #include "../swat/cTexturaSDL.h"
+#include "../swat/sRenderObject.h"
 #include "../laberinto/sMyMaze.h"
-#include "../sRenderObject.h"
 #include <SDL3/SDL.h>
 
 

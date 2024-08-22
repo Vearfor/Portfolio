@@ -170,13 +170,14 @@
     <None Include="..\comun\cmd\PostLinkDll.bat" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\cGame.cpp" />
-    <ClCompile Include="src\cTextura.cpp" />
+    <ClCompile Include="src\sGame.cpp" />
     <ClCompile Include="src\laberinto\sLaberinto.cpp" />
     <ClCompile Include="src\laberinto\sMyMaze.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\sGlobal.cpp" />
-    <ClCompile Include="src\sRenderObject.cpp" />
+    <ClCompile Include="src\swat\sTextura.cpp" />
+    <ClCompile Include="src\swat\sRenderObject.cpp" />
+    <ClCompile Include="src\swat\sRenderSystem.cpp" />
     <ClCompile Include="src\tool\cLog.cpp" />
     <ClCompile Include="src\tool\consola\cConio.cpp" />
     <ClCompile Include="src\tool\consola\cConsola.cpp" />
@@ -187,13 +188,14 @@
     <ClCompile Include="src\vistas\sVistaSDL.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\cGame.h" />
-    <ClInclude Include="src\cTextura.h" />
+    <ClInclude Include="src\sGame.h" />
     <ClInclude Include="src\laberinto\sLaberinto.h" />
     <ClInclude Include="src\laberinto\sMyMaze.h" />
     <ClInclude Include="src\laberinto\sPos.h" />
     <ClInclude Include="src\sGlobal.h" />
-    <ClInclude Include="src\sRenderObject.h" />
+    <ClInclude Include="src\swat\sTextura.h" />
+    <ClInclude Include="src\swat\sRenderObject.h" />
+    <ClInclude Include="src\swat\sRenderSystem.h" />
     <ClInclude Include="src\tool\cLog.h" />
     <ClInclude Include="src\tool\consola\cConio.h" />
     <ClInclude Include="src\tool\consola\cConsola.h" />

@@ -3,7 +3,7 @@
 \*------------------------------------------------------------------------*/
 
 
-#include "cGame.h"
+#include "sGame.h"
 #include "sGlobal.h"
 #include "tool/cTime.h"
 #include "laberinto/sMyMaze.h"
@@ -28,7 +28,7 @@ int presentacion();
 int main(int iArgc, char* vcArgv[])
 {
     cLog log;
-    cGame juego;
+    sGame juego;
 
     preinicio();
     miError(parametros(iArgc, vcArgv));
@@ -129,24 +129,14 @@ int presentacion()
     cLog::print(" ");
     cConio::Cls();
     cLog::print("\n");
-    cLog::print(" LABERINTO 3D:     Construimos un laberinto de %d\n", sGlobal::m_iDim);
-    cLog::print("                Funcion: ");
-    cConio::SetColor(eTextColor::eTexBlanco);
-    cLog::print("drawMaze2D()");
-    cConio::SetColor(eTextColor::eTexCeleste);
+    cLog::print(" %s:     Construimos un laberinto de %d\n", cConsola::getNombreProceso(), sGlobal::m_iDim);
     cLog::print("\n");
-    cLog::print("                (utilizamos la funcion anterior:  ");
-    cConio::SetColor(eTextColor::eTexBlanco);
-    cLog::print("createMaze2D(int n)");
-    cConio::SetColor(eTextColor::eTexCeleste);
-    cLog::print("\n");
-    cConio::SetColor(eTextColor::eTexCeleste);
     cLog::print(" 1 - Partimos de lo que se hizo en el anterior\n");
     cLog::print("     La vista de consola, no se si dejar la vista de SDL\n");
     cLog::print("\n");
     cLog::print(" 2 - Y ahora crearemos una ventana Window, cuyo contexto utilizaremos para dibujar 3D con openGL.\n");
     cLog::print("\n");
-    cLog::print(" 3 - Dejaremos el 'main' 'loop' para la gestión de eventos, para la ventana OpenGL\n");
+    cLog::print(" 3 - Dejaremos el 'main' 'loop' de sGame para la gestion de eventos, para la ventana OpenGL\n");
     cLog::print("\n");
     cConsola::PulsaTecla(" Pulsa tecla para continuar ");
     cConio::Cls();

@@ -5,7 +5,7 @@
 #include "sMyMaze.h"
 #include "../tool/cLog.h"
 #include "../tool/nComun.h"
-#include "../sRenderObject.h"
+#include "../swat/sRenderObject.h"
 #include <cstring>
 #include <cctype>
 

@@ -6,7 +6,7 @@
 #include "sLaberinto.h"
 #include "../tool/cLog.h"
 #include "../tool/nComun.h"
-#include "../sRenderObject.h"
+#include "../swat/sRenderObject.h"
 
 
 sLaberinto::sLaberinto(const char* pcSoy)

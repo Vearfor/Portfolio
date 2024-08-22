@@ -6,9 +6,9 @@
 #include "../tool/nComun.h"
 #include "../tool/cLog.h"
 #include "../tool/consola/cConsola.h"
-#include "../cTextura.h"
+#include "../swat/sTextura.h"
+#include "../swat/sRenderObject.h"
 #include "../laberinto/sMyMaze.h"
-#include "../sRenderObject.h"
 #include <SDL3/SDL.h>
 
 
@@ -31,11 +31,11 @@ int sVistaSDL::inicia(sLaberinto* lab)
     SDL_SetRenderDrawColor(m_pRenderer, 0x00, 0x00, 0xff, 0x00);
 
     // Cargamos las texturas, por ahora no utilizamos un gestor de recursos
-    m_pLetraA   = new cTextura(kPathLetraA.c_str());
-    m_pLetraB   = new cTextura(kPathLetraB.c_str());
-    m_pMuro     = new cTextura(kPathMuro.c_str());
-    m_pVacio    = new cTextura(kPathVacio.c_str());
-    m_pMarca    = new cTextura(kPathPunto.c_str());
+    m_pLetraA   = new sTextura(kPathLetraA.c_str());
+    m_pLetraB   = new sTextura(kPathLetraB.c_str());
+    m_pMuro     = new sTextura(kPathMuro.c_str());
+    m_pVacio    = new sTextura(kPathVacio.c_str());
+    m_pMarca    = new sTextura(kPathPunto.c_str());
 
     miError(
         m_pLetraA->init(m_pRenderer)    ||
@@ -297,7 +297,7 @@ int sVistaSDL::dibuja(sLaberinto* lab)
 
 void sVistaSDL::dibujaChar(char car, SDL_FRect * pRectDest)
 {
-    cTextura* pTex = { nullptr };
+    sTextura* pTex = { nullptr };
     switch (car)
     {
         case kVacio:

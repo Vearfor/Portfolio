@@ -29,7 +29,7 @@ struct sTextura
 
     // Si estamos usando SDL:
     SDL_Texture* m_pTextura{ nullptr };
-    SDL_FRect m_rectSource;
+    SDL_FRect m_rectSource{};
 
     sTextura(const char* pathFile);
     ~sTextura();

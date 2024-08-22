@@ -28,8 +28,8 @@
     <Filter Include="Source\src\vistas">
       <UniqueIdentifier>{97ca85ed-3497-4bb6-a1ab-cd0f5c68f29b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\src\texturas">
-      <UniqueIdentifier>{0e19b883-e932-4400-b684-058d0a7d4dc2}</UniqueIdentifier>
+    <Filter Include="Source\src\swat">
+      <UniqueIdentifier>{96d485bd-2b80-4b66-9b71-ab8ea6f089b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -38,16 +38,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\cTextura.cpp">
-      <Filter>Source\src</Filter>
-    </ClCompile>
     <ClCompile Include="src\main.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\sRenderObject.cpp">
-      <Filter>Source\src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\cGame.cpp">
+    <ClCompile Include="src\sGame.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
     <ClCompile Include="src\tool\consola\cConio.cpp">
@@ -83,15 +77,18 @@
     <ClCompile Include="src\vistas\sVista3D.cpp">
       <Filter>Source\src\vistas</Filter>
     </ClCompile>
+    <ClCompile Include="src\swat\sTextura.cpp">
+      <Filter>Source\src\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\sRenderObject.cpp">
+      <Filter>Source\src\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\sRenderSystem.cpp">
+      <Filter>Source\src\swat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\cTextura.h">
-      <Filter>Source\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sRenderObject.h">
-      <Filter>Source\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\cGame.h">
+    <ClInclude Include="src\sGame.h">
       <Filter>Source\src</Filter>
     </ClInclude>
     <ClInclude Include="src\tool\consola\cConio.h">
@@ -138,6 +135,15 @@
     </ClInclude>
     <ClInclude Include="src\vistas\sVista3D.h">
       <Filter>Source\src\vistas</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\sTextura.h">
+      <Filter>Source\src\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\sRenderObject.h">
+      <Filter>Source\src\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\sRenderSystem.h">
+      <Filter>Source\src\swat</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

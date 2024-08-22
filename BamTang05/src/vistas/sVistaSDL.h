@@ -35,7 +35,7 @@ const std::string kPathPuntoAmarillo = "../BamTang03/recursos/marca_circulo.png"
 //--------------------------------------------------------------------------
 struct SDL_Window;
 struct SDL_Renderer;
-class cTextura;
+struct sTextura;
 struct SDL_FRect;
 struct sLaberinto;
 //--------------------------------------------------------------------------
@@ -46,11 +46,11 @@ struct sVistaSDL
     SDL_Renderer* m_pRenderer{ nullptr };
     sLaberinto* m_pLaberinto{ nullptr };
 
-    cTextura* m_pLetraA{ nullptr };
-    cTextura* m_pLetraB{ nullptr };
-    cTextura* m_pMuro{ nullptr };
-    cTextura* m_pVacio{ nullptr };
-    cTextura* m_pMarca{ nullptr };
+    sTextura* m_pLetraA{ nullptr };
+    sTextura* m_pLetraB{ nullptr };
+    sTextura* m_pMuro{ nullptr };
+    sTextura* m_pVacio{ nullptr };
+    sTextura* m_pMarca{ nullptr };
 
     sVistaSDL();
     ~sVistaSDL();
