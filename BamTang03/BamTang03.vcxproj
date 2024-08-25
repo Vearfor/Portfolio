@@ -106,7 +106,7 @@
       <AdditionalDependencies>sdl3.lib;sdl3_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>$(SolutionDir)/comun/cmd/PostLinkDll.bat $(SolutionDir)\comun\lib\$(Platform)\$(Configuration) $(SolutionDir)\MisExes</Command>
+      <Command>$(SolutionDir)/comun/cmd/PostLinkSDL.bat $(SolutionDir)\comun\lib\$(Platform)\$(Configuration) $(SolutionDir)\MisExes</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>PostLinkado</Message>
@@ -132,7 +132,7 @@
       <AdditionalDependencies>sdl3.lib;sdl3_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>$(SolutionDir)/comun/cmd/PostLinkDll.bat $(SolutionDir)\comun\lib\$(Platform)\$(Configuration) $(SolutionDir)\MisExes</Command>
+      <Command>$(SolutionDir)/comun/cmd/PostLinkSDL.bat $(SolutionDir)\comun\lib\$(Platform)\$(Configuration) $(SolutionDir)\MisExes</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>PostLinkado</Message>
@@ -154,7 +154,7 @@
       <AdditionalDependencies>sdl3.lib;sdl3_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>$(SolutionDir)/comun/cmd/PostLinkDll.bat $(SolutionDir)\comun\lib\$(Platform)\$(Configuration) $(SolutionDir)\MisExes</Command>
+      <Command>$(SolutionDir)/comun/cmd/PostLinkSDL.bat $(SolutionDir)\comun\lib\$(Platform)\$(Configuration) $(SolutionDir)\MisExes</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>PostLinkado</Message>
@@ -180,7 +180,7 @@
       <AdditionalDependencies>sdl3.lib;sdl3_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>$(SolutionDir)/comun/cmd/PostLinkDll.bat $(SolutionDir)\comun\lib\$(Platform)\$(Configuration) $(SolutionDir)\MisExes</Command>
+      <Command>$(SolutionDir)/comun/cmd/PostLinkSDL.bat $(SolutionDir)\comun\lib\$(Platform)\$(Configuration) $(SolutionDir)\MisExes</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>PostLinkado</Message>
@@ -216,7 +216,7 @@
     <ClInclude Include="src\sVistaSDL.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\comun\cmd\PostLinkDll.bat" />
+    <None Include="..\comun\cmd\PostLinkSDL.bat" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="recursos\letraA.png" />

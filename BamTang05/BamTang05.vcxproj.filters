@@ -33,7 +33,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\comun\cmd\PostLinkDll.bat">
+    <None Include="..\comun\cmd\PostLinkGLEW.bat">
       <Filter>cmd</Filter>
     </None>
   </ItemGroup>
@@ -108,6 +108,15 @@
       <Filter>Source\src\tool</Filter>
     </ClCompile>
     <ClCompile Include="src\swat\cTeclado.cpp">
+      <Filter>Source\src\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\cGestorTexturas.cpp">
+      <Filter>Source\src\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\cTextura.cpp">
+      <Filter>Source\src\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\cShader.cpp">
       <Filter>Source\src\swat</Filter>
     </ClCompile>
   </ItemGroup>
@@ -194,6 +203,15 @@
       <Filter>Source\src\swat</Filter>
     </ClInclude>
     <ClInclude Include="src\swat\nCommonKeys.h">
+      <Filter>Source\src\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\cGestorTexturas.h">
+      <Filter>Source\src\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\cTextura.h">
+      <Filter>Source\src\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\cShader.h">
       <Filter>Source\src\swat</Filter>
     </ClInclude>
   </ItemGroup>

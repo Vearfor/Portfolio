@@ -96,7 +96,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\comun\cmd\PostLinkDll.bat">
+    <None Include="..\comun\cmd\PostLinkSDL.bat">
       <Filter>cmd</Filter>
     </None>
   </ItemGroup>

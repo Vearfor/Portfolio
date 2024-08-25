@@ -8,7 +8,7 @@
 #include <iostream>
 
 #include "cShader.h"
-#include "nUtil.h"
+#include "../tool/cTool.h"
 
 #include <GLM/gtc/type_ptr.hpp>
 #include <stdarg.h>

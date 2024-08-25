@@ -3,12 +3,12 @@
 \*========================================================================*/
 
 
-#include <iostream>
-// #include <SOIL2/SOIL2.h>
-#include <STB/stb_image.h>
 #include "cTextura.h"
 #include "cShader.h"
-#include "nUtil.h"
+#include "../tool/cTool.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include <STB/stb_image.h>
+#include <iostream>
 
 
 //--------------------------------------------------------------------------

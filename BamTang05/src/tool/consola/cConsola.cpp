@@ -485,7 +485,7 @@ int cConsola::longitud(va_list pstList, const char* pcFormat)
 char* cConsola::getArgumToBuffer(char* vcMensaje, size_t mensajeSize, int & longitud, va_list pstList, const char* pcFormat)
 {
     char* pcBuffer = nullptr;
-    if (longitud > mensajeSize)
+    if (longitud > static_cast<int>(mensajeSize))
     {
         // Si no tenemos espacio suficiente en vcMensaje.
         pcBuffer = (char*)malloc(longitud + 1);

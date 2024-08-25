@@ -43,7 +43,9 @@ int main(int iArgc, char* vcArgv[])
         time.espera(false);
     }
 
-    cConsola::PulsaTecla(" Pulsa tecla para terminar");
+    cConio::SetColor(eTextColor::eTexNormal);
+    cConsola::PulsaTecla(" Pulsa tecla para terminar ");
+    cLog::print("\n");
 
     cMonitor::release();
     return 0;

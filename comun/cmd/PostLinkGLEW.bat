@@ -2,22 +2,20 @@
 
 if "%2"=="" goto Incompleto
 
-set DirEnt=%1
+set FicEnt=%1
 set DirSal=%2
 
 echo "----------------------------------------------------------------------------"
-echo " DirEnt = %DirEnt%"
+echo " PostLinkGLEW"
+echo "----------------------------------------------------------------------------"
+echo " FicEnt = %FicEnt%"
 echo " DirSal = %DirSal%"
 echo "----------------------------------------------------------------------------"
 echo " Copiamos las Dlls en la carpeta de ejecutables:"
-echo "   SDL3.dll"
-echo "   SDL3_image.dll"
+echo "   glew32.dll o glew32d.dll para Win32"
 echo "----------------------------------------------------------------------------"
-echo "copy %DirEnt%\SDL3.dll %DirSal%"
-copy %DirEnt%\SDL3.dll %DirSal%
-
-echo "copy %DirEnt%\SDL3_image.dll %DirSal%"
-copy %DirEnt%\SDL3_image.dll %DirSal%
+echo "copy %FicEnt% %DirSal%"
+copy %FicEnt% %DirSal%
 
 goto Fin
 

@@ -4,7 +4,7 @@
 
 
 #include "cGestorTexturas.h"
-#include "nUtil.h"
+#include "../tool/cTool.h"
 
 
 //--------------------------------------------------------------------------
@@ -66,7 +66,7 @@ int cGestorTexturas::CargaTextura(const char* pcPathFichero, const char* pcDirec
 
     // Obtener el nombre del fichero sin el path
     char nombreFichero[LON_BUFF];
-    getNombreFichero(caminoCompleto.c_str(), nombreFichero, sizeof(nombreFichero));
+    cTool::getNombreFichero(caminoCompleto.c_str(), nombreFichero, sizeof(nombreFichero));
 
     // Comprobar si ya se ha cargado esta textura
     auto iter = _mapTexturas.find(nombreFichero);

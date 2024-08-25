@@ -7,9 +7,11 @@
 //--------------------------------------------------------------------------
 // Includes
 //--------------------------------------------------------------------------
-#include <GL/glew.h>
-#include <assimp/Importer.hpp>
+#include "sOpenGL.h"
+// #include <GL/glew.h>
+// #include <assimp/Importer.hpp>
 #include <vector>
+#include <string>
 //--------------------------------------------------------------------------
 
 
@@ -64,7 +66,7 @@ class cTextura
     cMaterial* _material;
 
     // Debería de borrarlas ?
-    aiString _path;
+    // aiString _path;
     std::string _nameLoc = "";
     GLint _texLoc = -2;
     
