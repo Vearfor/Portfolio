@@ -3,7 +3,7 @@
 \*========================================================================*/
 
 #include "sRenderObject.h"
-#include "sTextura.h"
+//#include "sTextura.h"
 #include "../tool/cLog.h"
 #include "../tool/nComun.h"
 #include "../laberinto/sLaberinto.h"
@@ -15,14 +15,14 @@ sRenderObject::sRenderObject()
 sRenderObject::~sRenderObject()
 {
     // Cuando tengamos un gestor de recursos, sacaremos este delete de aqui:
-    delete m_pTextura;
+    //delete m_pTextura;
 }
 
 
 int sRenderObject::setTextura(const char* pcPathTextura)
 {
-    delete m_pTextura;
-    m_pTextura = new sTextura(pcPathTextura);
+    //delete m_pTextura;
+    //m_pTextura = new sTextura(pcPathTextura);
     return 0;
 }
 

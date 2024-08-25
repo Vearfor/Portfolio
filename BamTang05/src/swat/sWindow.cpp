@@ -572,7 +572,7 @@ int	sWindow::destruyeRenderContext(void)
             hRc = wglGetCurrentContext();
             if (m_hRc == hRc)				// Deberia ser el mismo contexto que tenemos, pero puede que no.
             {
-                cLog::traza(cLog::eTraza::nor, " Tenemos el contexto actual\n");
+                cLog::traza(cLog::eTraza::nor, " Eliminamos el contexto de render actual\n");
             }
 
             if (m_hDC)

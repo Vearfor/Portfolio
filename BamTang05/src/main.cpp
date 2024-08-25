@@ -7,10 +7,8 @@
 #include "sGlobal.h"
 #include "tool/cTime.h"
 #include "laberinto/sMyMaze.h"
-#include "vistas/sVistaConsola.h"
-#include "vistas/sVista3D.h"
+#include "tool/cTool.h"
 #include "tool/cLog.h"
-#include "tool/nComun.h"
 #include "tool/consola/cConio.h"
 #include "tool/consola/cConsola.h"
 #include "swat/cMonitor.h"
@@ -77,6 +75,8 @@ int preinicio()
 //--------------------------------------------------------------------------
 int parametros(int iArgc, char* vcArgv[])
 {
+    cTool::getNombreFichero(vcArgv[0], sGlobal::vcNombrePrograma, sizeof(sGlobal::vcNombrePrograma));
+
     if (iArgc < 2)
     {
         return ayuda("falta el parametro del 'size'");
@@ -99,7 +99,7 @@ int parametros(int iArgc, char* vcArgv[])
 //--------------------------------------------------------------------------
 // Lo que debemos hacer
 //--------------------------------------------------------------------------
-int ayuda(const char * pcFormat, ...)
+int ayuda(const char* pcFormat, ...)
 {
     va_list stList;
 
@@ -114,10 +114,11 @@ int ayuda(const char * pcFormat, ...)
     printf(" Error: %s\n", vcMensaje);
     printf("\n");
     printf(" Uso:\n");
-    printf("      prog  <size>      mayor que %d.\n", kMin);
-    printf("                        no superior que %d (el enunciado no dice que haya limite, tampoco lo contrario)\n", kLim);
-    printf("                        y debe ser impar\n");
-    printf("                        (Superior a %d hacen que sean visualmente no menajables)\n", kLim);
+    printf("      %s  <size>  mayor que %d.\n", sGlobal::vcNombrePrograma, kMin);
+    printf("                             no superior que %d\n", kLim);
+    printf("                             (el enunciado no dice que haya limite, tampoco lo contrario)\n");
+    printf("                             y debe ser impar\n");
+    printf("                             (Superior a %d hacen que sean visualmente no manejables en la Consola)\n", kLim);
     printf("\n");
     cConsola::PulsaTecla(" Pulsa tecla para terminar ");
     printf("\n");

@@ -34,6 +34,8 @@ public:
     static void NoDisplay(void);
     static void Display(void);
     //----------------------------------------------------------------------
+    static void getCaminoFichero(const char* pcFichero, char* pcSalida, int iSizeSalida);
+    static void getNombreFichero(const char* pcPathFichero, char* pcSalida, int iSizeSalida);
     static void trim(char* pcCadena, char cBlancos = 0);
     static bool isBlank(char pcCar);
     //--------------------------------------------------

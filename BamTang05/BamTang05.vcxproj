@@ -181,7 +181,6 @@
     <ClCompile Include="src\swat\cTeclado.cpp" />
     <ClCompile Include="src\swat\cVecModosGraficos.cpp" />
     <ClCompile Include="src\swat\sOpenGL.cpp" />
-    <ClCompile Include="src\swat\sTextura.cpp" />
     <ClCompile Include="src\swat\sRenderObject.cpp" />
     <ClCompile Include="src\swat\sRenderSystem.cpp" />
     <ClCompile Include="src\swat\sWindow.cpp" />
@@ -209,7 +208,6 @@
     <ClInclude Include="src\swat\cVecModosGraficos.h" />
     <ClInclude Include="src\swat\nCommonKeys.h" />
     <ClInclude Include="src\swat\sOpenGL.h" />
-    <ClInclude Include="src\swat\sTextura.h" />
     <ClInclude Include="src\swat\sRenderObject.h" />
     <ClInclude Include="src\swat\sRenderSystem.h" />
     <ClInclude Include="src\swat\sWindow.h" />

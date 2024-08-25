@@ -10,6 +10,7 @@
 int sGlobal::m_iDim = 5;
 int sGlobal::m_iWidth = 800;
 int sGlobal::m_iHeight = 600;
+char sGlobal::vcNombrePrograma[] = "";
 /*------------------------------------------------------------------------*/
 
 

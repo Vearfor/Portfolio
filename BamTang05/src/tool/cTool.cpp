@@ -134,6 +134,72 @@ void cTool::Display(void)
 
 
 //--------------------------------------------------------------------------
+// Extraemos las partes distintas de un path 
+//--------------------------------------------------------------------------
+void cTool::getCaminoFichero(const char* pcFichero, char* pcSalida, int iSizeSalida)
+{
+    char* pcCad, * pcRes, * pcTok;
+    char	vcCadena[LON_BUFF];
+    char    vcDir[LON_BUFF];
+
+    pcTok = nullptr;
+
+    memset(pcSalida, 0, iSizeSalida);
+    //---------------------------------------------------
+    // El nombre del fichero es la Ultima cadena
+    // despues del '\' o del '/'.
+    //---------------------------------------------------
+    // mCopia(vcCadena, pcFichero);
+    strncpy_s(vcCadena, sizeof(vcCadena), pcFichero, sizeof(vcCadena) - 1);
+    // uTrim(vcCadena, '"');
+    // mInicio(vcDir);
+    memset(vcDir, 0, sizeof(vcDir));
+    for (pcRes = NULL,
+        pcCad = strtok_s(vcCadena, "/\\", &pcTok);
+        pcCad;
+        pcCad = strtok_s(NULL, "/\\", &pcTok)
+        )
+    {
+        if (pcRes)
+        {
+            strcat_s(vcDir, sizeof(vcDir), pcRes);
+            strcat_s(vcDir, sizeof(vcDir), "/");
+        }
+
+        pcRes = pcCad;
+    }
+    //---------------------------------------------------
+    strncpy_s(pcSalida, iSizeSalida, (const char*)vcDir, iSizeSalida - 1);
+    //---------------------------------------------------
+}
+
+
+void cTool::getNombreFichero(const char* pcPathFichero, char* pcSalida, int iSizeSalida)
+{
+    char* pcCad, * pcRes, * pcTok;
+    char	vcCadena[LON_BUFF];
+
+
+    memset(pcSalida, 0, iSizeSalida);
+    //---------------------------------------------------
+    // El nombre del fichero es la Ultima cadena
+    // despues del '\' o del '/'.
+    //---------------------------------------------------
+    mCopia(vcCadena, pcPathFichero);
+    trim(vcCadena, '"');
+    for (pcRes = NULL, pcCad = strtok_s(vcCadena, "/\\", &pcTok); pcCad; pcCad = strtok_s(NULL, "/\\", &pcTok))
+    {
+        pcRes = pcCad;
+    }
+    if (pcRes)
+    {
+        strncpy_s(pcSalida, iSizeSalida, pcRes, iSizeSalida - 1);
+    }
+    //---------------------------------------------------
+}
+
+
+//--------------------------------------------------------------------------
 // Cadena libre de blancos a derecha y a izquierda.
 //--------------------------------------------------------------------------
 //--------------------------------------------------------------------------

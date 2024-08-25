@@ -28,6 +28,12 @@ int presentacion();
 int createMaze2D(int n);
 int drawMaze2D();
 //--------------------------------------------------------------------------
+void getCaminoFichero(const char* pcFichero, char* pcSalida, int iSizeSalida);
+void getNombreFichero(const char* pcPathFichero, char* pcSalida, int iSizeSalida);
+void trim(char* pcCadena, char cBlancos);
+bool isBlank(char pCar);
+//--------------------------------------------------------------------------
+
 
 
 //--------------------------------------------------------------------------
@@ -36,6 +42,7 @@ int drawMaze2D();
 int g_iDim = 5;
 sLaberinto* g_pLaberinto = nullptr;
 sVista* g_pVista = nullptr;
+char vcNombrePrograma[LON_BUFF / 8];
 //--------------------------------------------------------------------------
 
 
@@ -88,6 +95,8 @@ int preinicio()
 //--------------------------------------------------------------------------
 int parametros(int iArgc, char* vcArgv[])
 {
+    getNombreFichero(vcArgv[0], vcNombrePrograma, sizeof(vcNombrePrograma));
+
     if (iArgc < 2)
     {
         return ayuda("falta el parametro del 'size'");
@@ -125,9 +134,11 @@ int ayuda(const char * pcFormat, ...)
     printf(" Error: %s\n", vcMensaje);
     printf("\n");
     printf(" Uso:\n");
-    printf("      prog  <size>      mayor que %d.\n", kMin);
-    printf("                        no superior que %d (el enunciado no dice que haya limite, tampoco lo contrario)\n", kLim);
-    printf("                        y debe ser impar\n");
+    printf("      %s  <size>  mayor que %d.\n", vcNombrePrograma, kMin);
+    printf("                             no superior que %d\n", kLim);
+    printf("                             (el enunciado no dice que haya limite, tampoco lo contrario)\n");
+    printf("                             y debe ser impar\n");
+    printf("                             (Superior a %d hacen que sean visualmente no manejables en la Consola)\n", kLim);
     printf("\n");
     cConsola::PulsaTecla(" Pulsa tecla para terminar ");
     printf("\n");
@@ -213,6 +224,133 @@ int presentacion()
     cConio::Cls();
     return 0;
 }
+
+
+void getCaminoFichero(const char* pcFichero, char* pcSalida, int iSizeSalida)
+{
+    char* pcCad, * pcRes, * pcTok;
+    char	vcCadena[LON_BUFF];
+    char    vcDir[LON_BUFF];
+
+    pcTok = nullptr;
+
+    memset(pcSalida, 0, iSizeSalida);
+    //---------------------------------------------------
+    // El nombre del fichero es la Ultima cadena
+    // despues del '\' o del '/'.
+    //---------------------------------------------------
+    // mCopia(vcCadena, pcFichero);
+    strncpy_s(vcCadena, sizeof(vcCadena), pcFichero, sizeof(vcCadena) - 1);
+    // uTrim(vcCadena, '"');
+    // mInicio(vcDir);
+    memset(vcDir, 0, sizeof(vcDir));
+    for (pcRes = NULL,
+        pcCad = strtok_s(vcCadena, "/\\", &pcTok);
+        pcCad;
+        pcCad = strtok_s(NULL, "/\\", &pcTok)
+        )
+    {
+        if (pcRes)
+        {
+            strcat_s(vcDir, sizeof(vcDir), pcRes);
+            strcat_s(vcDir, sizeof(vcDir), "/");
+        }
+
+        pcRes = pcCad;
+    }
+    //---------------------------------------------------
+    strncpy_s(pcSalida, iSizeSalida, (const char*)vcDir, iSizeSalida - 1);
+    //---------------------------------------------------
+}
+
+
+void getNombreFichero(const char* pcPathFichero, char* pcSalida, int iSizeSalida)
+{
+    char* pcCad, * pcRes, * pcTok;
+    char	vcCadena[LON_BUFF];
+
+
+    memset(pcSalida, 0, iSizeSalida);
+    //---------------------------------------------------
+    // El nombre del fichero es la Ultima cadena
+    // despues del '\' o del '/'.
+    //---------------------------------------------------
+    mCopia(vcCadena, pcPathFichero);
+    trim(vcCadena, '"');
+    for (pcRes = NULL, pcCad = strtok_s(vcCadena, "/\\", &pcTok); pcCad; pcCad = strtok_s(NULL, "/\\", &pcTok))
+    {
+        pcRes = pcCad;
+    }
+    if (pcRes)
+    {
+        strncpy_s(pcSalida, iSizeSalida, pcRes, iSizeSalida - 1);
+    }
+    //---------------------------------------------------
+}
+
+
+void trim(char* pcCadena, char cBlancos)
+{
+    if (mNoVacia(pcCadena))
+    {
+        // Por detras.
+        //------------------------------------------------------------------
+        int i, k, j, iLen, iLen1 = (int)strlen(pcCadena);
+
+        for (
+            i = 1;
+            (
+                (cBlancos == 0 && isBlank(pcCadena[iLen1 - i]))
+                || (cBlancos != 0 && cBlancos == pcCadena[iLen1 - i])
+                ) && i < iLen1;
+            i++
+            )
+        {
+            pcCadena[iLen1 - i] = 0;
+        }
+        // Nueva longitud
+        iLen = (int)strlen(pcCadena);
+
+        // Por delante
+        //------------------------------------------------------------------
+        // char * pcCopia = (char *) mNew(char,iLen+1,"Copia uTrim");
+        char* pcCopia = new char[iLen + 1];
+        if (pcCopia)
+        {
+            memset(pcCopia, 0, iLen + 1);
+            for (
+                j = 0;
+                j < iLen &&
+                (
+                    (cBlancos == 0 && isBlank(pcCadena[j]))
+                    || (cBlancos != 0 && cBlancos == pcCadena[j])
+                    );
+                j++
+                )
+                ;
+            for (k = 0, i = j; k < (iLen - j) && i < iLen1; k++, i++)
+            {
+                pcCopia[k] = pcCadena[i];
+            }
+            iLen = (int)strlen(pcCopia);
+            strncpy_s(pcCadena, iLen + 1, pcCopia, iLen);
+            delete[] pcCopia;
+        }
+        //------------------------------------------------------------------
+    }
+}
+
+
+bool isBlank(char pCar)
+{
+    int iCar = (int)pCar;
+
+    // Hacemos que todos los que nos den valores negativos sean tambien blancos
+    // a eliminar:   iCar < 0 ;
+
+    return (iCar == ' ' || iCar == '\t' || iCar == '\n' || iCar == '\r' || iCar < 0);
+}
+
 
 
 /*------------------------------------------------------------------------*\

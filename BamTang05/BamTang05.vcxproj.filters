@@ -74,9 +74,6 @@
     <ClCompile Include="src\vistas\sVista3D.cpp">
       <Filter>Source\src\vistas</Filter>
     </ClCompile>
-    <ClCompile Include="src\swat\sTextura.cpp">
-      <Filter>Source\src\swat</Filter>
-    </ClCompile>
     <ClCompile Include="src\swat\sRenderObject.cpp">
       <Filter>Source\src\swat</Filter>
     </ClCompile>
@@ -159,9 +156,6 @@
     </ClInclude>
     <ClInclude Include="src\vistas\sVista3D.h">
       <Filter>Source\src\vistas</Filter>
-    </ClInclude>
-    <ClInclude Include="src\swat\sTextura.h">
-      <Filter>Source\src\swat</Filter>
     </ClInclude>
     <ClInclude Include="src\swat\sRenderObject.h">
       <Filter>Source\src\swat</Filter>
