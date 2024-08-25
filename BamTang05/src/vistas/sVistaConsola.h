@@ -20,9 +20,9 @@ struct sVistaConsola
     ~sVistaConsola();
 
     virtual int inicia(sLaberinto* lab) override;
+    virtual int eventos() override;
     virtual int update() override;
-    virtual int dibuja(sLaberinto* lab) override;
-    virtual int mainLoop(sLaberinto* lab) override;
+    virtual int render() override;
 
     char** transformarMuros(char**, int size);
 
@@ -33,7 +33,9 @@ struct sVistaConsola
 
     char** m_matrizMuros{ nullptr };
     int m_size{ 0 };
+    bool m_renderizado{ false };
 
+    //----------------------------------------------------------------------
     const int kLVertical = 179;
     const int kLHorizontal = 196;
     const int kSSupDer = 191;
@@ -48,6 +50,7 @@ struct sVistaConsola
     const int kMTop = 194;
     const int kMDer = 180;
     const int kMBot = 193;
+    //----------------------------------------------------------------------
 };
 //--------------------------------------------------------------------------
 

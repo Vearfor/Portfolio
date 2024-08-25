@@ -8,11 +8,12 @@
 #include "tool/cTime.h"
 #include "laberinto/sMyMaze.h"
 #include "vistas/sVistaConsola.h"
-#include "vistas/sVistaSDL.h"
+#include "vistas/sVista3D.h"
 #include "tool/cLog.h"
 #include "tool/nComun.h"
 #include "tool/consola/cConio.h"
 #include "tool/consola/cConsola.h"
+#include "swat/cMonitor.h"
 
 
 //--------------------------------------------------------------------------
@@ -27,10 +28,11 @@ int presentacion();
 
 int main(int iArgc, char* vcArgv[])
 {
+    preinicio();
+
     cLog log;
     sGame juego;
 
-    preinicio();
     miError(parametros(iArgc, vcArgv));
     presentacion();
 
@@ -43,6 +45,9 @@ int main(int iArgc, char* vcArgv[])
         time.espera(false);
     }
 
+    cConsola::PulsaTecla(" Pulsa tecla para terminar");
+
+    cMonitor::release();
     return 0;
 }
 
@@ -59,7 +64,8 @@ int preinicio()
     cConsola::setModo(eModConsola::eMOD_CONSOLA);
     cConsola::SetActiva(true);
 #endif // _MYWINDOWS_
-    cConsola::setNombreProceso("Laberinto 3D");
+    cConsola::setNombreProceso("LABERINTO 3D");
+    cConsola::setInstance(GetModuleHandle(NULL));
     cLog::print("\n");
 
     return 0;
@@ -134,7 +140,8 @@ int presentacion()
     cLog::print(" 1 - Partimos de lo que se hizo en el anterior\n");
     cLog::print("     La vista de consola, no se si dejar la vista de SDL\n");
     cLog::print("\n");
-    cLog::print(" 2 - Y ahora crearemos una ventana Window, cuyo contexto utilizaremos para dibujar 3D con openGL.\n");
+    cLog::print(" 2 - Y ahora crearemos una Window, cuyo contexto utilizaremos para dibujar 3D con openGL.\n");
+    cLog::print("     Hemos desempolvado codigo de creacion de Ventanas, para no utilizar SDL o Glfw\n");
     cLog::print("\n");
     cLog::print(" 3 - Dejaremos el 'main' 'loop' de sGame para la gestion de eventos, para la ventana OpenGL\n");
     cLog::print("\n");

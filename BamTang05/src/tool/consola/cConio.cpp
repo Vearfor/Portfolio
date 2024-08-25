@@ -291,6 +291,9 @@ int cConio::Cls()
 }
 
 
+//--------------------------------------------------------------------------
+// Tenemos que probarlo
+//--------------------------------------------------------------------------
 int cConio::GotoXY(int x, int y)
 {
 	int iRes = 0;
@@ -328,12 +331,25 @@ int	cConio::SetLastXY()
 }
 
 
-int cConio::WriteConsole(char * pcMensaje, long lenMen, ulong * pused)
+int cConio::WriteConsole(cLog::eOut out, char * pcMensaje, long lenMen, ulong * pused)
 {
     int iRes = 0;
-    if (m_hOutHandle)
+    HANDLE output = m_hOutHandle;
+
+    switch (out)
     {
-        ::WriteConsoleA(m_hOutHandle, pcMensaje, lenMen, pused, 0);
+        case cLog::eOut::err:
+            output = m_hErrHandle;
+            break;
+        case cLog::eOut::std:
+        case cLog::eOut::fil:
+        default:
+            break;
+    }
+
+    if (output)
+    {
+        ::WriteConsoleA(output, pcMensaje, lenMen, pused, 0);
     }
     return (iRes) ? -1 : 0;
 }

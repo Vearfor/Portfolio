@@ -1,26 +1,25 @@
 /*------------------------------------------------------------------------*\
-|*
 |* sGame.cpp
-|*
 \*------------------------------------------------------------------------*/
-
 
 #include "sGame.h"
 #include "sGlobal.h"
 #include "laberinto/sMyMaze.h"
-#include "vistas/sVistaConsola.h"
-//#include "vistas/sVistaSDL.h"
-#include "vistas/sVista3D.h"
-#include "tool/nComun.h"
+//#include "vistas/sVistaConsola.h"
+////#include "vistas/sVistaSDL.h"
+//#include "vistas/sVista3D.h"
+//#include "tool/nComun.h"
 #include "swat/sRenderSystem.h"
+//#include "tool/consola/cConsola.h"
 
+
+sGame::sGame()
+{
+}
 
 sGame::~sGame()
 {
-    delete m_pVista3D;
     delete m_pRender;
-    //delete m_pVistaSDL;
-    delete m_pVistaConsola;
     delete m_pLaberinto;
 }
 
@@ -32,19 +31,8 @@ int sGame::init()
         m_pLaberinto = new sMyMaze();
         miError(m_pLaberinto->createMaze2D(sGlobal::m_iDim));
 
-        m_pVistaConsola = new sVistaConsola();
-        miError(
-            m_pVistaConsola->inicia(m_pLaberinto) ||
-            m_pVistaConsola->update() ||
-            m_pVistaConsola->dibuja(m_pLaberinto)
-        );
-
-        // Los elementos 3D los vamos a definir en sRenderSystem, tienen que estar antes
-        // para poder definir la vista 3D:
         m_pRender = new sRenderSystem();
-
-        m_pVista3D = new sVista3D();
-        miError(m_pVista3D->inicia(m_pLaberinto));
+        miError(m_pRender->init(m_pLaberinto, sGlobal::m_iWidth, sGlobal::m_iHeight));
 
         m_isRunning = true;
     }
@@ -61,9 +49,7 @@ bool sGame::isRunning()
 
 int sGame::eventos()
 {
-    //m_pHandler->ResetEvent();
-
-    m_isRunning = !m_pVista3D->eventos();
+    m_isRunning = m_pRender->eventos();
 
     return 0;
 }
@@ -71,7 +57,10 @@ int sGame::eventos()
 
 int sGame::update(float deltaTime)
 {
-    m_numFrames++;      // Por tener un numero que me de el numero de frames reales desde que empieza la ejecucion.
+    // Por tener un numero que me de el numero de frames reales desde que empieza la ejecucion.
+    m_numFrames++;
+
+    m_pRender->update();
 
     //// Update de la animacion para los dos destinos: m_desAnim, y el destino de m_hero
     //m_animKnight->update(deltaTime);
@@ -102,7 +91,7 @@ int sGame::update(float deltaTime)
 
 int sGame::render()
 {
-    m_pVista3D->dibuja(m_pLaberinto);
+    m_pRender->render();
 
     return 0;
 }
@@ -188,3 +177,7 @@ int sGame::render()
 //    return 0;
 //}
 
+
+/*------------------------------------------------------------------------*\
+|* Fin de sGame.cpp
+\*------------------------------------------------------------------------*/

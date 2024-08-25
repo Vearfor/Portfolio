@@ -68,9 +68,6 @@
     <ClCompile Include="src\vistas\sVistaConsola.cpp">
       <Filter>Source\src\vistas</Filter>
     </ClCompile>
-    <ClCompile Include="src\vistas\sVistaSDL.cpp">
-      <Filter>Source\src\vistas</Filter>
-    </ClCompile>
     <ClCompile Include="src\sGlobal.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
@@ -84,6 +81,36 @@
       <Filter>Source\src\swat</Filter>
     </ClCompile>
     <ClCompile Include="src\swat\sRenderSystem.cpp">
+      <Filter>Source\src\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\sWindow.cpp">
+      <Filter>Source\src\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\cMonitor.cpp">
+      <Filter>Source\src\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\cVecModosGraficos.cpp">
+      <Filter>Source\src\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\cModoGrafico.cpp">
+      <Filter>Source\src\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tool\cItem.cpp">
+      <Filter>Source\src\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tool\cTool.cpp">
+      <Filter>Source\src\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\sOpenGL.cpp">
+      <Filter>Source\src\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sGameWindow.cpp">
+      <Filter>Source\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tool\iMensajes.cpp">
+      <Filter>Source\src\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\cTeclado.cpp">
       <Filter>Source\src\swat</Filter>
     </ClCompile>
   </ItemGroup>
@@ -127,9 +154,6 @@
     <ClInclude Include="src\vistas\sVistaConsola.h">
       <Filter>Source\src\vistas</Filter>
     </ClInclude>
-    <ClInclude Include="src\vistas\sVistaSDL.h">
-      <Filter>Source\src\vistas</Filter>
-    </ClInclude>
     <ClInclude Include="src\sGlobal.h">
       <Filter>Source\src</Filter>
     </ClInclude>
@@ -143,6 +167,39 @@
       <Filter>Source\src\swat</Filter>
     </ClInclude>
     <ClInclude Include="src\swat\sRenderSystem.h">
+      <Filter>Source\src\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\sWindow.h">
+      <Filter>Source\src\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\cMonitor.h">
+      <Filter>Source\src\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\cVecModosGraficos.h">
+      <Filter>Source\src\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\cModoGrafico.h">
+      <Filter>Source\src\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tool\cItem.h">
+      <Filter>Source\src\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tool\cTool.h">
+      <Filter>Source\src\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\sOpenGL.h">
+      <Filter>Source\src\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sGameWindow.h">
+      <Filter>Source\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tool\iMensajes.h">
+      <Filter>Source\src\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\cTeclado.h">
+      <Filter>Source\src\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\nCommonKeys.h">
       <Filter>Source\src\swat</Filter>
     </ClInclude>
   </ItemGroup>

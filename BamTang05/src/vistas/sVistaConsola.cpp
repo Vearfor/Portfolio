@@ -4,10 +4,8 @@
 
 #include "sVistaConsola.h"
 #include "../laberinto/sLaberinto.h"
-#include "../tool/cLog.h"
 #include "../tool/consola/cConio.h"
 #include "../tool/consola/cConsola.h"
-#include "../tool/nComun.h"
 
 
 //--------------------------------------------------------------------------
@@ -23,41 +21,53 @@ sVistaConsola::~sVistaConsola()
 
 
 //--------------------------------------------------------------------------
+// inicio de la Vista Consola
+//--------------------------------------------------------------------------
 int sVistaConsola::inicia(sLaberinto* lab)
 {
-    m_size = lab->getSize();
-    m_matrizMuros = transformarMuros(lab->getMatriz(), m_size);
+    m_pLaberinto = lab;
+    m_size = m_pLaberinto->getSize();
+    m_matrizMuros = transformarMuros(m_pLaberinto->getMatriz(), m_size);
 
     return 0;
 }
+
+
+int sVistaConsola::eventos()
+{
+    // Complicado hacer aqui el shell: ... por ahora nada.
+    int running = 1;
+    return running;
+}
+
 
 int sVistaConsola::update()
 {
+    int iRes = (m_renderizado) ? 1 : 0;
+    return iRes;
+}
+
+
+int sVistaConsola::render()
+{
+    if (!m_renderizado)
+    {
+        cConio::Cls();
+        mostrar_1(m_pLaberinto->getMatriz(), m_pLaberinto->getSize());
+        cConsola::PulsaTecla(" Pulsa tecla para continuar ");
+
+        cConio::Cls();
+        mostrar_2(m_pLaberinto->getMatriz(), m_matrizMuros, m_size);
+        cConsola::PulsaTecla(" Pulsa tecla para continuar ");
+
+        cConio::Cls();
+        // Con la consola lo hacemos una sola vez:
+        m_renderizado = true;
+    }
+
     return 0;
 }
 
-int sVistaConsola::dibuja(sLaberinto * lab)
-{
-    mostrar_1(lab->getMatriz(), lab->getSize());
-    cConsola::PulsaTecla(" Pulsa tecla para continuar ");
-    cConio::Cls();
-    mostrar_2(lab->getMatriz(), m_matrizMuros, m_size);
-    cConsola::PulsaTecla(" Pulsa tecla para continuar ");
-     return 0;
-}
-
-int sVistaConsola::mainLoop(sLaberinto* lab)
-{
-    // para cuando tengamos un mainLoop de verdad dibujando con consola
-    // ahora, lo mismo de siempre:
-    miError(
-        inicia(lab) ||
-        update() ||
-        dibuja(lab)
-    );
-
-    return 0;
-}
 
 
 void sVistaConsola::mostrar_1(char** matriz, int size)

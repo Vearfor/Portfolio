@@ -1,40 +1,33 @@
 /*========================================================================*\
-|* sRenderSystem.h
+|* cModoGrafico.h
 \*========================================================================*/
+
 
 #pragma once
 //--------------------------------------------------------------------------
-// Include
+// Includes
 //--------------------------------------------------------------------------
+#include <Windows.h>
 //--------------------------------------------------------------------------
 
 
 //--------------------------------------------------------------------------
-// Struct
+// cMonitor
 //--------------------------------------------------------------------------
-struct sVista;
-struct sVistaConsola;
-struct sVista3D;
-struct sLaberinto;
-//--------------------------------------------------------------------------
-struct sRenderSystem
+class cModoGrafico
 {
-    sRenderSystem();
-    ~sRenderSystem();
+public:
 
-    int init(sLaberinto *pLab, int width, int height);
-    int eventos();
-    int update();
-    int render();
+    cModoGrafico(void);
+    ~cModoGrafico(void);
 
-    sVista* m_pVista{ nullptr };
+    DEVMODE m_tDevMode;
 
-    sVistaConsola* m_pVistaConsola{ nullptr };
-    sVista3D* m_pVista3D{ nullptr };
+    void resetModoGrafico(void);
 };
 //--------------------------------------------------------------------------
 
 
 /*========================================================================*\
-|* Fin de sRenderSystem.h
+|* Fin de cModoGrafico.h
 \*========================================================================*/

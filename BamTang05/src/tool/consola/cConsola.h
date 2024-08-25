@@ -60,6 +60,7 @@ class _mExport cConsola
     //static  HANDLE  m_hOutHandle;
     //static  HANDLE  m_hInHandle;
     //static  HANDLE  m_hNewHandle;
+    static  HINSTANCE   m_hInstance;
     static  HWND        m_hWindow;
 
     static  bool    m_bAllocConsoleOriginal;
@@ -67,6 +68,7 @@ class _mExport cConsola
     static  int AllocConsole(bool bOriginal = true);
     static  int FreeConsole();
     static  int longitud(va_list pstList, const char* pcFormat);
+    static  char* getArgumToBuffer(char* vcMensaje, size_t mensajeSize, int & longitud, va_list pstList, const char* pcFormat);
 
 public:
 
@@ -111,6 +113,9 @@ public:
 
     static void setNombreProceso(const char* pcNombreProceso);
     static const char* getNombreProceso(void);
+
+    static void setInstance(HINSTANCE hInstance);
+    static HINSTANCE getInstance();
 };
 //--------------------------------------------------------------------------
 

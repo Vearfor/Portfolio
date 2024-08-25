@@ -42,9 +42,18 @@ cLog::~cLog()
 
 int cLog::escribeLista(cLog::eTraza eNivel, cLog::eOut output, va_list pstList, const char* pcFormat)
 {
-    if (eNivel<=m_eNivelTraza)
+    if (siTraza(eNivel))
         return cConsola::escribeLista(output, pstList, pcFormat);
     return 0;
+}
+
+
+//--------------------------------------------------------------------------
+// Devuelve true si cumplimos el nivel actual de traza 
+//--------------------------------------------------------------------------
+bool cLog::siTraza(cLog::eTraza eNivel)
+{
+    return (eNivel <= m_eNivelTraza);
 }
 
 

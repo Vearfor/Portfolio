@@ -3,7 +3,7 @@
 \*------------------------------------------------------------------------*/
 
 #include "cTime.h"
-#include <SDL3/SDL.h>
+#include <Windows.h>
 
 cTime::cTime(float fps) : m_fps(fps)
 {
@@ -50,7 +50,7 @@ void cTime::espera(bool delayed)
         // Hay que esperar mas:
         int64_t nelapsed = m_milPerFrame - m_deltaTime;
         if (nelapsed > 0)
-            SDL_Delay((Uint32)nelapsed);
+            Sleep((DWORD)nelapsed);
     }
     m_lastTime = m_currentTime;
 }

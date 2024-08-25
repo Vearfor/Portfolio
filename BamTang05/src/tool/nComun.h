@@ -22,7 +22,8 @@
 //==========================================================================
 // Defines
 //==========================================================================
-#define LON_BUFF        1024
+#define LON_BUFF            1024
+#define	AM_INICIO_MENSAJES  WM_USER + 1000
 //==========================================================================
 
 
@@ -32,6 +33,8 @@
 #define mEsVacia(s)         (s==NULL || *s==0)
 #define mNoVacia(s)         (s!=NULL && *s!=0)
 //--------------------------------------------------------------------------
+#define mSizeArray(varray)  (sizeof(varray)/sizeof(varray[0]))
+//--------------------------------------------------------------------------
 #define miError(punt)       { if (punt!=0) { return -1; } }
 #define miNulo(punt)        { if (!punt) { return -1; } }
 #define mpError(punt)       { if (punt!=0) { return nullptr; } }
@@ -39,15 +42,39 @@
 //--------------------------------------------------------------------------
 #define mInicio(s)          std::memset(s, 0, sizeof(s))
 //--------------------------------------------------------------------------
+#define mCopia(dest,src)	\
+    strncpy_s(dest, sizeof(dest), src, sizeof(dest)-1)
+//--------------------------------------------------------------------------
+// cString::strncpy(dest,sizeof(dest),src,sizeof(dest)-1)
+//--------------------------------------------------------------------------
 #define mDo(punt)           if (punt) punt
+//--------------------------------------------------------------------------
+#define mDelete(mem)        { if (mem) { delete mem; mem=nullptr; } }
+#define mDeleteV(mem)       { if (mem) { delete[] mem; mem=nullptr; } }
+//--------------------------------------------------------------------------
+#define mbTrue(v)           ((!strcmp(v,"true"))? true: false)
+#define msTrue(s)           ((s)? "true": "false")
 //==========================================================================
 
 
 //==========================================================================
 // Typedefs
 //==========================================================================
-typedef unsigned long       ulong;
-typedef WORD                word;
+// typedef unsigned long       ulong;
+// typedef WORD                word;
+// typedef DWORD               dword;
+//==========================================================================
+using ulong = unsigned long;
+using uint = unsigned int;
+using word = WORD;
+using dword = DWORD;
+using byte = unsigned char;
+//--------------------------------------------------------------------------
+// Tipos funciones ...
+//--------------------------------------------------------------------------
+// typedef int(*piProcP)(void*);
+//--------------------------------------------------------------------------
+using piProcP = int (*)(void*);
 //==========================================================================
 
 

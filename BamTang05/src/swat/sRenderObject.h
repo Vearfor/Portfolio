@@ -12,10 +12,10 @@
 //--------------------------------------------------------------------------
 // Struct
 //--------------------------------------------------------------------------
-struct SDL_Renderer;
+//struct SDL_Renderer;
 struct sTextura;
 struct sLaberinto;
-struct SDL_FRect;
+//struct SDL_FRect;
 //--------------------------------------------------------------------------
 struct sRenderObject
 {
@@ -23,8 +23,8 @@ struct sRenderObject
     ~sRenderObject();
 
     int setTextura(const char* pcPathTextura);
-    int init(SDL_Renderer*);
-    int render(SDL_Renderer*, SDL_FRect* pRectDest);
+    //int init(SDL_Renderer*);
+    //int render(SDL_Renderer*, SDL_FRect* pRectDest);
 
     void izquierda();
     void derecha();

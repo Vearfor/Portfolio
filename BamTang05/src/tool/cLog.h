@@ -10,12 +10,6 @@
 #include <stdarg.h>
 #include <string>
 //--------------------------------------------------------------------------
-//#include <string>
-//#include "cFile.h"
-//#include "../Procesos/cCSeccion.h"
-//#include "../Util/cString.h"
-//#include "../Listas/tLista.h"
-//--------------------------------------------------------------------------
 
 
 //--------------------------------------------------------------------------
@@ -56,6 +50,7 @@ public:
     static eTraza m_eNivelTraza;
     static bool m_escribeLog;
 
+    static  bool siTraza(cLog::eTraza traza);
     static  int traza(cLog::eTraza eNivel, const char* pcFormat, ...);
     static  int print(const char* pcFormat, ...);
     static  int log(const char* pcFormat, ...);

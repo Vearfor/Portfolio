@@ -1,40 +1,30 @@
 /*========================================================================*\
-|* sRenderSystem.h
+|* cVecModosGraficos.h
 \*========================================================================*/
+
 
 #pragma once
 //--------------------------------------------------------------------------
-// Include
+// Includes
 //--------------------------------------------------------------------------
+#include "cModoGrafico.h"
+#include <vector>
 //--------------------------------------------------------------------------
 
 
 //--------------------------------------------------------------------------
-// Struct
+// cMonitor
 //--------------------------------------------------------------------------
-struct sVista;
-struct sVistaConsola;
-struct sVista3D;
-struct sLaberinto;
-//--------------------------------------------------------------------------
-struct sRenderSystem
+class cVecModosGraficos : public std::vector<cModoGrafico>
 {
-    sRenderSystem();
-    ~sRenderSystem();
+public:
 
-    int init(sLaberinto *pLab, int width, int height);
-    int eventos();
-    int update();
-    int render();
-
-    sVista* m_pVista{ nullptr };
-
-    sVistaConsola* m_pVistaConsola{ nullptr };
-    sVista3D* m_pVista3D{ nullptr };
+    cVecModosGraficos(void);
+    ~cVecModosGraficos(void);
 };
 //--------------------------------------------------------------------------
 
 
 /*========================================================================*\
-|* Fin de sRenderSystem.h
+|* Fin de cVecModosGraficos.h
 \*========================================================================*/

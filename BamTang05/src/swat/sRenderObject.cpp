@@ -27,29 +27,6 @@ int sRenderObject::setTextura(const char* pcPathTextura)
 }
 
 
-int sRenderObject::init(SDL_Renderer*pRenderer)
-{
-    if (!m_pTextura)
-    {
-        cLog::error(" sRenderObject::init: Error: el objeto textura del render object no esta instanciado\n");
-        return -1;
-    }
-
-    miError(m_pTextura->init(pRenderer));
-
-    return 0;
-}
-
-
-int sRenderObject::render(SDL_Renderer* pRenderer, SDL_FRect* pRectDest)
-{
-    // Tenemos la posicion dada por m_fila y comlumna, nos falta info del contexto de la ventana:
-    m_pTextura->render(pRenderer, pRectDest);
-    
-    return 0;
-}
-
-
 void sRenderObject::izquierda()
 {
     // Si la posicion siguiente es valida
@@ -60,8 +37,8 @@ void sRenderObject::izquierda()
         if (valor == kVacio || valor == kFin || valor == kInicio)
         {
             m_columna--;
-            //cLog::print(" izquierda:  [ %2d, %2d]\n", m_fila, m_columna);
         }
+        cLog::print(" izquierda:  [ %2d, %2d]\n", m_fila, m_columna);
     }
 }
 
@@ -76,8 +53,8 @@ void sRenderObject::derecha()
         if (valor == kVacio || valor == kFin || valor == kInicio)
         {
             m_columna++;
-            //cLog::print(" derecha:    [ %2d, %2d]\n", m_fila, m_columna);
         }
+        cLog::print(" derecha:    [ %2d, %2d]\n", m_fila, m_columna);
     }
 }
 
@@ -92,8 +69,8 @@ void sRenderObject::arriba()
         if (valor == kVacio || valor == kFin || valor == kInicio)
         {
             m_fila--;
-            //cLog::print(" arriba:     [ %2d, %2d]\n", m_fila, m_columna);
         }
+        cLog::print(" arriba:     [ %2d, %2d]\n", m_fila, m_columna);
     }
 }
 
@@ -107,8 +84,8 @@ void sRenderObject::abajo()
         if (valor == kVacio || valor == kFin || valor == kInicio)
         {
             m_fila++;
-            //cLog::print(" abajo:      [ %2d, %2d]\n", m_fila, m_columna);
         }
+        cLog::print(" abajo:      [ %2d, %2d]\n", m_fila, m_columna);
     }
 }
 

@@ -1,31 +1,39 @@
 /*========================================================================*\
-|* sVista.h
+|* cModoGrafico.cpp
 \*========================================================================*/
 
-#pragma once
-//--------------------------------------------------------------------------
-// Include
-//--------------------------------------------------------------------------
-//--------------------------------------------------------------------------
+
+#include "cModoGrafico.h"
+#include "../tool/nComun.h"
 
 
 //--------------------------------------------------------------------------
-// Struct
+// Constructor & Destructor
 //--------------------------------------------------------------------------
-struct sLaberinto;
-//--------------------------------------------------------------------------
-struct sVista
+cModoGrafico::cModoGrafico(void)
 {
-    sLaberinto* m_pLaberinto{ nullptr };
+    resetModoGrafico();
+}
 
-    virtual int inicia(sLaberinto* lab) = 0;
-    virtual int eventos() = 0;
-    virtual int update() = 0;
-    virtual int render() = 0;
-};
+
+cModoGrafico::~cModoGrafico(void)
+{
+}
+
+
 //--------------------------------------------------------------------------
+// Resto de metodos
+//--------------------------------------------------------------------------
+void cModoGrafico::resetModoGrafico(void)
+{
+    memset(&m_tDevMode, 0, sizeof(DEVMODE));
+    m_tDevMode.dmSize = sizeof(DEVMODE);
+    // Desconozco que voy a utilizar y que tamaño poner:
+    m_tDevMode.dmDriverExtra = LON_BUFF / 4;
+}
+
 
 
 /*========================================================================*\
-|* Fin de cLog.h
+|* Fin de cModoGrafico.cpp
 \*========================================================================*/

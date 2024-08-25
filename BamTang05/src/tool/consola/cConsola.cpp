@@ -42,6 +42,8 @@ bool        cConsola::m_bAllocConsoleOriginal = false;
 //--------------------------------------------------------------------------
 char        cConsola::m_vcNombreProceso[] = "";
 //--------------------------------------------------------------------------
+HINSTANCE   cConsola::m_hInstance = NULL;
+//--------------------------------------------------------------------------
 
 
 //--------------------------------------------------------------------------
@@ -211,33 +213,22 @@ int cConsola::escribeLista(cLog::eOut output, va_list pstList, const char * pcFo
             Mostrar();
 
             int lonFinal = longitud(pstList, pcFormat);
-            if (lonFinal>0)
+            miError(lonFinal < 1);
+
+            char vcMensaje[LON_BUFF+1];
+            char* pcBuffer;
+
+            pcBuffer = getArgumToBuffer(vcMensaje, sizeof(vcMensaje), lonFinal, pstList, pcFormat);
+            miNulo(pcBuffer);
+
+            cConio::WriteConsole(output, pcBuffer, lonFinal, &nused);
+
+            if (lonFinal > LON_BUFF)
             {
-                char vcMensaje[LON_BUFF+1];
-                char * pcBuffer;
-                if (lonFinal > LON_BUFF)
-                {
-                    // Si no tenemos espacio suficiente en vcMensaje.
-                    pcBuffer = (char *) malloc(lonFinal + 1);
-                }
-                else
-                {
-                    mInicio(vcMensaje);
-                    pcBuffer = vcMensaje;
-                    lonFinal = LON_BUFF;
-                }
-                if (pcBuffer)
-                {
-                    lonFinal = vsnprintf_s(pcBuffer, lonFinal, lonFinal-1, pcFormat, pstList);
-                    cConio::WriteConsole(pcBuffer, lonFinal, &nused);
-                    if (lonFinal > LON_BUFF)
-                    {
-                        free(pcBuffer);
-                        pcBuffer = nullptr;
-                    }
-                }
-                iRes = lonFinal;
+                free(pcBuffer);
             }
+
+            iRes = lonFinal;
         }
         else
         {
@@ -404,6 +395,18 @@ const char* cConsola::getNombreProceso(void)
 }
 
 
+void cConsola::setInstance(HINSTANCE hInstance)
+{
+    m_hInstance = hInstance;
+}
+
+
+HINSTANCE cConsola::getInstance()
+{
+    return m_hInstance;
+}
+
+
 //--------------------------------------------------------------------------
 // Limpia la pantalla de la consola
 //--------------------------------------------------------------------------
@@ -426,6 +429,7 @@ int cConsola::cls(int iTraza)
 {
     return cConio::Cls();
 }
+
 
 
 //--------------------------------------------------------------------------
@@ -476,6 +480,26 @@ int cConsola::longitud(va_list pstList, const char* pcFormat)
         lonFinal = vsnprintf(NULL, 0, pcFormat, pstList);
     }
     return lonFinal;
+}
+
+char* cConsola::getArgumToBuffer(char* vcMensaje, size_t mensajeSize, int & longitud, va_list pstList, const char* pcFormat)
+{
+    char* pcBuffer = nullptr;
+    if (longitud > mensajeSize)
+    {
+        // Si no tenemos espacio suficiente en vcMensaje.
+        pcBuffer = (char*)malloc(longitud + 1);
+        memset(pcBuffer, 0, longitud + 1);
+    }
+    else
+    {
+        mInicio(vcMensaje);
+        pcBuffer = vcMensaje;
+        longitud = static_cast<int>(mensajeSize);
+    }
+    longitud = vsnprintf_s(pcBuffer, longitud, longitud - 1, pcFormat, pstList);
+
+    return pcBuffer;
 }
 
 

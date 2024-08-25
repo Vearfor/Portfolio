@@ -7,6 +7,7 @@
 // Include
 //--------------------------------------------------------------------------
 #include "sVista.h"
+#include "../tool/iMensajes.h"
 #include <cstdint>
 #include <string>
 //--------------------------------------------------------------------------
@@ -33,20 +34,31 @@
 //--------------------------------------------------------------------------
 // Struct
 //--------------------------------------------------------------------------
-struct SDL_Window;
-struct SDL_Renderer;
-//class cTextura;
-struct SDL_FRect;
-//struct sRenderObject;
-//struct sLaberinto;
+struct sWindow;
 //--------------------------------------------------------------------------
 struct sVista3D
     : public sVista
+    , public iMensajes
 {
-    //SDL_Window* m_pWindow{ nullptr };
-    //SDL_Renderer* m_pRenderer{ nullptr };
+    sVista3D();
+    ~sVista3D();
 
-    //sLaberinto* m_sLaberinto{ nullptr };
+    virtual int inicia(sLaberinto* lab) override;
+    virtual int eventos() override;
+    virtual int update() override;
+    virtual int render() override;
+
+    int creaWindow(int width, int height);
+
+    sWindow* m_mainWindow{ nullptr };
+
+    //--------------------------------------------------------------------------
+    //void dibujaChar(char car, SDL_FRect* pRectDest);
+    //void calculaRect(int fila, int columna, int size, SDL_FRect* pOutRect);
+
+    void laVentanaGanaFoco();
+    void laVentanaPierdeFoco();
+    //----------------------------------------------------------------------
 
     //// Hay que tener en cuenta que lo estamos haciendo mal, hay que separar de las vistas
     //// los contenidos/datos centrales del Laberinto
@@ -58,25 +70,7 @@ struct sVista3D
     //cTextura* m_pMuro{ nullptr };
     //cTextura* m_pVacio{ nullptr };
     //cTextura* m_pMarca{ nullptr };
-
-    sVista3D();
-    ~sVista3D();
-
-    virtual int inicia(sLaberinto* lab) override;
-    virtual int update() override;
-    virtual int dibuja(sLaberinto* lab) override;
-    virtual int mainLoop(sLaberinto* lab) override;
-
-    int initSDL();
-    int createWindow(SDL_Window** pWindow, SDL_Renderer** pRenderer);
-    int libera();
-
-    bool eventos();
-    void dibujaChar(char car, SDL_FRect* pRectDest);
-    void calculaRect(int fila, int columna, int size, SDL_FRect* pOutRect);
-
-    void laVentanaGanaFoco();
-    void laVentanaPierdeFoco();
+    //----------------------------------------------------------------------
 };
 //--------------------------------------------------------------------------
 

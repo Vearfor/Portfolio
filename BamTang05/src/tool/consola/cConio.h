@@ -7,6 +7,7 @@
 //--------------------------------------------------------------------------
 // Include
 //--------------------------------------------------------------------------
+#include "../cLog.h"
 #include "../nComun.h"
 //--------------------------------------------------------------------------
 
@@ -69,6 +70,12 @@ class _mExport cConio
 
 public:
 
+    enum class eOut : uint8_t
+    {
+        std = 1,
+        err = 2,
+    };
+
     static  int     open(void);
     static  int     close(void);
 
@@ -77,7 +84,7 @@ public:
     static  int     Cls();
 	static  int     GotoXY(int x, int y);
 	static	int		SetLastXY();
-	static  int     WriteConsole(char * vcMensaje, long lenMen, ulong * pused);
+	static  int     WriteConsole(cLog::eOut out, char * vcMensaje, long lenMen, ulong * pused);
 	static  int		MaxX(int lon);
 	static  int		MaxY(int lon);
 
@@ -85,9 +92,6 @@ public:
     static  int     GetConsole(void);
     static  bool    HayEventosConsola(void);
 
-    //static  int     EventosConsola(piProcP fInterpreta);
-    //static  int     EventosConsola(piProcM fInterpreta);
-	//static  int     EventosConsola(piProcII fInterpreta);
     static  void    setInHandle(HANDLE hInHandle);
     static  void    setOutHandle(HANDLE hOutHandle);
 

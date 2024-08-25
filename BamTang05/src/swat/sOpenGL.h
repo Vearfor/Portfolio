@@ -1,12 +1,12 @@
 /*------------------------------------------------------------------------*\
-|* sTextura.h
+|* sOpenGL.h
 \*------------------------------------------------------------------------*/
 
 #pragma once
 /*------------------------------------------------------------------------*\
 |* Includes
 \*------------------------------------------------------------------------*/
-#include <string>
+#include <GL/glew.h>
 /*------------------------------------------------------------------------*/
 
 //--------------------------------------------------------------------------
@@ -20,31 +20,17 @@
 //--------------------------------------------------------------------------
 //--------------------------------------------------------------------------
 
-// Si estamos usando SDL:
-//struct SDL_Renderer;
-struct sTextura
+
+//--------------------------------------------------------------------------
+// Struct
+//--------------------------------------------------------------------------
+struct sOpenGL
 {
-    std::string m_pathFile;
-
-    // Si estamos usando SDL:
-    //SDL_Texture* m_pTextura{ nullptr };
-    //SDL_FRect m_rectSource{};
-
-    sTextura(const char* pathFile);
-    ~sTextura();
-
-    //int init(SDL_Renderer* pRenderer);
-    //int render(SDL_Renderer* pRenderer, const SDL_FRect * pdest) const;
-
-    //SDL_Texture* getTextura() { return m_pTextura; }
-    //float getWidth() { return m_rectSource.w; }
-    //float getHeight() { return m_rectSource.h; }
-
-    //void setSource(SDL_FRect* source);
-    void release();
+    static bool m_bGlFinish;
 };
+//--------------------------------------------------------------------------
 
 
 /*------------------------------------------------------------------------*\
-|* Fin de sTextura.h
+|* Fin de sOpenGL.h
 \*------------------------------------------------------------------------*/
