@@ -61,7 +61,9 @@ int sVistaConsola::render()
         cConsola::PulsaTecla(" Pulsa tecla para continuar ");
 
         cConio::Cls();
-        // Con la consola lo hacemos una sola vez:
+        cLog::print("\n");
+
+        // Con la consola lo hacemos una sola vez: modificamos el flag.
         m_renderizado = true;
     }
 

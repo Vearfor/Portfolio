@@ -192,6 +192,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="..\comun\cmd\PostLinkGLEW.bat" />
+    <None Include="..\comun\shaders\fragment_cubo.glsl" />
+    <None Include="..\comun\shaders\fragment_triangulo.glsl" />
+    <None Include="..\comun\shaders\vertex_cubo.glsl" />
+    <None Include="..\comun\shaders\vertex_triangulo.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sGame.cpp" />
@@ -200,17 +204,23 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\sGameWindow.cpp" />
     <ClCompile Include="src\sGlobal.cpp" />
-    <ClCompile Include="src\swat\cGestorTexturas.cpp" />
-    <ClCompile Include="src\swat\cModoGrafico.cpp" />
-    <ClCompile Include="src\swat\cMonitor.cpp" />
-    <ClCompile Include="src\swat\cShader.cpp" />
-    <ClCompile Include="src\swat\cTeclado.cpp" />
-    <ClCompile Include="src\swat\cTextura.cpp" />
-    <ClCompile Include="src\swat\cVecModosGraficos.cpp" />
+    <ClCompile Include="src\sObjeto.cpp" />
+    <ClCompile Include="src\swat\cCamara.cpp" />
+    <ClCompile Include="src\swat\cMalla.cpp" />
+    <ClCompile Include="src\swat\cModel.cpp" />
+    <ClCompile Include="src\swat\input\cRaton.cpp" />
+    <ClCompile Include="src\swat\input\cTeclado.cpp" />
+    <ClCompile Include="src\swat\shaders\cGestorShaders.cpp" />
+    <ClCompile Include="src\swat\shaders\cShader.cpp" />
     <ClCompile Include="src\swat\sOpenGL.cpp" />
     <ClCompile Include="src\swat\sRenderObject.cpp" />
     <ClCompile Include="src\swat\sRenderSystem.cpp" />
-    <ClCompile Include="src\swat\sWindow.cpp" />
+    <ClCompile Include="src\swat\texturas\cGestorTexturas.cpp" />
+    <ClCompile Include="src\swat\texturas\cTextura.cpp" />
+    <ClCompile Include="src\swat\windows\cModoGrafico.cpp" />
+    <ClCompile Include="src\swat\windows\cMonitor.cpp" />
+    <ClCompile Include="src\swat\windows\cVecModosGraficos.cpp" />
+    <ClCompile Include="src\swat\windows\sWindow.cpp" />
     <ClCompile Include="src\tool\cItem.cpp" />
     <ClCompile Include="src\tool\cLog.cpp" />
     <ClCompile Include="src\tool\consola\cConio.cpp" />
@@ -229,18 +239,25 @@
     <ClInclude Include="src\laberinto\sPos.h" />
     <ClInclude Include="src\sGameWindow.h" />
     <ClInclude Include="src\sGlobal.h" />
-    <ClInclude Include="src\swat\cGestorTexturas.h" />
-    <ClInclude Include="src\swat\cModoGrafico.h" />
-    <ClInclude Include="src\swat\cMonitor.h" />
-    <ClInclude Include="src\swat\cShader.h" />
-    <ClInclude Include="src\swat\cTeclado.h" />
-    <ClInclude Include="src\swat\cTextura.h" />
-    <ClInclude Include="src\swat\cVecModosGraficos.h" />
-    <ClInclude Include="src\swat\nCommonKeys.h" />
+    <ClInclude Include="src\sObjeto.h" />
+    <ClInclude Include="src\swat\cCamara.h" />
+    <ClInclude Include="src\swat\cMalla.h" />
+    <ClInclude Include="src\swat\cModel.h" />
+    <ClInclude Include="src\swat\input\cRaton.h" />
+    <ClInclude Include="src\swat\input\cTeclado.h" />
+    <ClInclude Include="src\swat\input\nCommonKeys.h" />
+    <ClInclude Include="src\swat\shaders\cGestorShaders.h" />
+    <ClInclude Include="src\swat\shaders\cShader.h" />
     <ClInclude Include="src\swat\sOpenGL.h" />
     <ClInclude Include="src\swat\sRenderObject.h" />
     <ClInclude Include="src\swat\sRenderSystem.h" />
-    <ClInclude Include="src\swat\sWindow.h" />
+    <ClInclude Include="src\swat\texturas\cGestorTexturas.h" />
+    <ClInclude Include="src\swat\texturas\cTextura.h" />
+    <ClInclude Include="src\swat\windows\cModoGrafico.h" />
+    <ClInclude Include="src\swat\windows\cMonitor.h" />
+    <ClInclude Include="src\swat\windows\cVecModosGraficos.h" />
+    <ClInclude Include="src\swat\windows\sWindow.h" />
+    <ClInclude Include="src\swat\windows\tRect.h" />
     <ClInclude Include="src\tool\cItem.h" />
     <ClInclude Include="src\tool\cLog.h" />
     <ClInclude Include="src\tool\consola\cConio.h" />

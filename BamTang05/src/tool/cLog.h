@@ -30,12 +30,10 @@ public:
     {
         std = 1,
         err = 2,
-        fil = 3,
+        fil = 4,
     };
 
 private:
-
-    static int escribeLista(cLog::eTraza eNivel, cLog::eOut output, va_list pstList, const char* pcFormat);
 
     static  int     open(void);
     static  int     close(void);
@@ -50,6 +48,7 @@ public:
     static eTraza m_eNivelTraza;
     static bool m_escribeLog;
 
+    static int escribeLista(cLog::eTraza eNivel, cLog::eOut output, va_list pstList, const char* pcFormat);
     static  bool siTraza(cLog::eTraza traza);
     static  int traza(cLog::eTraza eNivel, const char* pcFormat, ...);
     static  int print(const char* pcFormat, ...);

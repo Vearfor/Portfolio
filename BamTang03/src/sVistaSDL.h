@@ -75,8 +75,8 @@ struct sVistaSDL
     void dibujaChar(char car, SDL_FRect* pRectDest);
     void calculaRect(int fila, int columna, int size, SDL_FRect* pOutRect);
 
-    void laVentanaGanaFoco();
-    void laVentanaPierdeFoco();
+    void OnSetFocus();
+    void OnKillFocus();
 };
 //--------------------------------------------------------------------------
 

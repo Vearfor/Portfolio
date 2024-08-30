@@ -56,7 +56,7 @@ int cTool::copiaMultibyteToUnicode(const std::string& multibyteSrc, WCHAR* unico
 {
     WCHAR* ptrInd = unicodeDest;
     short car = 0;
-    for (int i = 0; i < multibyteSrc.size() &&  i < sizeUnicodeDest; i++)
+    for (size_t i = 0; i < multibyteSrc.size() &&  i < sizeUnicodeDest; i++)
     {
         car = static_cast<short>(multibyteSrc[i]);
         *ptrInd = static_cast<WCHAR>(car);

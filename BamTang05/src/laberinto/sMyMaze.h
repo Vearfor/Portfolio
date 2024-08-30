@@ -29,11 +29,6 @@ struct sMyMaze
     virtual int calculaCaminoMasLargo() override;
     virtual int creaLaberintoFrame() override;
 
-    virtual int arriba() override;
-    virtual int derecha() override;
-    virtual int abajo() override;
-    virtual int izquierda() override;
-
 private:
 
     void setHole(sPos pos);

@@ -21,6 +21,13 @@ sLaberinto::sLaberinto(const char* pcSoy)
 
 sLaberinto::~sLaberinto()
 {
+    delete m_pObjCamara;
+
+    delete m_pFin;
+    delete m_pInicio;
+    delete m_pMuro;
+    delete m_pSuelo;
+
     delete m_pPunto;
 
     destruyeMatriz(m_matriz, m_size);
@@ -84,9 +91,15 @@ int sLaberinto::createMaze2D(int size)
 
     // No es el sitio: lo reorganizaremos de otra manera, pero metemos las condiciones del Laberinto aqui para que el 'punto'
     // sepa las condiciones del laberinto.
-    m_pPunto->setLaberinto(this);
     m_pPunto->m_fila = 1;
     m_pPunto->m_columna = 1;
+
+    m_pSuelo = new sRenderObject();
+    m_pMuro = new sRenderObject();
+    m_pInicio = new sRenderObject();
+    m_pFin = new sRenderObject();
+
+    m_pObjCamara = new sRenderObject();
 
     return 0;
 }
@@ -109,26 +122,71 @@ char** sLaberinto::getCopiaMatriz(char** src_matriz, int size)
 
 int sLaberinto::arriba()
 {
+    if (m_pPunto)
+    {
+        int fila = m_pPunto->m_fila;
+        int columna = m_pPunto->m_columna;
+        char valor = m_matriz[fila][columna - 1];
+        if (valor == kVacio || valor == kFin || valor == kInicio)
+        {
+            m_pPunto->m_columna--;
+        }
+        cLog::print(" arriba:     [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
+    }
     return 0;
 }
 
 
 int sLaberinto::derecha()
 {
+    if (m_pPunto)
+    {
+        int fila = m_pPunto->m_fila;
+        int columna = m_pPunto->m_columna;
+        char valor = m_matriz[fila + 1][columna];
+        if (valor == kVacio || valor == kFin || valor == kInicio)
+        {
+            m_pPunto->m_fila++;
+        }
+        cLog::print(" abajo:      [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
+    }
     return 0;
 }
 
 
 int sLaberinto::abajo()
 {
+    if (m_pPunto)
+    {
+        int fila = m_pPunto->m_fila;
+        int columna = m_pPunto->m_columna;
+        char valor = m_matriz[fila][columna + 1];
+        if (valor == kVacio || valor == kFin || valor == kInicio)
+        {
+            m_pPunto->m_columna++;
+        }
+        cLog::print(" abajo:      [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
+    }
     return 0;
 }
 
 
 int sLaberinto::izquierda()
 {
+    if (m_pPunto)
+    {
+        int fila = m_pPunto->m_fila;
+        int columna = m_pPunto->m_columna;
+        char valor = m_matriz[fila - 1][columna];
+        if (valor == kVacio || valor == kFin || valor == kInicio)
+        {
+            m_pPunto->m_fila--;
+        }
+        cLog::print(" izquierda:  [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
+    }
     return 0;
 }
+
 
 
 /*========================================================================*\

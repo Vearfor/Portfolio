@@ -49,16 +49,21 @@ struct sLaberinto
 
     char** getMatriz() const { return m_matriz; }
     int getSize() { return m_size; }
-    sRenderObject* getPunto() { return m_pPunto; }
+    sRenderObject* getObjectPunto() { return m_pPunto; }
+    sRenderObject* getObjectSuelo() { return m_pSuelo; }
+    sRenderObject* getObjectMuro() { return m_pMuro; }
+    sRenderObject* getObjectInicio() { return m_pInicio; }
+    sRenderObject* getObjectFin() { return m_pFin; }
+    sRenderObject* getObjectCamara() { return m_pObjCamara; }
 
     virtual int creaLaberinto() = 0;
-    virtual int calculaCaminoMasLargo() = 0;
     virtual int creaLaberintoFrame() = 0;
+    virtual int calculaCaminoMasLargo() = 0;
 
-    virtual int arriba();
-    virtual int derecha();
-    virtual int abajo();
-    virtual int izquierda();
+    int arriba();
+    int derecha();
+    int abajo();
+    int izquierda();
 
     static void destruyeMatriz(char** matriz, int size);
     static char** getCopiaMatriz(char** src_matriz, int size);
@@ -85,6 +90,14 @@ protected:
     // los contenidos/datos centrales del Laberinto
     sRenderObject* m_pPunto{ nullptr };
     // El render object sera UN personaje que esta dentro del laberinto y debería estar fuera de la vista !!!
+
+    // Y el laberinto se compondra del resto de RenderObjects:
+    sRenderObject* m_pSuelo{ nullptr };
+    sRenderObject* m_pMuro{ nullptr };
+    sRenderObject* m_pInicio{ nullptr };
+    sRenderObject* m_pFin{ nullptr };
+
+    sRenderObject* m_pObjCamara{ nullptr };
 
     int creaMatriz(int size);
 };

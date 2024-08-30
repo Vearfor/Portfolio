@@ -11,7 +11,7 @@
 #include "tool/cLog.h"
 #include "tool/consola/cConio.h"
 #include "tool/consola/cConsola.h"
-#include "swat/cMonitor.h"
+#include "swat/windows/cMonitor.h"
 
 
 //--------------------------------------------------------------------------
@@ -141,7 +141,8 @@ int presentacion()
     cLog::print(" %s:     Construimos un laberinto de %d\n", cConsola::getNombreProceso(), sGlobal::m_iDim);
     cLog::print("\n");
     cLog::print(" 1 - Partimos de lo que se hizo en el anterior\n");
-    cLog::print("     La vista de consola, no se si dejar la vista de SDL\n");
+    cLog::print("     La vista de consola, no se si dejar la vista de SDL, pero quiero demostrar que puedo generar\n");
+    cLog::print("     la ventana 3D sin tener que utlizar SDL o GLFW, etc ..\n");
     cLog::print("\n");
     cLog::print(" 2 - Y ahora crearemos una Window, cuyo contexto utilizaremos para dibujar 3D con openGL.\n");
     cLog::print("     Hemos desempolvado codigo de creacion de Ventanas, para no utilizar SDL o Glfw\n");

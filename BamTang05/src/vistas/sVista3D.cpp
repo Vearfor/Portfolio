@@ -7,7 +7,83 @@
 #include "../sGameWindow.h"
 #include "../tool/cLog.h"
 #include "../tool/consola/cConsola.h"
-#include "../swat/cTeclado.h"
+#include "../swat/input/cTeclado.h"
+#include "../swat/cMalla.h"
+#include "../swat/texturas/cGestorTexturas.h"
+#include "../swat/shaders/cGestorShaders.h"
+#include "../swat/sOpenGL.h"
+#include "../swat/cCamara.h"
+#include "../swat/sRenderObject.h"
+#include <GLM/glm.hpp>
+
+GLfloat trianguloVertices[] = {
+    -0.5f, -0.5f, 0.0f,
+     0.5f, -0.5f, 0.0f,
+     0.0f,  0.5f, 0.0f,
+};
+
+GLfloat cuadroVertices[] = {
+    // front face
+    -1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
+     1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
+     1.0f,  1.0f,  1.0f, 1.0f, 1.0f,
+    -1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
+    -1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
+     1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
+};
+
+// An array of vertex data for a cube with index buffer data
+GLfloat cubeVertices[] = {
+    // position		    // tex coords
+
+    // front face
+    -1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
+     1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
+     1.0f,  1.0f,  1.0f, 1.0f, 1.0f,
+    -1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
+    -1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
+     1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
+
+    // back face
+    -1.0f,  1.0f, -1.0f, 0.0f, 1.0f,
+     1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
+     1.0f,  1.0f, -1.0f, 1.0f, 1.0f,
+    -1.0f,  1.0f, -1.0f, 0.0f, 1.0f,
+    -1.0f, -1.0f, -1.0f, 0.0f, 0.0f,
+     1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
+
+    // left face
+    -1.0f,  1.0f, -1.0f, 0.0f, 1.0f,
+    -1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
+    -1.0f,  1.0f,  1.0f, 1.0f, 1.0f,
+    -1.0f,  1.0f, -1.0f, 0.0f, 1.0f,
+    -1.0f, -1.0f, -1.0f, 0.0f, 0.0f,
+    -1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
+
+     // right face
+      1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
+      1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
+      1.0f,  1.0f, -1.0f, 1.0f, 1.0f,
+      1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
+      1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
+      1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
+
+    // top face
+    -1.0f,  1.0f, -1.0f, 0.0f, 1.0f,
+     1.0f,  1.0f,  1.0f, 1.0f, 0.0f,
+     1.0f,  1.0f, -1.0f, 1.0f, 1.0f,
+    -1.0f,  1.0f, -1.0f, 0.0f, 1.0f,
+    -1.0f,  1.0f,  1.0f, 0.0f, 0.0f,
+     1.0f,  1.0f,  1.0f, 1.0f, 0.0f,
+
+    // bottom face
+    -1.0f, -1.0f,  1.0f, 0.0f, 1.0f,
+     1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
+     1.0f, -1.0f,  1.0f, 1.0f, 1.0f,
+    -1.0f, -1.0f,  1.0f, 0.0f, 1.0f,
+    -1.0f, -1.0f, -1.0f, 0.0f, 0.0f,
+     1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
+};
 
 
 sVista3D::sVista3D()
@@ -16,20 +92,21 @@ sVista3D::sVista3D()
 
 sVista3D::~sVista3D()
 {
+    cGestorShaders::Delete();
+    cGestorTexturas::Delete();
+    delete m_pTriangulo;
+    delete m_pCuadro;
+    delete m_pCubo;
+    delete m_pCamara;
+    // Destruccion de la ventana:
+    // - implica destruccion del Render Context, ya no son necesarias funciones OpenGL.
     delete m_mainWindow;
-}
-
-
-int sVista3D::inicia(sLaberinto* lab)
-{
-    m_pLaberinto = lab;
-    return 0;
 }
 
 
 int sVista3D::creaWindow(int width, int height)
 {
-    sGameWindow* pWin = new sGameWindow();
+    sGameWindow* pWin = new sGameWindow(m_pLaberinto);
     if (!pWin)
     {
         cLog::error(" Error: sRenderSystem:init: error en la creacion de la ventana");
@@ -41,10 +118,113 @@ int sVista3D::creaWindow(int width, int height)
         (int)ePosControl::eCENTER,
         width, height,
         0.1, 100.0, 45.0, 32, 32, false,
-        eEstiloW::eCaption,
+        eEstiloW::eWindow,
         cConsola::getNombreProceso(), "Window OpenGL", nullptr));
 
     m_mainWindow = pWin;
+
+    return 0;
+}
+
+int sVista3D::inicia(sLaberinto* lab)
+{
+    m_pLaberinto = lab;
+    m_pCamara = new cCamara();
+
+    // Una vez que la ventana es creada, se utiliza el contexto de renderizado de la ventana
+    // para las inicializaciones de openGL
+    // Debería ya estar puesto, pero lo ponemos nosotros para que se vea:
+    m_mainWindow->setRenderContext();
+    // Si no fuera así las sentencias de OpenGL fallarian: ... 
+
+    miError(sOpenGL::initOpenGL());
+
+    glClearColor(0.0, 1.0, 1.0, 1.0);
+
+    m_pCubo = new cMalla();
+    miError(m_pCubo->createMalla(cubeVertices, sizeof(cubeVertices), nullptr, 0, eVertexType::eVer_PosTex));
+
+    m_pCuadro = new cMalla();
+    miError(m_pCuadro->createMalla(cuadroVertices, sizeof(cuadroVertices), nullptr, 0, eVertexType::eVer_PosTex));
+
+    m_pTriangulo = new cMalla();
+    miError(m_pTriangulo->createMalla(trianguloVertices, sizeof(trianguloVertices), nullptr, 0, eVertexType::eVer_Pos));
+
+    cGestorShaders* pGestorShaders = cGestorShaders::Instancia();
+
+    cLog::print("\n Carga de Shaders:\n");
+    miError(
+        (pGestorShaders->CargaShader(kNombreShader.c_str(), kVertexFile.c_str(), nullptr, kFragmentFile.c_str(), kDirShaders.c_str())) ||
+        ((m_pMainShader = pGestorShaders->GetShader(kNombreShader.c_str())) == nullptr)
+    );
+
+    cGestorTexturas* pGestorTexturas = cGestorTexturas::Instancia();
+
+    cLog::print("\n Carga de Texturas:\n");
+    miError(
+        pGestorTexturas->CargaTextura(kTexSuelo.c_str(), kDirTexturas.c_str()) ||
+        pGestorTexturas->CargaTextura(kTexMuro.c_str(), kDirTexturas.c_str()) ||
+        pGestorTexturas->CargaTextura(kTexMuro2.c_str(), kDirTexturas.c_str()) ||
+        pGestorTexturas->CargaTextura(kTexLetraA.c_str(), kDirTexturas.c_str()) ||
+        pGestorTexturas->CargaTextura(kTexLetraB.c_str(), kDirTexturas.c_str()) ||
+        pGestorTexturas->CargaTextura(kTexPunto.c_str(), kDirTexturas.c_str()) ||
+        pGestorTexturas->CargaTextura(kTexCamara.c_str(), kDirTexturas.c_str()) ||
+        pGestorTexturas->listarTexturas()
+    );
+
+    miError(
+        ((m_pTexSuelo = pGestorTexturas->GetTextura(kTexSuelo.c_str())) == nullptr) ||
+        ((m_pTexMuro = pGestorTexturas->GetTextura(kTexMuro.c_str())) == nullptr) ||
+        ((m_pTexMuro2 = pGestorTexturas->GetTextura(kTexMuro2.c_str())) == nullptr) ||
+        ((m_pTexLetraA = pGestorTexturas->GetTextura(kTexLetraA.c_str())) == nullptr) ||
+        ((m_pTexLetraB = pGestorTexturas->GetTextura(kTexLetraB.c_str())) == nullptr) ||
+        ((m_pTexPunto = pGestorTexturas->GetTextura(kTexPunto.c_str())) == nullptr) ||
+        ((m_pTexCamara = pGestorTexturas->GetTextura(kTexCamara.c_str())) == nullptr)
+    );
+
+    // Las locations de las variables uniform de los shaders:
+    cLog::print("\n Las Locations:\n");
+
+    // Si nos guardamos los loc, nos podemos quitar los find de map locations en cada frame.
+    m_loc_model = m_pMainShader->getLocation(kModel.c_str());
+    m_loc_view = m_pMainShader->getLocation(kView.c_str());
+    m_loc_projection = m_pMainShader->getLocation(kProjection.c_str());
+    m_loc_texSampler1 = m_pMainShader->getLocation(kTexSampler1.c_str());
+
+    // Cube and floor positions
+    m_cubePos = glm::vec3(-1.0f, 0.0f, 0.0f);
+    m_floorPos = glm::vec3(0.0f, -1.0f, 0.0f);
+    m_pCamara->setPosCamara(glm::vec3(0.0f, 30.0f, -40.0f));
+
+    sRenderObject* pPunto = m_pLaberinto->getObjectPunto();
+    pPunto->m_pTextura = m_pTexPunto;
+    pPunto->m_escala = glm::vec3(0.5, 0.5, 0.5);
+    pPunto->m_pMalla = m_pCubo;
+
+    sRenderObject* pSuelo = m_pLaberinto->getObjectSuelo();
+    pSuelo->m_pTextura = m_pTexSuelo;
+    pSuelo->m_escala = glm::vec3(20.0f, 0.01f, 20.0f);
+    pSuelo->m_pMalla = m_pCubo;
+
+    sRenderObject* pMuro = m_pLaberinto->getObjectMuro();
+    pMuro->m_pTextura = m_pTexMuro;
+    pMuro->m_escala = glm::vec3(1.0, 1.0, 1.0);
+    pMuro->m_pMalla = m_pCubo;
+
+    sRenderObject* pInicio = m_pLaberinto->getObjectInicio();
+    pInicio->m_pTextura = m_pTexLetraA;
+    pInicio->m_escala = glm::vec3(0.5, 0.5, 0.5);
+    pInicio->m_pMalla = m_pCubo;
+
+    sRenderObject* pFin = m_pLaberinto->getObjectFin();
+    pFin->m_pTextura = m_pTexLetraB;
+    pFin->m_escala = glm::vec3(0.5, 0.5, 0.5);
+    pFin->m_pMalla = m_pCubo;
+
+    sRenderObject* pObjCamara = m_pLaberinto->getObjectCamara();
+    pObjCamara->m_pTextura = m_pTexCamara;
+    pObjCamara->m_escala = glm::vec3(1.0f, 1.0f, 1.0f);
+    pObjCamara->m_pMalla = m_pCuadro;
 
     return 0;
 }
@@ -58,6 +238,7 @@ int sVista3D::eventos()
 }
 
 
+bool bLanzaLaberintoFrame = false;
 int sVista3D::update()
 {
     sGameWindow* pGameWindow = dynamic_cast<sGameWindow*>(m_mainWindow);
@@ -71,47 +252,60 @@ int sVista3D::update()
                 m_mainWindow->destruyeVentana();
             }
 
-            if (pTeclado->isUp(VK_UP) || pTeclado->isUp('W'))
-            {
-                m_pLaberinto->arriba();
-            }
-
-            if (pTeclado->isUp(VK_RIGHT) || pTeclado->isUp('D'))
-            {
-                m_pLaberinto->derecha();
-            }
-
-            if (pTeclado->isUp(VK_DOWN) || pTeclado->isUp('S'))
-            {
-                m_pLaberinto->abajo();
-            }
-
-            if (pTeclado->isUp(VK_LEFT) || pTeclado->isUp('A'))
+            //--------------------------------------------------------------
+            // Movimientos dentro del laberinto: teclas AWSD
+            //--------------------------------------------------------------
+            if (pTeclado->isUp('A'))
             {
                 m_pLaberinto->izquierda();
             }
+            if (pTeclado->isUp('W'))
+            {
+                m_pLaberinto->arriba();
+            }
+            if (pTeclado->isUp('D'))
+            {
+                m_pLaberinto->derecha();
+            }
+            if (pTeclado->isUp('S'))
+            {
+                m_pLaberinto->abajo();
+            }
+            //--------------------------------------------------------------
+            if (pTeclado->isUp(VK_SPACE))
+            {
+                bLanzaLaberintoFrame = true;
+            }
+            //--------------------------------------------------------------
+
+            //--------------------------------------------------------------
+            // Movimientos de la Camara: teclas de Direccion:
+            // - left, up, right, down 
+            //--------------------------------------------------------------
+            if (pTeclado->isUp(VK_LEFT))
+            {
+                m_pCamara->izquierda();
+            }
+            if (pTeclado->isUp(VK_UP))
+            {
+                m_pCamara->arriba();
+            }
+            if (pTeclado->isUp(VK_RIGHT))
+            {
+                m_pCamara->derecha();
+            }
+            if (pTeclado->isUp(VK_DOWN))
+            {
+                m_pCamara->abajo();
+            }
+            //--------------------------------------------------------------
 
             // Hay que hacer reset para el siguiente control de eventos
             pTeclado->reset();
-
-            //    //        case SDLK_SPACE:
-            //    //            // m_sLaberinto->creaLaberintoFrame();
-            //    //            // m_sLaberinto->calculaCaminoMasLargo();
-            //    //            break;
-            
-            //    //    case SDL_EVENT_QUIT:
-            //    //        mustQuit = true;
-            //    //        break;
-            // 
-            //    //    case SDL_EVENT_WINDOW_FOCUS_GAINED:
-            //    //        laVentanaGanaFoco();
-            //    //        break;
-            //
-            //    //    case SDL_EVENT_WINDOW_FOCUS_LOST:
-            //    //        laVentanaPierdeFoco();
-            //    //        break;
         }
     }
+
+    m_pCamara->update();
 
     return 0;
 }
@@ -121,7 +315,40 @@ int sVista3D::render()
 {
     m_mainWindow->clean();
 
-    // ... dibujado de nuestro laberinto:
+    {
+        // Shader:
+        //------------------------------------------------------------------
+        m_pMainShader->use();
+
+        m_view = m_pCamara->getViewMatrix();
+        m_orthoProjection = m_mainWindow->getOrthoProjection();
+        m_perspProjection = m_mainWindow->getPerspProjection();
+
+        // Set View
+        m_pMainShader->SetUniform(m_loc_view, m_view);
+        // Set projection
+        m_pMainShader->SetUniform(m_loc_projection, m_perspProjection);
+
+        //------------------------------------------------------------------
+        // Suelo
+        //------------------------------------------------------------------
+        m_pLaberinto->getObjectSuelo()->render(m_pMainShader, m_loc_model, m_floorPos);
+        //------------------------------------------------------------------
+
+        //------------------------------------------------------------------
+        // Laberinto
+        //------------------------------------------------------------------
+        // renderLaberinto();
+        //------------------------------------------------------------------
+        lanzaLaberintoFrame();
+        //------------------------------------------------------------------
+        sRenderObject* pPunto = m_pLaberinto->getObjectPunto();
+        int size = m_pLaberinto->getSize();
+        cRect<float> rectDest;
+        calculaRect(pPunto->m_fila, pPunto->m_columna, size, &rectDest);
+        pPunto->render(m_pMainShader, m_loc_model, &rectDest);
+        //------------------------------------------------------------------
+    }
 
     m_mainWindow->swap();
 
@@ -129,124 +356,162 @@ int sVista3D::render()
 }
 
 
-void sVista3D::laVentanaGanaFoco()
+int sVista3D::renderLaberinto()
 {
-    //int size = 0;
-    //if (m_sLaberinto)
-    //    size = m_sLaberinto->getSize();
+    sRenderObject* pPunto = m_pLaberinto->getObjectPunto();
+    int size = m_pLaberinto->getSize();
+    char** matriz = m_pLaberinto->getMatriz();
+    char valor = 0;
+    cRect<float> rectDest;
+    for (int fila = -1; fila < size + 1; fila++)
+    {
+        for (int columna = -1; columna < size + 1; columna++)
+        {
+            if (fila<0 || fila>size - 1 || columna<0 || columna>size - 1)
+            {
+                valor = kVacio;
+            }
+            else
+            {
+                int iValor = matriz[fila][columna];
+                valor = static_cast<char>(iValor);
 
-    //char vcSize[8];
-    //sprintf_s(vcSize, sizeof(vcSize) - 1, "%2d", size);
+                calculaRect(fila, columna, size, &rectDest);
+                renderChar(valor, &rectDest);
+                //cLog::print(" %d %d\n", fila, columna);
+            }
+        }
+        break;
+    }
 
-    //std::string nombre = cConsola::getNombreProceso();
-    //nombre += "    Size: ";
-    //nombre += vcSize;
-    //nombre += "    Pulsa Esc para salir. A,W,S,D para moverse.";
-
-    //// cLog::print(" ganamos el foco: \n");
-
-    //SDL_SetWindowTitle(m_pWindow, nombre.c_str());
+    return 0;
 }
 
 
-void sVista3D::laVentanaPierdeFoco()
+int s_fila = 0;
+int s_columna = 0;
+bool finRenderLaberintoFrame = false;
+
+int sVista3D::lanzaLaberintoFrame()
 {
-    //int size = 0;
-    //if (m_sLaberinto)
-    //    size = m_sLaberinto->getSize();
+    if (bLanzaLaberintoFrame)
+    {
+        rederLaberintoFrame();
+        bLanzaLaberintoFrame = false;
+    }
+    return 0;
+}
 
-    //char vcSize[8];
-    //sprintf_s(vcSize, sizeof(vcSize) - 1, "%2d", size);
+int sVista3D::rederLaberintoFrame()
+{
+    int size = m_pLaberinto->getSize();
+    if (s_fila < size && s_columna < size && !finRenderLaberintoFrame)
+    {
+        char** matriz = m_pLaberinto->getMatriz();
+        cRect<float> rectDest;
+        char valor = 0;
+        if (s_fila<0 || s_fila>size - 1 || s_columna<0 || s_columna>size - 1)
+        {
+            valor = kVacio;
+        }
+        else
+        {
+            int iValor = matriz[s_fila][s_columna];
+            valor = static_cast<char>(iValor);
 
-    //std::string nombre = cConsola::getNombreProceso();
-    //nombre += "    Size: ";
-    //nombre += vcSize;
-    //nombre += "    Toca la ventana para darle el foco";
+            calculaRect(s_fila, s_columna, size, &rectDest);
+            renderChar(valor, &rectDest);
+            cLog::print(" %d %d\n", s_fila, s_columna);
+        }
 
-    //// cLog::print(" perdemos el foco: \n");
+        //------------------------------------------------------------------
+        s_columna++;
+        if (s_columna > size - 1)
+        {
+            s_columna = -1;
+            s_fila++;
+            if (s_fila > size - 1)
+            {
+                s_fila = -1;
+                finRenderLaberintoFrame = true;
+            }
+        }
+        //------------------------------------------------------------------
+    }
 
-    //SDL_SetWindowTitle(m_pWindow, nombre.c_str());
+    return 0;
 }
 
 
-//int sVista3D::dibuja(sLaberinto* lab)
-//{
-//    //SDL_RenderClear(m_pRenderer);
-//
-//    //// ... y aqui dibujamos ...
-//    //int size = lab->getSize();
-//    //char** matriz = lab->getMatriz();
-//    //SDL_FRect rectDest;
-//    //char valor = 0;
-//
-//    //for (int fila = -1; fila < size + 1; fila++)
-//    //{
-//    //    for (int columna = -1; columna < size + 1; columna++)
-//    //    {
-//    //        if (fila<0 || fila>size - 1 || columna<0 || columna>size - 1)
-//    //        {
-//    //            valor = kVacio;
-//    //        }
-//    //        else
-//    //        {
-//    //            int iValor = matriz[fila][columna];
-//    //            valor = char(iValor);
-//    //        }
-//    //        calculaRect(fila, columna, size, &rectDest);
-//    //        dibujaChar(valor, &rectDest);
-//    //    }
-//    //}
-//
-//    //calculaRect(m_pPunto->m_fila, m_pPunto->m_columna, size, &rectDest);
-//    //m_pPunto->render(m_pRenderer, &rectDest);
-//
-//    //SDL_RenderPresent(m_pRenderer);
-//    //SDL_Delay(1);
-//    return 0;
-//}
+void sVista3D::calculaRect(int fila, int columna, int size, cRect<float>* pOutRect)
+{
+    float diffx = - (float(size * kCelda) / 2.0f);
+    float diffy = - (float(size * kCelda) / 2.0f);
+    pOutRect->left = diffx + columna * kCelda + 1;
+    pOutRect->top = diffy + fila * kCelda + 1;
+    float ancho, alto;
+    ancho = alto = static_cast<float>(kCelda);
+    pOutRect->right = pOutRect->left + ancho;
+    pOutRect->bottom = pOutRect->top + alto;
+}
 
 
-//void sVista3D::dibujaChar(char car, SDL_FRect* pRectDest)
-//{
-//    //cTextura* pTex = { nullptr };
-//    //switch (car)
-//    //{
-//    //case kVacio:
-//    //    pTex = m_pVacio;
-//    //    break;
-//    //case kMuro:
-//    //    pTex = m_pMuro;
-//    //    break;
-//    //case kInicio:
-//    //    pTex = m_pLetraA;
-//    //    m_pVacio->render(m_pRenderer, pRectDest);
-//    //    break;
-//    //case kFin:
-//    //    pTex = m_pLetraB;
-//    //    m_pVacio->render(m_pRenderer, pRectDest);
-//    //    break;
-//    //case kNulo:
-//    //    pTex = m_pMarca;
-//    //    m_pVacio->render(m_pRenderer, pRectDest);
-//    //    break;
-//    //}
-//
-//    //if (pTex)
-//    //{
-//    //    pTex->render(m_pRenderer, pRectDest);
-//    //}
-//}
+void sVista3D::renderChar(char car, cRect<float>* pRectDest)
+{
+    sRenderObject* pRender = { nullptr };
+    switch (car)
+    {
+        case kNulo:
+        case kVacio:
+            cLog::print(" ---");
+            break;
+
+        case kMuro:
+            cLog::print(" render Muro");
+            pRender = m_pLaberinto->getObjectMuro();
+            break;
+
+        case kInicio:
+            cLog::print(" render Inicio");
+            pRender = m_pLaberinto->getObjectInicio();
+            break;
+
+        case kFin:
+            cLog::print(" render Fin");
+            pRender = m_pLaberinto->getObjectFin();
+            break;
+    }
+    
+    mDo(pRender)->render(m_pMainShader, m_loc_model, pRectDest);
+}
 
 
-//void sVista3D::calculaRect(int fila, int columna, int size, SDL_FRect* pOutRect)
-//{
-//    //float diffx = (float(kWidth) / 2.0f - (float(size * kCelda) / 2.0f));
-//    //float diffy = (float(kHeight) / 2.0f - (float(size * kCelda) / 2.0f));
-//    //pOutRect->x = diffx + columna * kCelda;
-//    //pOutRect->y = diffy + fila * kCelda;
-//    //pOutRect->w = kCelda;
-//    //pOutRect->h = kCelda;
-//}
+int sVista3D::renderCubo()
+{
+    //m_pTexMuro->useTextura(0);
+    glm::vec3 pos = m_cubePos;
+    sRenderObject* pRender = m_pLaberinto->getObjectMuro();
+    int size = m_pLaberinto->getSize();
+    cRect<float> rectDest;
+    int columna = 0;
+    for (int i = 0; i < 5; i++)
+    {
+        // pos.x = m_cubePos.x + (2 * i);
+        calculaRect(0, columna, size, &rectDest);
+        renderChar(kMuro, &rectDest);
+        //pRender->render(m_pMainShader, m_loc_model, &rectDest);
+        columna++;
+        //glm::mat4 localModel{ 1.0 };
+        //m_model = glm::translate(localModel, pos);
+        //// Modificamos las matrices: con las loc anteriormente guardadas, pare evitarnos los find en el map de locations.
+        //m_pMainShader->SetUniform(m_loc_model, m_model);
+        //// Activo textura:
+        //// Y dibujamos el cubo que hemos guardado en m_pCubo:
+        //m_pCubo->drawMalla();
+    }
+
+    return 0;
+}
 
 
 /*========================================================================*\

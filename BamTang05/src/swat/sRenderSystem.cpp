@@ -6,8 +6,9 @@
 #include "sRenderSystem.h"
 #include "../vistas/sVistaConsola.h"
 #include "../vistas/sVista3D.h"
-#include "../swat/sWindow.h"
+#include "../swat/windows/sWindow.h"
 #include "../tool/nComun.h"
+#include "../tool/consola/cConsola.h"
 
 
 //--------------------------------------------------------------------------
@@ -30,11 +31,15 @@ int sRenderSystem::init(sLaberinto* pLab, int width, int height)
 
     m_pVista3D = new sVista3D();
     miError(
-        m_pVista3D->inicia(pLab) ||
-        m_pVista3D->creaWindow(width, height)
+        m_pVista3D->creaWindow(width, height) ||
+        m_pVista3D->inicia(pLab)
     );
 
     m_pVista = m_pVistaConsola;
+
+    cLog::print("\n");
+    cConsola::PulsaTecla(" Pulsa tecla para continuar ");
+
     return 0;
 }
 

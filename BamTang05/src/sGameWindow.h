@@ -6,20 +6,27 @@
 //--------------------------------------------------------------------------
 // Include
 //--------------------------------------------------------------------------
-#include "swat/sWindow.h"
+#include "swat/windows/sWindow.h"
 //--------------------------------------------------------------------------
 
 
 /*------------------------------------------------------------------------*/
 class cTeclado;
+struct sLaberinto;
 /*------------------------------------------------------------------------*/
 struct sGameWindow
     : public sWindow
 {
-    sGameWindow();
+    sGameWindow(sLaberinto* pLab);
     ~sGameWindow();
 
-    cTeclado* m_pTeclado;
+    cTeclado* m_pTeclado{ nullptr };
+    sLaberinto* m_pLaberinto{ nullptr };
+
+    //----------------------------------------------------------------------
+    void OnSetFocus(sLaberinto* pLab);
+    void OnKillFocus(sLaberinto* pLab);
+    //----------------------------------------------------------------------
 
 protected:
 

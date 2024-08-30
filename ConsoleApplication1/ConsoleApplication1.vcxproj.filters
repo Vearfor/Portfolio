@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Recursos">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source\BamTang05">
+      <UniqueIdentifier>{9878f432-c4db-4430-aaf7-0249fc1e7359}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\BamTang05\laberinto">
+      <UniqueIdentifier>{bc246795-c129-4756-9fc4-10b194d9b8ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\BamTang05\swat">
+      <UniqueIdentifier>{66a9c271-c2cf-4656-8d8e-b134acf2060a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\BamTang05\swat\input">
+      <UniqueIdentifier>{d0ca9b18-eede-47ec-b577-947570023dfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\BamTang05\swat\texturas">
+      <UniqueIdentifier>{d23bfe9f-34a5-4712-885d-7d3b2de14dd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\BamTang05\swat\windows">
+      <UniqueIdentifier>{3fffa54b-5882-4ac0-a1d9-a823a8bb0015}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\BamTang05\swat\shaders">
+      <UniqueIdentifier>{e7b17567-e56b-4705-8afc-3a55706915fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\BamTang05\tool">
+      <UniqueIdentifier>{410c7f20-bb16-4df9-9cdd-f5db7ccc949d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\BamTang05\tool\consola">
+      <UniqueIdentifier>{8ef949f2-ddcd-4aae-8534-2d4afa4b809a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cmd">
+      <UniqueIdentifier>{29b4bc61-0907-4c54-b198-e9bbb4b474bc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ConsoleApplication1.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="sConsoleWindow.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\laberinto\sLaberinto.cpp">
+      <Filter>Source\BamTang05\laberinto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\laberinto\sMyMaze.cpp">
+      <Filter>Source\BamTang05\laberinto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\swat\cMalla.cpp">
+      <Filter>Source\BamTang05\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\swat\cModel.cpp">
+      <Filter>Source\BamTang05\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\swat\sOpenGL.cpp">
+      <Filter>Source\BamTang05\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\swat\sRenderObject.cpp">
+      <Filter>Source\BamTang05\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\swat\cCamara.cpp">
+      <Filter>Source\BamTang05\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\swat\input\cTeclado.cpp">
+      <Filter>Source\BamTang05\swat\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\swat\input\cRaton.cpp">
+      <Filter>Source\BamTang05\swat\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\swat\texturas\cGestorTexturas.cpp">
+      <Filter>Source\BamTang05\swat\texturas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\swat\texturas\cTextura.cpp">
+      <Filter>Source\BamTang05\swat\texturas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\swat\windows\cModoGrafico.cpp">
+      <Filter>Source\BamTang05\swat\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\swat\windows\cMonitor.cpp">
+      <Filter>Source\BamTang05\swat\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\swat\windows\cVecModosGraficos.cpp">
+      <Filter>Source\BamTang05\swat\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\swat\windows\sWindow.cpp">
+      <Filter>Source\BamTang05\swat\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\swat\shaders\cGestorShaders.cpp">
+      <Filter>Source\BamTang05\swat\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\swat\shaders\cShader.cpp">
+      <Filter>Source\BamTang05\swat\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\tool\cItem.cpp">
+      <Filter>Source\BamTang05\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\tool\cLog.cpp">
+      <Filter>Source\BamTang05\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\tool\cRandom.cpp">
+      <Filter>Source\BamTang05\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\tool\cTime.cpp">
+      <Filter>Source\BamTang05\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\tool\cTool.cpp">
+      <Filter>Source\BamTang05\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\tool\iMensajes.cpp">
+      <Filter>Source\BamTang05\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\tool\consola\cConio.cpp">
+      <Filter>Source\BamTang05\tool\consola</Filter>
+    </ClCompile>
+    <ClCompile Include="..\BamTang05\src\tool\consola\cConsola.cpp">
+      <Filter>Source\BamTang05\tool\consola</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="sConsoleWindow.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\laberinto\sLaberinto.h">
+      <Filter>Source\BamTang05\laberinto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\laberinto\sMyMaze.h">
+      <Filter>Source\BamTang05\laberinto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\laberinto\sPos.h">
+      <Filter>Source\BamTang05\laberinto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\cMalla.h">
+      <Filter>Source\BamTang05\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\cModel.h">
+      <Filter>Source\BamTang05\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\sOpenGL.h">
+      <Filter>Source\BamTang05\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\sRenderObject.h">
+      <Filter>Source\BamTang05\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\cCamara.h">
+      <Filter>Source\BamTang05\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\input\cTeclado.h">
+      <Filter>Source\BamTang05\swat\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\input\nCommonKeys.h">
+      <Filter>Source\BamTang05\swat\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\input\cRaton.h">
+      <Filter>Source\BamTang05\swat\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\texturas\cGestorTexturas.h">
+      <Filter>Source\BamTang05\swat\texturas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\texturas\cTextura.h">
+      <Filter>Source\BamTang05\swat\texturas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\windows\cModoGrafico.h">
+      <Filter>Source\BamTang05\swat\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\windows\cMonitor.h">
+      <Filter>Source\BamTang05\swat\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\windows\cVecModosGraficos.h">
+      <Filter>Source\BamTang05\swat\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\windows\sWindow.h">
+      <Filter>Source\BamTang05\swat\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\windows\tRect.h">
+      <Filter>Source\BamTang05\swat\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\shaders\cGestorShaders.h">
+      <Filter>Source\BamTang05\swat\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\swat\shaders\cShader.h">
+      <Filter>Source\BamTang05\swat\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\tool\cItem.h">
+      <Filter>Source\BamTang05\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\tool\cLog.h">
+      <Filter>Source\BamTang05\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\tool\cRandom.hpp">
+      <Filter>Source\BamTang05\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\tool\cTime.h">
+      <Filter>Source\BamTang05\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\tool\cTool.h">
+      <Filter>Source\BamTang05\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\tool\iMensajes.h">
+      <Filter>Source\BamTang05\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\tool\nComun.h">
+      <Filter>Source\BamTang05\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\tool\nExport.h">
+      <Filter>Source\BamTang05\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\tool\consola\cConio.h">
+      <Filter>Source\BamTang05\tool\consola</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\tool\consola\cConsola.h">
+      <Filter>Source\BamTang05\tool\consola</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\comun\cmd\PostLinkGLEW.bat">
+      <Filter>cmd</Filter>
+    </None>
+  </ItemGroup>
+</Project>

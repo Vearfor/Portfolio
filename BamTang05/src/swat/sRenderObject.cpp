@@ -3,10 +3,14 @@
 \*========================================================================*/
 
 #include "sRenderObject.h"
-//#include "sTextura.h"
 #include "../tool/cLog.h"
 #include "../tool/nComun.h"
-#include "../laberinto/sLaberinto.h"
+#include "shaders/cShader.h"
+#include "texturas/cTextura.h"
+#include "cMalla.h"
+#include <GLM/glm.hpp>
+#include <GLM/gtc/matrix_transform.hpp>
+
 
 sRenderObject::sRenderObject()
 {
@@ -14,84 +18,25 @@ sRenderObject::sRenderObject()
     
 sRenderObject::~sRenderObject()
 {
-    // Cuando tengamos un gestor de recursos, sacaremos este delete de aqui:
-    //delete m_pTextura;
 }
 
 
-int sRenderObject::setTextura(const char* pcPathTextura)
+void sRenderObject::render(cShader* pShader, int locModel, cRect<float> * pInRect)
 {
-    //delete m_pTextura;
-    //m_pTextura = new sTextura(pcPathTextura);
-    return 0;
+    glm::vec3 pos{ pInRect->left, 0.0, pInRect->top };
+
+    render(pShader, locModel, pos);
 }
 
 
-void sRenderObject::izquierda()
+void sRenderObject::render(cShader* pShader, int locModel, glm::vec3 posRender)
 {
-    // Si la posicion siguiente es valida
-    char** matriz = m_pLaberinto->getMatriz();
-    if (matriz)
-    {
-        char valor = matriz[m_fila][m_columna - 1];
-        if (valor == kVacio || valor == kFin || valor == kInicio)
-        {
-            m_columna--;
-        }
-        cLog::print(" izquierda:  [ %2d, %2d]\n", m_fila, m_columna);
-    }
-}
-
-
-void sRenderObject::derecha()
-{
-    // Si la posicion siguiente es valida
-    char** matriz = m_pLaberinto->getMatriz();
-    if (matriz)
-    {
-        char valor = matriz[m_fila][m_columna + 1];
-        if (valor == kVacio || valor == kFin || valor == kInicio)
-        {
-            m_columna++;
-        }
-        cLog::print(" derecha:    [ %2d, %2d]\n", m_fila, m_columna);
-    }
-}
-
-
-void sRenderObject::arriba()
-{
-    // Si la posicion siguiente es valida
-    char** matriz = m_pLaberinto->getMatriz();
-    if (matriz)
-    {
-        char valor = matriz[m_fila - 1][m_columna];
-        if (valor == kVacio || valor == kFin || valor == kInicio)
-        {
-            m_fila--;
-        }
-        cLog::print(" arriba:     [ %2d, %2d]\n", m_fila, m_columna);
-    }
-}
-
-
-void sRenderObject::abajo()
-{
-    char** matriz = m_pLaberinto->getMatriz();
-    if (matriz)
-    {
-        char valor = matriz[m_fila + 1][m_columna];
-        if (valor == kVacio || valor == kFin || valor == kInicio)
-        {
-            m_fila++;
-        }
-        cLog::print(" abajo:      [ %2d, %2d]\n", m_fila, m_columna);
-    }
-}
-
-void sRenderObject::setLaberinto(sLaberinto* lab)
-{
-    m_pLaberinto = lab;
+    mDo(m_pTextura)->useTextura(0);
+    glm::mat4 localModel{ 1.0 };
+    localModel = glm::translate(localModel, posRender);
+    localModel = glm::scale(localModel, m_escala);
+    pShader->SetUniform(locModel, localModel);
+    m_pMalla->drawMalla();
 }
 
 

@@ -10,6 +10,7 @@
 // Includes
 //--------------------------------------------------------------------------
 #include "nComun.h"
+#include "cLog.h"
 //--------------------------------------------------------------------------
 
 
@@ -30,11 +31,15 @@ protected:
     virtual ~iMensajes(void);
 
     virtual	long AppProc(const MSG* lpmsg);
-    virtual	bool mensajes(void);
 
     long MyDispatchMessage(const MSG* lpmsg);
 
 public:
+
+    virtual	bool mensajes(void);
+
+    static int mensajeThread(ulong idThread, uint msg, WPARAM wParam, LPARAM lPARAM, cLog::eTraza iTraza = cLog::eTraza::min, const char* pcFormato = NULL, ...);
+    static bool esFinPrograma();
 
     long getCiclo(void) { return m_lCiclo; }
 };

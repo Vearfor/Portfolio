@@ -293,34 +293,6 @@ void sMyMaze::setHole(sPos pos)
 }
 
 
-int sMyMaze::arriba()
-{
-    m_pPunto->arriba();
-    return 0;
-}
-
-
-int sMyMaze::derecha()
-{
-    m_pPunto->derecha();
-    return 0;
-}
-
-
-int sMyMaze::abajo()
-{
-    m_pPunto->abajo();
-    return 0;
-}
-
-
-int sMyMaze::izquierda()
-{
-    m_pPunto->izquierda();
-    return 0;
-}
-
-
 /*========================================================================*\
 |* Fin de sMyMaze.cpp
 \*========================================================================*/

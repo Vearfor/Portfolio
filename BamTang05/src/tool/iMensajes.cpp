@@ -11,6 +11,13 @@
 
 
 //--------------------------------------------------------------------------
+// Resto de metodos
+//--------------------------------------------------------------------------
+bool iMensajes::m_bFinPrograma = false;
+//--------------------------------------------------------------------------
+
+
+//--------------------------------------------------------------------------
 // Constructor & Destructor
 //--------------------------------------------------------------------------
 iMensajes::iMensajes()
@@ -147,6 +154,42 @@ long iMensajes::AppProc(const MSG* lpmsg)
     }
 
     return lRes;
+}
+
+
+//--------------------------------------------------------------------------
+// Metemos los postthreadmessage en una funcion que los controle, para
+// poder generar la traza de los mensajes enviados.
+//--------------------------------------------------------------------------
+cstatic int iMensajes::mensajeThread(ulong idThread, uint msg, WPARAM wParam, LPARAM lParam, cLog::eTraza eTraza, const char* pcFormato, ...)
+{
+    // Si hay mensaje que mostrar, que sea vea antes del postThreadMessage
+    // Antes del lanzamiento del mensaje
+    if (mNoVacia(pcFormato) && cLog::siTraza(eTraza))
+    {
+        va_list	stList;
+        va_start(stList, pcFormato);
+        cLog::escribeLista(eTraza, cLog::eOut::std, stList, pcFormato);
+        va_end(stList);
+    }
+
+    BOOL bRes = PostThreadMessage(idThread, msg, wParam, lParam);
+    if (!bRes)
+    {
+        cLog::error(" Error: iMensajes::mensajeThread: PostThreadMessage \n");
+        return -1;
+    }
+    return 0;
+}
+
+
+//--------------------------------------------------------------------------
+// Si el proceso de fin de programa se ha desatado, debemos saberlo
+// para evitar posibles interbloqueos
+//--------------------------------------------------------------------------
+cstatic bool iMensajes::esFinPrograma()
+{
+    return m_bFinPrograma;
 }
 
 

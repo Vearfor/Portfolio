@@ -6,37 +6,53 @@
 //--------------------------------------------------------------------------
 // Include
 //--------------------------------------------------------------------------
+#include <GLM/glm.hpp>
+#include "windows/tRect.h"
 //--------------------------------------------------------------------------
 
 
 //--------------------------------------------------------------------------
 // Struct
 //--------------------------------------------------------------------------
-//struct SDL_Renderer;
-struct sTextura;
-struct sLaberinto;
-//struct SDL_FRect;
+class cTextura;
+class cMalla;
+class cShader;
 //--------------------------------------------------------------------------
 struct sRenderObject
 {
     sRenderObject();
     ~sRenderObject();
 
-    int setTextura(const char* pcPathTextura);
-    //int init(SDL_Renderer*);
-    //int render(SDL_Renderer*, SDL_FRect* pRectDest);
+    // Esto solo es una primera aproximacion de lo que pueder ser al final
+    // un render object
+    // En este caso lo tengo pensado para ser utilizado en el universo de
+    // un Laberinto.
+    // Segun esto los render objects podran ser:
+    // - el punto, o personaje que se mueve dentro del laberinto
+    // - el inicio del laberinto, donde pondremos la textura de una A
+    // - el fin del laberinto, donde pondremos la textura de una B
+    // - y el muro, donde pondremos la malla y la textura de una pared.
+    //   o algo que lo parezca
+    // Así que vamos a crear estos elementos como miembros de sLaberinto
+    // y agregaremos los elementos que luego seran necesarios para 
+    // renderizarlos.
 
-    void izquierda();
-    void derecha();
-    void arriba();
-    void abajo();
-
+    // Fila y columna seran la posicion que tengan en el laberinto:
     int m_fila{-1};
     int m_columna{-1};
-    sTextura* m_pTextura{ nullptr };
-    sLaberinto* m_pLaberinto{ nullptr };
 
-    void setLaberinto(sLaberinto* lab);
+    // La textura que se utilizara para identficar cada personaje:
+    cTextura* m_pTextura{ nullptr };
+
+    // La malla que se utilizara para dibujarlas:
+    cMalla* m_pMalla{ nullptr };
+
+    // Y la escala que se utilizará para modificar a voluntad
+    // el dibujo final.
+    glm::vec3 m_escala{ 1.0, 1.0, 1.0 };
+
+    void render(cShader* pShader, int locModel, cRect<float>* pInRect);
+    void render(cShader* pShader, int locModel, glm::vec3 posRender);
 };
 //--------------------------------------------------------------------------
 

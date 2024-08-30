@@ -3,14 +3,18 @@
 \*------------------------------------------------------------------------*/
 
 #include "sGameWindow.h"
-#include "swat/cTeclado.h"
+#include "swat/input/cTeclado.h"
 #include "swat/sOpenGL.h"
+#include "tool/consola/cConsola.h"
+#include "laberinto/sLaberinto.h"
+#include "tool/cTool.h"
 
 
 /*------------------------------------------------------------------------*/
-sGameWindow::sGameWindow()
+sGameWindow::sGameWindow(sLaberinto* pLab)
+    : m_pTeclado(new cTeclado())
+    , m_pLaberinto(pLab)
 {
-    m_pTeclado = new cTeclado();
 }
 
 sGameWindow::~sGameWindow()
@@ -25,6 +29,20 @@ long sGameWindow::commonWindowProc(HWND hwnd, uint uiMsg, WPARAM wparam, LPARAM 
 {
     m_pTeclado->onKeyboardEvent(uiMsg, wparam, lparam);
 
+    switch (uiMsg)
+    {
+        case WM_SETFOCUS:
+            OnSetFocus(m_pLaberinto);
+            break;
+
+        case WM_KILLFOCUS:
+            OnKillFocus(m_pLaberinto);
+            break;
+
+        default:
+            break;
+    }
+
     return myWindowProc(hwnd, uiMsg, wparam, lparam);
 }
 
@@ -32,23 +50,57 @@ long sGameWindow::commonWindowProc(HWND hwnd, uint uiMsg, WPARAM wparam, LPARAM 
 /*------------------------------------------------------------------------*/
 int sGameWindow::initWindow()
 {
-    glClearColor(0.0, 1.0, 1.0, 1.0);
     return 0;
 }
 
 
 /*------------------------------------------------------------------------*/
-//long sGameWindow::OnKeyUp(long lTecla)
-//{
-//    short sTecla = (short)lTecla;
-//
-//    if (sTecla == VK_ESCAPE)
-//    {
-//        destruyeVentana();
-//    }
-//
-//    return sWindow::OnKeyUp(lTecla);
-//}
+void sGameWindow::OnSetFocus(sLaberinto* pLab)
+{
+    if (m_hWindow)
+    {
+        int size = 0;
+        if (m_pLaberinto)
+            size = m_pLaberinto->getSize();
+
+        char vcSize[8];
+        sprintf_s(vcSize, sizeof(vcSize) - 1, "%2d", size);
+
+        std::string nombre = cConsola::getNombreProceso();
+        nombre += "    Size: ";
+        nombre += vcSize;
+        nombre += "    Pulsa Esc para salir. A,W,S,D para moverse.";
+
+        // cLog::print(" ganamos el foco: \n");
+        WCHAR wcNombre[LON_BUFF / 8];
+        cTool::copiaMultibyteToUnicode(nombre, wcNombre, sizeof(wcNombre));
+        SetWindowText(m_hWindow, wcNombre);
+    }
+}
+
+
+void sGameWindow::OnKillFocus(sLaberinto* pLab)
+{
+    if (m_hWindow)
+    {
+        int size = 0;
+        if (m_pLaberinto)
+            size = m_pLaberinto->getSize();
+
+        char vcSize[8];
+        sprintf_s(vcSize, sizeof(vcSize) - 1, "%2d", size);
+
+        std::string nombre = cConsola::getNombreProceso();
+        nombre += "    Size: ";
+        nombre += vcSize;
+        nombre += "    Toca la ventana para darle el foco";
+
+        // cLog::print(" ganamos el foco: \n");
+        WCHAR wcNombre[LON_BUFF / 8];
+        cTool::copiaMultibyteToUnicode(nombre, wcNombre, sizeof(wcNombre));
+        SetWindowText(m_hWindow, wcNombre);
+    }
+}
 
 
 /*------------------------------------------------------------------------*\

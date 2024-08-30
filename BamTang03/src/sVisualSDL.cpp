@@ -212,11 +212,11 @@ bool sVistaSDL::eventos()
 
 
             case SDL_EVENT_WINDOW_FOCUS_GAINED:
-                laVentanaGanaFoco();
+                OnSetFocus();
                 break;
 
             case SDL_EVENT_WINDOW_FOCUS_LOST:
-                laVentanaPierdeFoco();
+                OnKillFocus();
                 break;
 
             default:
@@ -228,7 +228,7 @@ bool sVistaSDL::eventos()
 }
 
 
-void sVistaSDL::laVentanaGanaFoco()
+void sVistaSDL::OnSetFocus()
 {
     int size = 0;
     if (m_sLaberinto)
@@ -248,7 +248,7 @@ void sVistaSDL::laVentanaGanaFoco()
 }
 
 
-void sVistaSDL::laVentanaPierdeFoco()
+void sVistaSDL::OnKillFocus()
 {
     int size = 0;
     if (m_sLaberinto)

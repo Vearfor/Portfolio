@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{c55eeb8a-43f9-4542-920b-e5d9a586b876}</ProjectGuid>
+    <RootNamespace>ConsoleApplication1</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\MisExes\</OutDir>
+    <IntDir>$(SolutionDir)\Objs\$(MSBuildProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)\MisExes\</OutDir>
+    <IntDir>$(SolutionDir)\Objs\$(MSBuildProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\MisExes\</OutDir>
+    <IntDir>$(SolutionDir)\Objs\$(MSBuildProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)\MisExes\</OutDir>
+    <IntDir>$(SolutionDir)\Objs\$(MSBuildProjectName)\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRONO_;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)/BamTang05/src;$(SolutionDir)/comun/GLM;$(SolutionDir)/comun/STB;$(SolutionDir)/comun/OpenGL/Glew/include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;glew32d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)/comun/lib/$(Platform)/$(Configuration)/;$(SolutionDir)/comun/OpenGL/Glew/lib/$(Platform)/</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>$(SolutionDir)/comun/cmd/PostLinkGLEW.bat $(SolutionDir)\comun\OpenGL\Glew\lib\Win32\glew32d.dll $(SolutionDir)\MisExes</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>PostLinkado</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRONO_;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)/BamTang05/src;$(SolutionDir)/comun/GLM;$(SolutionDir)/comun/STB;$(SolutionDir)/comun/OpenGL/Glew/include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;glew32d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)/comun/lib/$(Platform)/$(Configuration)/;$(SolutionDir)/comun/OpenGL/Glew/lib/$(Platform)/</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>$(SolutionDir)/comun/cmd/PostLinkGLEW.bat $(SolutionDir)\comun\OpenGL\Glew\lib\Win32\glew32d.dll $(SolutionDir)\MisExes</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>PostLinkado</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRONO_;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)/BamTang05/src;$(SolutionDir)/comun/GLM;$(SolutionDir)/comun/STB;$(SolutionDir)/comun/OpenGL/Glew/include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)/comun/lib/$(Platform)/$(Configuration)/;$(SolutionDir)/comun/OpenGL/Glew/lib/$(Platform)/</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>$(SolutionDir)/comun/cmd/PostLinkGLEW.bat $(SolutionDir)\comun\OpenGL\Glew\lib\x64\glew32.dll $(SolutionDir)\MisExes</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>PostLinkado</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRONO_;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)/BamTang05/src;$(SolutionDir)/comun/GLM;$(SolutionDir)/comun/STB;$(SolutionDir)/comun/OpenGL/Glew/include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)/comun/lib/$(Platform)/$(Configuration)/;$(SolutionDir)/comun/OpenGL/Glew/lib/$(Platform)/</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>$(SolutionDir)/comun/cmd/PostLinkGLEW.bat $(SolutionDir)\comun\OpenGL\Glew\lib\x64\glew32.dll $(SolutionDir)\MisExes</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>PostLinkado</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\BamTang05\src\laberinto\sLaberinto.cpp" />
+    <ClCompile Include="..\BamTang05\src\laberinto\sMyMaze.cpp" />
+    <ClCompile Include="..\BamTang05\src\swat\cCamara.cpp" />
+    <ClCompile Include="..\BamTang05\src\swat\cMalla.cpp" />
+    <ClCompile Include="..\BamTang05\src\swat\cModel.cpp" />
+    <ClCompile Include="..\BamTang05\src\swat\input\cRaton.cpp" />
+    <ClCompile Include="..\BamTang05\src\swat\input\cTeclado.cpp" />
+    <ClCompile Include="..\BamTang05\src\swat\shaders\cGestorShaders.cpp" />
+    <ClCompile Include="..\BamTang05\src\swat\shaders\cShader.cpp" />
+    <ClCompile Include="..\BamTang05\src\swat\sOpenGL.cpp" />
+    <ClCompile Include="..\BamTang05\src\swat\sRenderObject.cpp" />
+    <ClCompile Include="..\BamTang05\src\swat\texturas\cGestorTexturas.cpp" />
+    <ClCompile Include="..\BamTang05\src\swat\texturas\cTextura.cpp" />
+    <ClCompile Include="..\BamTang05\src\swat\windows\cModoGrafico.cpp" />
+    <ClCompile Include="..\BamTang05\src\swat\windows\cMonitor.cpp" />
+    <ClCompile Include="..\BamTang05\src\swat\windows\cVecModosGraficos.cpp" />
+    <ClCompile Include="..\BamTang05\src\swat\windows\sWindow.cpp" />
+    <ClCompile Include="..\BamTang05\src\tool\cItem.cpp" />
+    <ClCompile Include="..\BamTang05\src\tool\cLog.cpp" />
+    <ClCompile Include="..\BamTang05\src\tool\consola\cConio.cpp" />
+    <ClCompile Include="..\BamTang05\src\tool\consola\cConsola.cpp" />
+    <ClCompile Include="..\BamTang05\src\tool\cRandom.cpp" />
+    <ClCompile Include="..\BamTang05\src\tool\cTime.cpp" />
+    <ClCompile Include="..\BamTang05\src\tool\cTool.cpp" />
+    <ClCompile Include="..\BamTang05\src\tool\iMensajes.cpp" />
+    <ClCompile Include="ConsoleApplication1.cpp" />
+    <ClCompile Include="sConsoleWindow.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\BamTang05\src\laberinto\sLaberinto.h" />
+    <ClInclude Include="..\BamTang05\src\laberinto\sMyMaze.h" />
+    <ClInclude Include="..\BamTang05\src\laberinto\sPos.h" />
+    <ClInclude Include="..\BamTang05\src\swat\cCamara.h" />
+    <ClInclude Include="..\BamTang05\src\swat\cMalla.h" />
+    <ClInclude Include="..\BamTang05\src\swat\cModel.h" />
+    <ClInclude Include="..\BamTang05\src\swat\input\cRaton.h" />
+    <ClInclude Include="..\BamTang05\src\swat\input\cTeclado.h" />
+    <ClInclude Include="..\BamTang05\src\swat\input\nCommonKeys.h" />
+    <ClInclude Include="..\BamTang05\src\swat\shaders\cGestorShaders.h" />
+    <ClInclude Include="..\BamTang05\src\swat\shaders\cShader.h" />
+    <ClInclude Include="..\BamTang05\src\swat\sOpenGL.h" />
+    <ClInclude Include="..\BamTang05\src\swat\sRenderObject.h" />
+    <ClInclude Include="..\BamTang05\src\swat\texturas\cGestorTexturas.h" />
+    <ClInclude Include="..\BamTang05\src\swat\texturas\cTextura.h" />
+    <ClInclude Include="..\BamTang05\src\swat\windows\cModoGrafico.h" />
+    <ClInclude Include="..\BamTang05\src\swat\windows\cMonitor.h" />
+    <ClInclude Include="..\BamTang05\src\swat\windows\cVecModosGraficos.h" />
+    <ClInclude Include="..\BamTang05\src\swat\windows\sWindow.h" />
+    <ClInclude Include="..\BamTang05\src\swat\windows\tRect.h" />
+    <ClInclude Include="..\BamTang05\src\tool\cItem.h" />
+    <ClInclude Include="..\BamTang05\src\tool\cLog.h" />
+    <ClInclude Include="..\BamTang05\src\tool\consola\cConio.h" />
+    <ClInclude Include="..\BamTang05\src\tool\consola\cConsola.h" />
+    <ClInclude Include="..\BamTang05\src\tool\cRandom.hpp" />
+    <ClInclude Include="..\BamTang05\src\tool\cTime.h" />
+    <ClInclude Include="..\BamTang05\src\tool\cTool.h" />
+    <ClInclude Include="..\BamTang05\src\tool\iMensajes.h" />
+    <ClInclude Include="..\BamTang05\src\tool\nComun.h" />
+    <ClInclude Include="..\BamTang05\src\tool\nExport.h" />
+    <ClInclude Include="sConsoleWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\comun\cmd\PostLinkGLEW.bat" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

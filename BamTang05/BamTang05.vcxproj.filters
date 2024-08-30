@@ -31,10 +31,37 @@
     <Filter Include="Source\src\swat">
       <UniqueIdentifier>{96d485bd-2b80-4b66-9b71-ab8ea6f089b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\src\swat\input">
+      <UniqueIdentifier>{6edd819d-9db6-4573-ab7a-c77410f03ce4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\src\swat\texturas">
+      <UniqueIdentifier>{0bb36dfb-9140-45b4-992f-9f6159742962}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\src\swat\windows">
+      <UniqueIdentifier>{5c3aecc1-c4a9-48d6-9c57-712e90d3c144}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\src\swat\shaders">
+      <UniqueIdentifier>{280f6ca1-d483-4d97-9bda-770d5aa62984}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Recursos\shaders">
+      <UniqueIdentifier>{b20accdb-323b-43a5-bdec-6488d8052239}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\comun\cmd\PostLinkGLEW.bat">
       <Filter>cmd</Filter>
+    </None>
+    <None Include="..\comun\shaders\fragment_cubo.glsl">
+      <Filter>Recursos\shaders</Filter>
+    </None>
+    <None Include="..\comun\shaders\vertex_cubo.glsl">
+      <Filter>Recursos\shaders</Filter>
+    </None>
+    <None Include="..\comun\shaders\fragment_triangulo.glsl">
+      <Filter>Recursos\shaders</Filter>
+    </None>
+    <None Include="..\comun\shaders\vertex_triangulo.glsl">
+      <Filter>Recursos\shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -80,18 +107,6 @@
     <ClCompile Include="src\swat\sRenderSystem.cpp">
       <Filter>Source\src\swat</Filter>
     </ClCompile>
-    <ClCompile Include="src\swat\sWindow.cpp">
-      <Filter>Source\src\swat</Filter>
-    </ClCompile>
-    <ClCompile Include="src\swat\cMonitor.cpp">
-      <Filter>Source\src\swat</Filter>
-    </ClCompile>
-    <ClCompile Include="src\swat\cVecModosGraficos.cpp">
-      <Filter>Source\src\swat</Filter>
-    </ClCompile>
-    <ClCompile Include="src\swat\cModoGrafico.cpp">
-      <Filter>Source\src\swat</Filter>
-    </ClCompile>
     <ClCompile Include="src\tool\cItem.cpp">
       <Filter>Source\src\tool</Filter>
     </ClCompile>
@@ -101,23 +116,53 @@
     <ClCompile Include="src\swat\sOpenGL.cpp">
       <Filter>Source\src\swat</Filter>
     </ClCompile>
-    <ClCompile Include="src\sGameWindow.cpp">
-      <Filter>Source\src</Filter>
-    </ClCompile>
     <ClCompile Include="src\tool\iMensajes.cpp">
       <Filter>Source\src\tool</Filter>
     </ClCompile>
-    <ClCompile Include="src\swat\cTeclado.cpp">
+    <ClCompile Include="src\sObjeto.cpp">
+      <Filter>Source\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\cModel.cpp">
       <Filter>Source\src\swat</Filter>
     </ClCompile>
-    <ClCompile Include="src\swat\cGestorTexturas.cpp">
+    <ClCompile Include="src\swat\cMalla.cpp">
       <Filter>Source\src\swat</Filter>
     </ClCompile>
-    <ClCompile Include="src\swat\cTextura.cpp">
+    <ClCompile Include="src\swat\input\cTeclado.cpp">
+      <Filter>Source\src\swat\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\windows\cModoGrafico.cpp">
+      <Filter>Source\src\swat\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\windows\cMonitor.cpp">
+      <Filter>Source\src\swat\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\windows\cVecModosGraficos.cpp">
+      <Filter>Source\src\swat\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\windows\sWindow.cpp">
+      <Filter>Source\src\swat\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\texturas\cGestorTexturas.cpp">
+      <Filter>Source\src\swat\texturas</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\texturas\cTextura.cpp">
+      <Filter>Source\src\swat\texturas</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\shaders\cGestorShaders.cpp">
+      <Filter>Source\src\swat\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\shaders\cShader.cpp">
+      <Filter>Source\src\swat\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\swat\cCamara.cpp">
       <Filter>Source\src\swat</Filter>
     </ClCompile>
-    <ClCompile Include="src\swat\cShader.cpp">
-      <Filter>Source\src\swat</Filter>
+    <ClCompile Include="src\swat\input\cRaton.cpp">
+      <Filter>Source\src\swat\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sGameWindow.cpp">
+      <Filter>Source\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,18 +217,6 @@
     <ClInclude Include="src\swat\sRenderSystem.h">
       <Filter>Source\src\swat</Filter>
     </ClInclude>
-    <ClInclude Include="src\swat\sWindow.h">
-      <Filter>Source\src\swat</Filter>
-    </ClInclude>
-    <ClInclude Include="src\swat\cMonitor.h">
-      <Filter>Source\src\swat</Filter>
-    </ClInclude>
-    <ClInclude Include="src\swat\cVecModosGraficos.h">
-      <Filter>Source\src\swat</Filter>
-    </ClInclude>
-    <ClInclude Include="src\swat\cModoGrafico.h">
-      <Filter>Source\src\swat</Filter>
-    </ClInclude>
     <ClInclude Include="src\tool\cItem.h">
       <Filter>Source\src\tool</Filter>
     </ClInclude>
@@ -193,26 +226,59 @@
     <ClInclude Include="src\swat\sOpenGL.h">
       <Filter>Source\src\swat</Filter>
     </ClInclude>
-    <ClInclude Include="src\sGameWindow.h">
-      <Filter>Source\src</Filter>
-    </ClInclude>
     <ClInclude Include="src\tool\iMensajes.h">
       <Filter>Source\src\tool</Filter>
     </ClInclude>
-    <ClInclude Include="src\swat\cTeclado.h">
+    <ClInclude Include="src\sObjeto.h">
+      <Filter>Source\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\cModel.h">
       <Filter>Source\src\swat</Filter>
     </ClInclude>
-    <ClInclude Include="src\swat\nCommonKeys.h">
+    <ClInclude Include="src\swat\cMalla.h">
       <Filter>Source\src\swat</Filter>
     </ClInclude>
-    <ClInclude Include="src\swat\cGestorTexturas.h">
+    <ClInclude Include="src\swat\input\cTeclado.h">
+      <Filter>Source\src\swat\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\input\nCommonKeys.h">
+      <Filter>Source\src\swat\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\windows\cModoGrafico.h">
+      <Filter>Source\src\swat\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\windows\cMonitor.h">
+      <Filter>Source\src\swat\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\windows\cVecModosGraficos.h">
+      <Filter>Source\src\swat\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\windows\sWindow.h">
+      <Filter>Source\src\swat\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\texturas\cGestorTexturas.h">
+      <Filter>Source\src\swat\texturas</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\texturas\cTextura.h">
+      <Filter>Source\src\swat\texturas</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\shaders\cGestorShaders.h">
+      <Filter>Source\src\swat\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\shaders\cShader.h">
+      <Filter>Source\src\swat\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\cCamara.h">
       <Filter>Source\src\swat</Filter>
     </ClInclude>
-    <ClInclude Include="src\swat\cTextura.h">
-      <Filter>Source\src\swat</Filter>
+    <ClInclude Include="src\swat\input\cRaton.h">
+      <Filter>Source\src\swat\input</Filter>
     </ClInclude>
-    <ClInclude Include="src\swat\cShader.h">
-      <Filter>Source\src\swat</Filter>
+    <ClInclude Include="src\swat\windows\tRect.h">
+      <Filter>Source\src\swat\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sGameWindow.h">
+      <Filter>Source\src</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
