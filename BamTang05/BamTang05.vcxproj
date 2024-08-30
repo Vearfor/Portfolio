@@ -198,13 +198,15 @@
     <None Include="..\comun\shaders\vertex_triangulo.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\sGame.cpp" />
-    <ClCompile Include="src\laberinto\sLaberinto.cpp" />
-    <ClCompile Include="src\laberinto\sMyMaze.cpp" />
+    <ClCompile Include="src\game\laberinto\sLaberinto.cpp" />
+    <ClCompile Include="src\game\laberinto\sMyMaze.cpp" />
+    <ClCompile Include="src\game\sGame.cpp" />
+    <ClCompile Include="src\game\sGameWindow.cpp" />
+    <ClCompile Include="src\game\sGlobal.cpp" />
+    <ClCompile Include="src\game\sRenderSystem.cpp" />
+    <ClCompile Include="src\game\vistas\sVista3D.cpp" />
+    <ClCompile Include="src\game\vistas\sVistaConsola.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\sGameWindow.cpp" />
-    <ClCompile Include="src\sGlobal.cpp" />
-    <ClCompile Include="src\sObjeto.cpp" />
     <ClCompile Include="src\swat\cCamara.cpp" />
     <ClCompile Include="src\swat\cMalla.cpp" />
     <ClCompile Include="src\swat\cModel.cpp" />
@@ -214,7 +216,6 @@
     <ClCompile Include="src\swat\shaders\cShader.cpp" />
     <ClCompile Include="src\swat\sOpenGL.cpp" />
     <ClCompile Include="src\swat\sRenderObject.cpp" />
-    <ClCompile Include="src\swat\sRenderSystem.cpp" />
     <ClCompile Include="src\swat\texturas\cGestorTexturas.cpp" />
     <ClCompile Include="src\swat\texturas\cTextura.cpp" />
     <ClCompile Include="src\swat\windows\cModoGrafico.cpp" />
@@ -229,17 +230,18 @@
     <ClCompile Include="src\tool\cTime.cpp" />
     <ClCompile Include="src\tool\cTool.cpp" />
     <ClCompile Include="src\tool\iMensajes.cpp" />
-    <ClCompile Include="src\vistas\sVista3D.cpp" />
-    <ClCompile Include="src\vistas\sVistaConsola.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\sGame.h" />
-    <ClInclude Include="src\laberinto\sLaberinto.h" />
-    <ClInclude Include="src\laberinto\sMyMaze.h" />
-    <ClInclude Include="src\laberinto\sPos.h" />
-    <ClInclude Include="src\sGameWindow.h" />
-    <ClInclude Include="src\sGlobal.h" />
-    <ClInclude Include="src\sObjeto.h" />
+    <ClInclude Include="src\game\laberinto\sLaberinto.h" />
+    <ClInclude Include="src\game\laberinto\sMyMaze.h" />
+    <ClInclude Include="src\game\laberinto\sPos.h" />
+    <ClInclude Include="src\game\sGame.h" />
+    <ClInclude Include="src\game\sGameWindow.h" />
+    <ClInclude Include="src\game\sGlobal.h" />
+    <ClInclude Include="src\game\sRenderSystem.h" />
+    <ClInclude Include="src\game\vistas\sVista.h" />
+    <ClInclude Include="src\game\vistas\sVista3D.h" />
+    <ClInclude Include="src\game\vistas\sVistaConsola.h" />
     <ClInclude Include="src\swat\cCamara.h" />
     <ClInclude Include="src\swat\cMalla.h" />
     <ClInclude Include="src\swat\cModel.h" />
@@ -250,7 +252,6 @@
     <ClInclude Include="src\swat\shaders\cShader.h" />
     <ClInclude Include="src\swat\sOpenGL.h" />
     <ClInclude Include="src\swat\sRenderObject.h" />
-    <ClInclude Include="src\swat\sRenderSystem.h" />
     <ClInclude Include="src\swat\texturas\cGestorTexturas.h" />
     <ClInclude Include="src\swat\texturas\cTextura.h" />
     <ClInclude Include="src\swat\windows\cModoGrafico.h" />
@@ -268,9 +269,6 @@
     <ClInclude Include="src\tool\iMensajes.h" />
     <ClInclude Include="src\tool\nComun.h" />
     <ClInclude Include="src\tool\nExport.h" />
-    <ClInclude Include="src\vistas\sVista.h" />
-    <ClInclude Include="src\vistas\sVista3D.h" />
-    <ClInclude Include="src\vistas\sVistaConsola.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

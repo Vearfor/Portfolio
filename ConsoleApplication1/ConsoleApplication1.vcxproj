@@ -191,8 +191,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\BamTang05\src\laberinto\sLaberinto.cpp" />
-    <ClCompile Include="..\BamTang05\src\laberinto\sMyMaze.cpp" />
     <ClCompile Include="..\BamTang05\src\swat\cCamara.cpp" />
     <ClCompile Include="..\BamTang05\src\swat\cMalla.cpp" />
     <ClCompile Include="..\BamTang05\src\swat\cModel.cpp" />
@@ -220,9 +218,6 @@
     <ClCompile Include="sConsoleWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\BamTang05\src\laberinto\sLaberinto.h" />
-    <ClInclude Include="..\BamTang05\src\laberinto\sMyMaze.h" />
-    <ClInclude Include="..\BamTang05\src\laberinto\sPos.h" />
     <ClInclude Include="..\BamTang05\src\swat\cCamara.h" />
     <ClInclude Include="..\BamTang05\src\swat\cMalla.h" />
     <ClInclude Include="..\BamTang05\src\swat\cModel.h" />

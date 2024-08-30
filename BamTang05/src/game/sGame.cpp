@@ -9,7 +9,7 @@
 ////#include "vistas/sVistaSDL.h"
 //#include "vistas/sVista3D.h"
 //#include "tool/nComun.h"
-#include "swat/sRenderSystem.h"
+#include "sRenderSystem.h"
 //#include "tool/consola/cConsola.h"
 
 

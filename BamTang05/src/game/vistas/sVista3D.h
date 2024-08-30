@@ -7,9 +7,9 @@
 // Include
 //--------------------------------------------------------------------------
 #include "sVista.h"
-#include "../tool/iMensajes.h"
-#include "../swat/sOpenGL.h"
-#include "../swat/windows/cMonitor.h"
+#include "../../tool/iMensajes.h"
+#include "../../swat/sOpenGL.h"
+#include "../../swat/windows/cMonitor.h"
 #include <cstdint>
 #include <string>
 #include <GLM/gtc/matrix_transform.hpp>

@@ -3,11 +3,11 @@
 \*------------------------------------------------------------------------*/
 
 #include "sGameWindow.h"
-#include "swat/input/cTeclado.h"
-#include "swat/sOpenGL.h"
-#include "tool/consola/cConsola.h"
+#include "../swat/input/cTeclado.h"
+#include "../swat/sOpenGL.h"
+#include "../tool/consola/cConsola.h"
 #include "laberinto/sLaberinto.h"
-#include "tool/cTool.h"
+#include "../tool/cTool.h"
 
 
 /*------------------------------------------------------------------------*/

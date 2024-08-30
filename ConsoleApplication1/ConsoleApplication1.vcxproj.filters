@@ -12,9 +12,6 @@
     <Filter Include="Source\BamTang05">
       <UniqueIdentifier>{9878f432-c4db-4430-aaf7-0249fc1e7359}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\BamTang05\laberinto">
-      <UniqueIdentifier>{bc246795-c129-4756-9fc4-10b194d9b8ab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\BamTang05\swat">
       <UniqueIdentifier>{66a9c271-c2cf-4656-8d8e-b134acf2060a}</UniqueIdentifier>
     </Filter>
@@ -46,12 +43,6 @@
     </ClCompile>
     <ClCompile Include="sConsoleWindow.cpp">
       <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\BamTang05\src\laberinto\sLaberinto.cpp">
-      <Filter>Source\BamTang05\laberinto</Filter>
-    </ClCompile>
-    <ClCompile Include="..\BamTang05\src\laberinto\sMyMaze.cpp">
-      <Filter>Source\BamTang05\laberinto</Filter>
     </ClCompile>
     <ClCompile Include="..\BamTang05\src\swat\cMalla.cpp">
       <Filter>Source\BamTang05\swat</Filter>
@@ -126,15 +117,6 @@
   <ItemGroup>
     <ClInclude Include="sConsoleWindow.h">
       <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\BamTang05\src\laberinto\sLaberinto.h">
-      <Filter>Source\BamTang05\laberinto</Filter>
-    </ClInclude>
-    <ClInclude Include="..\BamTang05\src\laberinto\sMyMaze.h">
-      <Filter>Source\BamTang05\laberinto</Filter>
-    </ClInclude>
-    <ClInclude Include="..\BamTang05\src\laberinto\sPos.h">
-      <Filter>Source\BamTang05\laberinto</Filter>
     </ClInclude>
     <ClInclude Include="..\BamTang05\src\swat\cMalla.h">
       <Filter>Source\BamTang05\swat</Filter>

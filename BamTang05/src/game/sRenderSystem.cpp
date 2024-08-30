@@ -4,8 +4,8 @@
 
 
 #include "sRenderSystem.h"
-#include "../vistas/sVistaConsola.h"
-#include "../vistas/sVista3D.h"
+#include "vistas/sVistaConsola.h"
+#include "vistas/sVista3D.h"
 #include "../swat/windows/sWindow.h"
 #include "../tool/nComun.h"
 #include "../tool/consola/cConsola.h"

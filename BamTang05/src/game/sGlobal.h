@@ -1,38 +1,24 @@
 /*------------------------------------------------------------------------*\
-|* sObjeto.h
+|* sGlobal.h
 \*------------------------------------------------------------------------*/
 
 #pragma once
 //--------------------------------------------------------------------------
 // Includes
 //--------------------------------------------------------------------------
-#include "tool/cItem.h"
-#include <GLM/glm.hpp>
-#include <string>
+#include "../tool/nComun.h"
 //--------------------------------------------------------------------------
 
 /*------------------------------------------------------------------------*/
-class cModel;
-/*------------------------------------------------------------------------*/
-struct sObjeto
-    : public cItem
+struct sGlobal
 {
-    sObjeto();
-    sObjeto(const std::string& pathModelFile, glm::vec3 & pos, glm::vec3 rot, glm::vec3 sca, cModel* pModel );
-    ~sObjeto();
-
-    std::string m_pathModelFile{ "" };
-    glm::vec3   m_position{ 0.0f, 0.0f, 0.0f };
-    glm::vec3   m_rotation{ 0.0f, 0.0f, 0.0f };
-    glm::vec3   m_scale{ 1.0f, 1.0f, 1.0f };
-
-    cModel* m_pModel{ nullptr };
-
-    int load();
-    int render();
+    static int m_iDim;
+    static int m_iWidth;
+    static int m_iHeight;
+    static char vcNombrePrograma[LON_BUFF / 8];
 };
 /*------------------------------------------------------------------------*/
 
 /*------------------------------------------------------------------------*\
-|* Fin de sObjeto.h
+|* Fin de sGlobal.h
 \*------------------------------------------------------------------------*/

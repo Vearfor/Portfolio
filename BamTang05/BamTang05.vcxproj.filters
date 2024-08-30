@@ -22,12 +22,6 @@
     <Filter Include="Source\src\tool\consola">
       <UniqueIdentifier>{6765a81b-26f2-4914-ac57-2cb8114ef7c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\src\laberinto">
-      <UniqueIdentifier>{11491836-1464-4d6b-a2bd-d1e827017823}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\src\vistas">
-      <UniqueIdentifier>{97ca85ed-3497-4bb6-a1ab-cd0f5c68f29b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\src\swat">
       <UniqueIdentifier>{96d485bd-2b80-4b66-9b71-ab8ea6f089b2}</UniqueIdentifier>
     </Filter>
@@ -45,6 +39,15 @@
     </Filter>
     <Filter Include="Recursos\shaders">
       <UniqueIdentifier>{b20accdb-323b-43a5-bdec-6488d8052239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\src\game">
+      <UniqueIdentifier>{2f45d77e-b851-496c-b957-c1797dfee428}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\src\game\laberinto">
+      <UniqueIdentifier>{9f45ef15-60e3-411b-86aa-eada6e9aeb62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\src\game\vistas">
+      <UniqueIdentifier>{b5d99b88-c21a-44f6-b335-8dc2fd934348}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -68,9 +71,6 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\sGame.cpp">
-      <Filter>Source\src</Filter>
-    </ClCompile>
     <ClCompile Include="src\tool\consola\cConio.cpp">
       <Filter>Source\src\tool\consola</Filter>
     </ClCompile>
@@ -86,25 +86,7 @@
     <ClCompile Include="src\tool\cTime.cpp">
       <Filter>Source\src\tool</Filter>
     </ClCompile>
-    <ClCompile Include="src\laberinto\sLaberinto.cpp">
-      <Filter>Source\src\laberinto</Filter>
-    </ClCompile>
-    <ClCompile Include="src\laberinto\sMyMaze.cpp">
-      <Filter>Source\src\laberinto</Filter>
-    </ClCompile>
-    <ClCompile Include="src\vistas\sVistaConsola.cpp">
-      <Filter>Source\src\vistas</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sGlobal.cpp">
-      <Filter>Source\src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\vistas\sVista3D.cpp">
-      <Filter>Source\src\vistas</Filter>
-    </ClCompile>
     <ClCompile Include="src\swat\sRenderObject.cpp">
-      <Filter>Source\src\swat</Filter>
-    </ClCompile>
-    <ClCompile Include="src\swat\sRenderSystem.cpp">
       <Filter>Source\src\swat</Filter>
     </ClCompile>
     <ClCompile Include="src\tool\cItem.cpp">
@@ -118,9 +100,6 @@
     </ClCompile>
     <ClCompile Include="src\tool\iMensajes.cpp">
       <Filter>Source\src\tool</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sObjeto.cpp">
-      <Filter>Source\src</Filter>
     </ClCompile>
     <ClCompile Include="src\swat\cModel.cpp">
       <Filter>Source\src\swat</Filter>
@@ -161,14 +140,32 @@
     <ClCompile Include="src\swat\input\cRaton.cpp">
       <Filter>Source\src\swat\input</Filter>
     </ClCompile>
-    <ClCompile Include="src\sGameWindow.cpp">
-      <Filter>Source\src</Filter>
+    <ClCompile Include="src\game\sGame.cpp">
+      <Filter>Source\src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\sGameWindow.cpp">
+      <Filter>Source\src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\sGlobal.cpp">
+      <Filter>Source\src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\sRenderSystem.cpp">
+      <Filter>Source\src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\vistas\sVista3D.cpp">
+      <Filter>Source\src\game\vistas</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\vistas\sVistaConsola.cpp">
+      <Filter>Source\src\game\vistas</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\laberinto\sLaberinto.cpp">
+      <Filter>Source\src\game\laberinto</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\laberinto\sMyMaze.cpp">
+      <Filter>Source\src\game\laberinto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\sGame.h">
-      <Filter>Source\src</Filter>
-    </ClInclude>
     <ClInclude Include="src\tool\consola\cConio.h">
       <Filter>Source\src\tool\consola</Filter>
     </ClInclude>
@@ -190,31 +187,7 @@
     <ClInclude Include="src\tool\nExport.h">
       <Filter>Source\src\tool</Filter>
     </ClInclude>
-    <ClInclude Include="src\laberinto\sLaberinto.h">
-      <Filter>Source\src\laberinto</Filter>
-    </ClInclude>
-    <ClInclude Include="src\laberinto\sMyMaze.h">
-      <Filter>Source\src\laberinto</Filter>
-    </ClInclude>
-    <ClInclude Include="src\laberinto\sPos.h">
-      <Filter>Source\src\laberinto</Filter>
-    </ClInclude>
-    <ClInclude Include="src\vistas\sVista.h">
-      <Filter>Source\src\vistas</Filter>
-    </ClInclude>
-    <ClInclude Include="src\vistas\sVistaConsola.h">
-      <Filter>Source\src\vistas</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sGlobal.h">
-      <Filter>Source\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\vistas\sVista3D.h">
-      <Filter>Source\src\vistas</Filter>
-    </ClInclude>
     <ClInclude Include="src\swat\sRenderObject.h">
-      <Filter>Source\src\swat</Filter>
-    </ClInclude>
-    <ClInclude Include="src\swat\sRenderSystem.h">
       <Filter>Source\src\swat</Filter>
     </ClInclude>
     <ClInclude Include="src\tool\cItem.h">
@@ -228,9 +201,6 @@
     </ClInclude>
     <ClInclude Include="src\tool\iMensajes.h">
       <Filter>Source\src\tool</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sObjeto.h">
-      <Filter>Source\src</Filter>
     </ClInclude>
     <ClInclude Include="src\swat\cModel.h">
       <Filter>Source\src\swat</Filter>
@@ -277,8 +247,35 @@
     <ClInclude Include="src\swat\windows\tRect.h">
       <Filter>Source\src\swat\windows</Filter>
     </ClInclude>
-    <ClInclude Include="src\sGameWindow.h">
-      <Filter>Source\src</Filter>
+    <ClInclude Include="src\game\sGame.h">
+      <Filter>Source\src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\sGameWindow.h">
+      <Filter>Source\src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\sGlobal.h">
+      <Filter>Source\src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\sRenderSystem.h">
+      <Filter>Source\src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\vistas\sVista.h">
+      <Filter>Source\src\game\vistas</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\vistas\sVista3D.h">
+      <Filter>Source\src\game\vistas</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\vistas\sVistaConsola.h">
+      <Filter>Source\src\game\vistas</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\laberinto\sLaberinto.h">
+      <Filter>Source\src\game\laberinto</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\laberinto\sMyMaze.h">
+      <Filter>Source\src\game\laberinto</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\laberinto\sPos.h">
+      <Filter>Source\src\game\laberinto</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

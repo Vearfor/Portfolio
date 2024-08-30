@@ -2,11 +2,10 @@
 |* main.cpp
 \*------------------------------------------------------------------------*/
 
-
-#include "sGame.h"
-#include "sGlobal.h"
+#include "game/sGame.h"
+#include "game/sGlobal.h"
+#include "game/laberinto/sLaberinto.h"
 #include "tool/cTime.h"
-#include "laberinto/sMyMaze.h"
 #include "tool/cTool.h"
 #include "tool/cLog.h"
 #include "tool/consola/cConio.h"

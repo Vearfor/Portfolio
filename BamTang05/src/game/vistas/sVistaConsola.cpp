@@ -4,8 +4,8 @@
 
 #include "sVistaConsola.h"
 #include "../laberinto/sLaberinto.h"
-#include "../tool/consola/cConio.h"
-#include "../tool/consola/cConsola.h"
+#include "../../tool/consola/cConio.h"
+#include "../../tool/consola/cConsola.h"
 
 
 //--------------------------------------------------------------------------
