@@ -107,9 +107,9 @@ struct sWindow
         int	    iTopP,
         int	    iAnchoP,
         int	    iAltoP,
-        double dCercano,
-        double dLejano,
-        double dFov,
+        float fCercano,
+        float fLejano,
+        float fFov,
         int iBitsColor,
         int iBitsDepth,
         bool bFull,
@@ -130,6 +130,7 @@ struct sWindow
     HDC getDeviceContext(void) { return m_hDC; }
     glm::mat4 getPerspProjection() { return m_projection; }
     glm::mat4 getOrthoProjection() { return m_ortho; }
+    HWND getWindow(void) { return m_hWindow; }
 
     static bool GetWindowRect(HWND hwnd, cRect<long>* pRectRes);
 
@@ -140,9 +141,9 @@ protected:
     int m_iHeight{ 400 };
     int m_iBitsColor{ 0 };
     int m_iBitsDepth{ 0 };
-    double m_dFov{ 45.0 };
-    double m_dPCercano{ 0.1 };
-    double m_dPLejano{ 100.0 };
+    float m_fFov{ 45.0f };
+    float m_fPCercano{ 0.1f };
+    float m_fPLejano{ 100.0f };
     bool m_bRegistrada{ false };        // Indica si esta registrada.
     bool m_bVisible{ false };           // Visible o no la ventana.
     HDC m_hDC;		                    // Handle del dispositivo.
@@ -153,6 +154,7 @@ protected:
     bool m_bFullDesktop{ false };       // Para marcar si tenemos que estar en pantalla completa. Recuerda que tenemos m_tVentana.bFull.
     cRect<long> m_wCurrentRect;               // Guardamos los actuales: Area de rectangulo de la ventana. Al terminar de crear la ventana.
     cRect<long> m_wInitRect;		            // Guardamos los iniciales, para recuperar despues de pantalla completa.
+    bool m_bActiva{ false };
 
     // Del OnSize
     // No tiene mucho sentido, pero poco a poco ..
@@ -199,6 +201,8 @@ protected:
     void    setScreenY(int iValor) { m_iScreenY = iValor; }
     int     getScreenX(void) { return m_iScreenX; }
     int     getScreenY(void) { return m_iScreenY; }
+    void    setActiva(bool bActiva) { m_bActiva = bActiva; }
+    bool    esActiva(void) { return m_bActiva; }
 
     virtual long OnCreate(HWND hwnd);
     virtual long OnDestroy();

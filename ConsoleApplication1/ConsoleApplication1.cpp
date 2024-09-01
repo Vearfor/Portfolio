@@ -40,7 +40,7 @@ int main()
         (int)ePosControl::eCENTER,
         (int)ePosControl::eCENTER,
         kWidth, kHeight,
-        0.1, 100.0, 45.0, 32, 32, false,
+        0.1f, 100.0f, 45.0f, 32, 32, false,
         eEstiloW::eWindow,
         cConsola::getNombreProceso(), "Window OpenGL", nullptr)
     );
@@ -59,6 +59,7 @@ int main()
     cGestorShaders::Delete();
     delete g_pTriangulo;
     delete g_pMainWindow;
+    cMonitor::release();
 
     return 0;
 }

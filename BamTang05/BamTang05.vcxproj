@@ -144,7 +144,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRONO_;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRONO_;_X64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)/comun/GLM;$(SolutionDir)/comun/STB;$(SolutionDir)/comun/OpenGL/Glew/include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -169,7 +169,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRONO_;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRONO_;_X64;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)/comun/GLM;$(SolutionDir)/comun/STB;$(SolutionDir)/comun/OpenGL/Glew/include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -207,6 +207,7 @@
     <ClCompile Include="src\game\vistas\sVista3D.cpp" />
     <ClCompile Include="src\game\vistas\sVistaConsola.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\swat\cAtributo.cpp" />
     <ClCompile Include="src\swat\cCamara.cpp" />
     <ClCompile Include="src\swat\cMalla.cpp" />
     <ClCompile Include="src\swat\cModel.cpp" />
@@ -230,6 +231,7 @@
     <ClCompile Include="src\tool\cTime.cpp" />
     <ClCompile Include="src\tool\cTool.cpp" />
     <ClCompile Include="src\tool\iMensajes.cpp" />
+    <ClCompile Include="src\tool\sMath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\laberinto\sLaberinto.h" />
@@ -242,6 +244,7 @@
     <ClInclude Include="src\game\vistas\sVista.h" />
     <ClInclude Include="src\game\vistas\sVista3D.h" />
     <ClInclude Include="src\game\vistas\sVistaConsola.h" />
+    <ClInclude Include="src\swat\cAtributo.h" />
     <ClInclude Include="src\swat\cCamara.h" />
     <ClInclude Include="src\swat\cMalla.h" />
     <ClInclude Include="src\swat\cModel.h" />
@@ -269,6 +272,7 @@
     <ClInclude Include="src\tool\iMensajes.h" />
     <ClInclude Include="src\tool\nComun.h" />
     <ClInclude Include="src\tool\nExport.h" />
+    <ClInclude Include="src\tool\sMath.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

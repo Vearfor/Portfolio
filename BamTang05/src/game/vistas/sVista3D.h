@@ -41,7 +41,7 @@ const std::string kTexSampler1 = "texSampler1";
 //--------------------------------------------------------------------------
 const uint16_t kWidth = 800;                // 1024;
 const uint16_t kHeight = 600;               // 768;
-const uint16_t kCelda = 1;                  //
+const uint16_t kCelda = 2;                  //
 //--------------------------------------------------------------------------
 
 
@@ -58,21 +58,20 @@ struct sVista3D
     : public sVista
     , public iMensajes
 {
-    sVista3D();
+    sVista3D(int width, int height);
     ~sVista3D();
 
     virtual int inicia(sLaberinto* lab) override;
     virtual int eventos() override;
-    virtual int update() override;
+    virtual int update(float fDeltaTime) override;
     virtual int render() override;
 
-    int creaWindow(int width, int height);
+    int creaWindow();
     int renderLaberinto();
     int renderCubo();
 
-    int lanzaLaberintoFrame();
-    int rederLaberintoFrame();
-
+    int m_width{ 0 };
+    int m_height{ 0 };
     cCamara* m_pCamara{ nullptr };
     sWindow* m_mainWindow{ nullptr };
     cMalla* m_pCubo{ nullptr };

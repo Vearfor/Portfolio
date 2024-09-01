@@ -126,12 +126,14 @@ int sLaberinto::arriba()
     {
         int fila = m_pPunto->m_fila;
         int columna = m_pPunto->m_columna;
-        char valor = m_matriz[fila][columna - 1];
+        // char valor = m_matriz[fila][columna - 1];
+        char valor = m_matriz[fila - 1][columna];
         if (valor == kVacio || valor == kFin || valor == kInicio)
         {
-            m_pPunto->m_columna--;
+            //m_pPunto->m_columna--;
+            m_pPunto->m_fila--;
         }
-        cLog::print(" arriba:     [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
+        //cLog::print(" arriba:     [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
     }
     return 0;
 }
@@ -143,12 +145,14 @@ int sLaberinto::derecha()
     {
         int fila = m_pPunto->m_fila;
         int columna = m_pPunto->m_columna;
-        char valor = m_matriz[fila + 1][columna];
+        // char valor = m_matriz[fila + 1][columna];
+        char valor = m_matriz[fila][columna + 1];
         if (valor == kVacio || valor == kFin || valor == kInicio)
         {
-            m_pPunto->m_fila++;
+            // m_pPunto->m_fila++;
+            m_pPunto->m_columna++;
         }
-        cLog::print(" abajo:      [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
+        //cLog::print(" derecha:    [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
     }
     return 0;
 }
@@ -160,12 +164,14 @@ int sLaberinto::abajo()
     {
         int fila = m_pPunto->m_fila;
         int columna = m_pPunto->m_columna;
-        char valor = m_matriz[fila][columna + 1];
+        // char valor = m_matriz[fila][columna + 1];
+        char valor = m_matriz[fila + 1][columna];
         if (valor == kVacio || valor == kFin || valor == kInicio)
         {
-            m_pPunto->m_columna++;
+            // m_pPunto->m_columna++;
+            m_pPunto->m_fila++;
         }
-        cLog::print(" abajo:      [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
+        //cLog::print(" abajo:      [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
     }
     return 0;
 }
@@ -177,12 +183,14 @@ int sLaberinto::izquierda()
     {
         int fila = m_pPunto->m_fila;
         int columna = m_pPunto->m_columna;
-        char valor = m_matriz[fila - 1][columna];
+        // char valor = m_matriz[fila - 1][columna];
+        char valor = m_matriz[fila][columna - 1];
         if (valor == kVacio || valor == kFin || valor == kInicio)
         {
-            m_pPunto->m_fila--;
+            // m_pPunto->m_fila--;
+            m_pPunto->m_columna--;
         }
-        cLog::print(" izquierda:  [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
+        //cLog::print(" izquierda:  [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
     }
     return 0;
 }

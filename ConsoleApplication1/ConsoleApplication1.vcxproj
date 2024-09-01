@@ -214,6 +214,7 @@
     <ClCompile Include="..\BamTang05\src\tool\cTime.cpp" />
     <ClCompile Include="..\BamTang05\src\tool\cTool.cpp" />
     <ClCompile Include="..\BamTang05\src\tool\iMensajes.cpp" />
+    <ClCompile Include="..\BamTang05\src\tool\sMath.cpp" />
     <ClCompile Include="ConsoleApplication1.cpp" />
     <ClCompile Include="sConsoleWindow.cpp" />
   </ItemGroup>
@@ -245,6 +246,7 @@
     <ClInclude Include="..\BamTang05\src\tool\iMensajes.h" />
     <ClInclude Include="..\BamTang05\src\tool\nComun.h" />
     <ClInclude Include="..\BamTang05\src\tool\nExport.h" />
+    <ClInclude Include="..\BamTang05\src\tool\sMath.h" />
     <ClInclude Include="sConsoleWindow.h" />
   </ItemGroup>
   <ItemGroup>

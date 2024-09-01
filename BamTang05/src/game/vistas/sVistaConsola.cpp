@@ -36,12 +36,14 @@ int sVistaConsola::inicia(sLaberinto* lab)
 int sVistaConsola::eventos()
 {
     // Complicado hacer aqui el shell: ... por ahora nada.
+    // Deberiamos hacer la gestion de entrada/teclado/etc ... pero no la tengo.
+    // Solo tengo el 'PulsaTecla', el resto, que sería como la Vista 3D, no esta terminado.
     int running = 1;
     return running;
 }
 
 
-int sVistaConsola::update()
+int sVistaConsola::update(float fDeltaTime)
 {
     int iRes = (m_renderizado) ? 1 : 0;
     return iRes;
@@ -75,7 +77,7 @@ int sVistaConsola::render()
 void sVistaConsola::mostrar_1(char** matriz, int size)
 {
     cLog::print("\n");
-    cLog::print(" La que nos han pedido:\n");
+    cLog::print(" Lo que nos han pedido:\n");
     cLog::print("\n");
     for (int fila = 0; fila < size; fila++)
     {
@@ -99,7 +101,7 @@ void sVistaConsola::mostrar_2(char** matriz1, char** matriz2, int size)
     char vcLinea2[LON_BUFF / 8];
 
     cLog::print("\n");
-    cLog::print(" Para visualizarla mejor:\n");
+    cLog::print(" Para visualizarlo mejor:\n");
     cLog::print("\n");
     for (int fila = 0; fila < size; fila++)
     {

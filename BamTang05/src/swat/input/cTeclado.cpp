@@ -103,10 +103,6 @@ cTeclado::cTeclado	( void )
     m_iVkey=-1;
     m_iCar=-1;
     
-    //for	(uint i =0; i<sizeof(m_vbTecla); i++ )
-    //{
-    //    m_vbTecla[i] = false;
-    //}
     mInicio(m_vbTeclaDown);
     mInicio(m_vbTeclaUp);
 

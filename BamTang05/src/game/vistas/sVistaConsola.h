@@ -21,7 +21,7 @@ struct sVistaConsola
 
     virtual int inicia(sLaberinto* lab) override;
     virtual int eventos() override;
-    virtual int update() override;
+    virtual int update(float fDeltaTime) override;
     virtual int render() override;
 
     char** transformarMuros(char**, int size);

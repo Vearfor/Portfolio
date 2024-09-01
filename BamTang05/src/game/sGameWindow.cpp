@@ -4,6 +4,7 @@
 
 #include "sGameWindow.h"
 #include "../swat/input/cTeclado.h"
+#include "../swat/input/cRaton.h"
 #include "../swat/sOpenGL.h"
 #include "../tool/consola/cConsola.h"
 #include "laberinto/sLaberinto.h"
@@ -11,14 +12,16 @@
 
 
 /*------------------------------------------------------------------------*/
-sGameWindow::sGameWindow(sLaberinto* pLab)
+sGameWindow::sGameWindow(sLaberinto* pLab, int width, int height)
     : m_pTeclado(new cTeclado())
+    , m_pRaton(new cRaton(width, height))
     , m_pLaberinto(pLab)
 {
 }
 
 sGameWindow::~sGameWindow()
 {
+    delete m_pRaton;
     delete m_pTeclado;
 }
 /*------------------------------------------------------------------------*/
@@ -28,6 +31,7 @@ sGameWindow::~sGameWindow()
 long sGameWindow::commonWindowProc(HWND hwnd, uint uiMsg, WPARAM wparam, LPARAM lparam)
 {
     m_pTeclado->onKeyboardEvent(uiMsg, wparam, lparam);
+    m_pRaton->onMouseEvent(uiMsg, wparam, lparam);
 
     switch (uiMsg)
     {
@@ -50,6 +54,7 @@ long sGameWindow::commonWindowProc(HWND hwnd, uint uiMsg, WPARAM wparam, LPARAM 
 /*------------------------------------------------------------------------*/
 int sGameWindow::initWindow()
 {
+    // Podriammos haber metido aqui las inicializaciones ...
     return 0;
 }
 
@@ -71,10 +76,13 @@ void sGameWindow::OnSetFocus(sLaberinto* pLab)
         nombre += vcSize;
         nombre += "    Pulsa Esc para salir. A,W,S,D para moverse.";
 
-        // cLog::print(" ganamos el foco: \n");
         WCHAR wcNombre[LON_BUFF / 8];
         cTool::copiaMultibyteToUnicode(nombre, wcNombre, sizeof(wcNombre));
         SetWindowText(m_hWindow, wcNombre);
+
+        m_pRaton->setCursorCentro();
+        m_pRaton->ocultar();
+        m_pRaton->atrapaCursor(this);
     }
 }
 
@@ -95,10 +103,12 @@ void sGameWindow::OnKillFocus(sLaberinto* pLab)
         nombre += vcSize;
         nombre += "    Toca la ventana para darle el foco";
 
-        // cLog::print(" ganamos el foco: \n");
         WCHAR wcNombre[LON_BUFF / 8];
         cTool::copiaMultibyteToUnicode(nombre, wcNombre, sizeof(wcNombre));
         SetWindowText(m_hWindow, wcNombre);
+
+        m_pRaton->mostrar();
+        m_pRaton->liberaCursor();
     }
 }
 

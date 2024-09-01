@@ -27,14 +27,16 @@ sRenderSystem::~sRenderSystem()
 int sRenderSystem::init(sLaberinto* pLab, int width, int height)
 {
     m_pVistaConsola = new sVistaConsola();
-    miError(m_pVistaConsola->inicia(pLab));
-
-    m_pVista3D = new sVista3D();
     miError(
-        m_pVista3D->creaWindow(width, height) ||
+        m_pVistaConsola->inicia(pLab)
+    );
+
+    m_pVista3D = new sVista3D(width, height);
+    miError(
         m_pVista3D->inicia(pLab)
     );
 
+    // La primera vista que utilizamos:
     m_pVista = m_pVistaConsola;
 
     cLog::print("\n");
@@ -50,12 +52,12 @@ int sRenderSystem::eventos()
 }
 
 
-int sRenderSystem::update()
+int sRenderSystem::update(float fDeltaTime)
 {
-    int iRes = m_pVista->update();
+    int iRes = m_pVista->update(fDeltaTime);
     if (iRes)
     {
-        // Cambiamos la vista:
+        // Cambiamos a la vista 3D:
         m_pVista = m_pVista3D;
         m_pVista3D->m_mainWindow->muestraVentana();
     }

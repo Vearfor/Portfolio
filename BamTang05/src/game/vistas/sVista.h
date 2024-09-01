@@ -20,7 +20,7 @@ struct sVista
 
     virtual int inicia(sLaberinto* lab) = 0;
     virtual int eventos() = 0;
-    virtual int update() = 0;
+    virtual int update(float fDeltaTime) = 0;
     virtual int render() = 0;
 };
 //--------------------------------------------------------------------------

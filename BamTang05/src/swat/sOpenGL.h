@@ -35,12 +35,18 @@ enum class eSync
 //--------------------------------------------------------------------------
 // Struct
 //--------------------------------------------------------------------------
+class cAtributo;
 struct sOpenGL
 {
     static bool m_bIniciado;
 
     static void syncro(eSync sync);
     static int initOpenGL();
+    static void toggle_Line_Fill();
+
+    static int getCodigoOpenGL(const char* pcNombreOpenGL);
+    static const char* getNombreOpenGL(int iCodigoOpenGL);
+    static int getValorAtributo(cAtributo* poAtributo, int valorPorDefecto);
 };
 //--------------------------------------------------------------------------
 

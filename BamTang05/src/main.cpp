@@ -39,13 +39,13 @@ int main(int iArgc, char* vcArgv[])
         juego.update(time.getDeltaTime());
         juego.render();
 
-        time.espera(false);
+        time.espera(true);
     }
 
     cConio::SetColor(eTextColor::eTexNormal);
     cConsola::PulsaTecla(" Pulsa tecla para terminar ");
     cLog::print("\n");
-
+    // Pendiente de mejorar: quedan mas recursos pendientes de liberar ?
     cMonitor::release();
     return 0;
 }
@@ -63,7 +63,7 @@ int preinicio()
     cConsola::setModo(eModConsola::eMOD_CONSOLA);
     cConsola::SetActiva(true);
 #endif // _MYWINDOWS_
-    cConsola::setNombreProceso("LABERINTO 3D");
+    cConsola::setNombreProceso("LABERINTO 3D " TITLE);
     cConsola::setInstance(GetModuleHandle(NULL));
     cLog::print("\n");
 

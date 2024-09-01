@@ -24,7 +24,7 @@ struct sRenderSystem
 
     int init(sLaberinto *pLab, int width, int height);
     int eventos();
-    int update();
+    int update(float fDeltaTime);
     int render();
 
     sVista* m_pVista{ nullptr };

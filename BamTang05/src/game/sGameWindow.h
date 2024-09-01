@@ -12,15 +12,17 @@
 
 /*------------------------------------------------------------------------*/
 class cTeclado;
+class cRaton;
 struct sLaberinto;
 /*------------------------------------------------------------------------*/
 struct sGameWindow
     : public sWindow
 {
-    sGameWindow(sLaberinto* pLab);
+    sGameWindow(sLaberinto* pLab, int width, int height);
     ~sGameWindow();
 
     cTeclado* m_pTeclado{ nullptr };
+    cRaton* m_pRaton{ nullptr };
     sLaberinto* m_pLaberinto{ nullptr };
 
     //----------------------------------------------------------------------

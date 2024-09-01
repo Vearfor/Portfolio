@@ -164,6 +164,12 @@
     <ClCompile Include="src\game\laberinto\sMyMaze.cpp">
       <Filter>Source\src\game\laberinto</Filter>
     </ClCompile>
+    <ClCompile Include="src\swat\cAtributo.cpp">
+      <Filter>Source\src\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tool\sMath.cpp">
+      <Filter>Source\src\tool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\tool\consola\cConio.h">
@@ -276,6 +282,12 @@
     </ClInclude>
     <ClInclude Include="src\game\laberinto\sPos.h">
       <Filter>Source\src\game\laberinto</Filter>
+    </ClInclude>
+    <ClInclude Include="src\swat\cAtributo.h">
+      <Filter>Source\src\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tool\sMath.h">
+      <Filter>Source\src\tool</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

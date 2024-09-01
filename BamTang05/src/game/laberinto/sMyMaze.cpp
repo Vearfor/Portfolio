@@ -241,7 +241,7 @@ int sMyMaze::calculaCaminoMasLargo()
 
 
 //--------------------------------------------------------------------------
-// como una coctelera cambia los valores del array para cambiar el orden
+// como una COCTELERA cambia los valores del array para cambiar el orden
 // de los valores
 // Decide en que orden(aleatorio) se quedan los siguientes alrededor de
 // nosotros:
@@ -268,7 +268,6 @@ void sMyMaze::ordenRandom(int* array, int n)
 //--------------------------------------------------------------------------
 bool sMyMaze::isValidPosition(sPos pos, int alto, int ancho)
 {
-    // no se consideran los bordes
     return pos.m_fila >= 1 && pos.m_columna >= 1 && pos.m_fila < alto - 1 && pos.m_columna < ancho - 1;
 }
 

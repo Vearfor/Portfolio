@@ -68,9 +68,9 @@ int sWindow::crea(
     int	    iTopP,
     int	    iAnchoP,
     int	    iAltoP,
-    double dCercano,
-    double dLejano,
-    double dFov,
+    float fCercano,
+    float fLejano,
+    float fFov,
     int iBitsColor,
     int iBitsDepth,
     bool bFull,
@@ -87,9 +87,9 @@ int sWindow::crea(
 
     m_iBitsColor = iBitsColor;
     m_iBitsDepth = iBitsDepth;
-    m_dFov = dFov;
-    m_dPCercano = dCercano;
-    m_dPLejano = dLejano;
+    m_fFov = fFov;
+    m_fPCercano = fCercano;
+    m_fPLejano = fLejano;
 
     m_tVentana.hInstancia = cConsola::getInstance();
     m_tVentana.eType = estilo;
@@ -925,7 +925,7 @@ long sWindow::OnCreate(HWND hwnd)
         creaDeviceContext(hwnd) ||
         creaPixelFormat(m_hDC) ||
         creaRenderContext(m_hDC) ||
-        setRenderContext() ||
+        setRenderContext() ||           // El Render Context esta: se podrian poner sentencias openGL.
         initWindow()
         // unSetRenderContext()
     );
@@ -956,12 +956,17 @@ long sWindow::OnSize(int newWidth, int newHeight)
     m_dAspectX = (getScreenX() > 0) ? (double)getAnchoOnSize() / (double)getScreenX() : 1.0;
     m_dAspectY = (getScreenY() > 0) ? (double)getAltoOnSize() / (double)getScreenY() : 1.0;
 
+    //----------------------------------------------------------------------
+    // Jugamos con que no ponemos Viewport por defecto.
+    //----------------------------------------------------------------------
     // glViewport(0, 0, getAnchoOnSize(), getAltoOnSize());
+    //----------------------------------------------------------------------
 
     float fAspect = (getAltoOnSize() > 0) ? (float)getAnchoOnSize() / (float)getAltoOnSize() : 1.0f;
 
-    m_projection = glm::perspective((float)glm::radians(m_dFov), fAspect, (float)m_dPCercano, (float)m_dPLejano);
+    m_projection = glm::perspective<float>(glm::radians(m_fFov), fAspect, m_fPCercano, m_fPLejano);
     //                          left  right                    bottom                  top   cercano             lejano.
+    // Tenemos pendiente probar el primer plano.
     m_ortho = glm::ortho<float>(0.0f, (float)getAnchoOnSize(), (float)getAltoOnSize(), 0.0f, -100.0f, 100.0f);
 
     // m_ortho = glm::ortho<float>(0.0f, (float)getAnchoOnSize(), (float)getAltoOnSize(), 0.0f, (float)m_dPCercano, (float)m_dPLejano);
@@ -1028,6 +1033,10 @@ long sWindow::myWindowProc(HWND hwnd, uint uiMsg, WPARAM wparam, LPARAM lparam)
 
         case WM_KEYUP:
             OnKeyUp((long)wparam);
+            break;
+
+        case WM_ACTIVATE:
+            setActiva(!HIWORD(wparam));
             break;
 
         default:

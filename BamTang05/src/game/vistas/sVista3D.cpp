@@ -3,11 +3,13 @@
 \*========================================================================*/
 
 #include "sVista3D.h"
+#include "../sGlobal.h"
 #include "../laberinto/sMyMaze.h"
 #include "../sGameWindow.h"
 #include "../../tool/cLog.h"
 #include "../../tool/consola/cConsola.h"
 #include "../../swat/input/cTeclado.h"
+#include "../../swat/input/cRaton.h"
 #include "../../swat/cMalla.h"
 #include "../../swat/texturas/cGestorTexturas.h"
 #include "../../swat/shaders/cGestorShaders.h"
@@ -86,7 +88,12 @@ GLfloat cubeVertices[] = {
 };
 
 
-sVista3D::sVista3D()
+//--------------------------------------------------------------------------
+// Cosntructor & Destructor
+//--------------------------------------------------------------------------
+sVista3D::sVista3D(int width, int height)
+    : m_width(width)
+    , m_height(height)
 {
 }
 
@@ -102,11 +109,16 @@ sVista3D::~sVista3D()
     // - implica destruccion del Render Context, ya no son necesarias funciones OpenGL.
     delete m_mainWindow;
 }
+//--------------------------------------------------------------------------
 
 
-int sVista3D::creaWindow(int width, int height)
+#pragma region Eventos de la Vista
+//--------------------------------------------------------------------------
+// Eventos de la Vista 3D
+//--------------------------------------------------------------------------
+int sVista3D::creaWindow()
 {
-    sGameWindow* pWin = new sGameWindow(m_pLaberinto);
+    sGameWindow* pWin = new sGameWindow(m_pLaberinto, m_width, m_height);
     if (!pWin)
     {
         cLog::error(" Error: sRenderSystem:init: error en la creacion de la ventana");
@@ -116,8 +128,8 @@ int sVista3D::creaWindow(int width, int height)
     miError(pWin->crea(
         (int)ePosControl::eCENTER,
         (int)ePosControl::eCENTER,
-        width, height,
-        0.1, 100.0, 45.0, 32, 32, false,
+        m_width, m_height,
+        0.1f, 1000.0f, 45.0f, 32, 32, false,
         eEstiloW::eWindow,
         cConsola::getNombreProceso(), "Window OpenGL", nullptr));
 
@@ -126,19 +138,22 @@ int sVista3D::creaWindow(int width, int height)
     return 0;
 }
 
+
 int sVista3D::inicia(sLaberinto* lab)
 {
     m_pLaberinto = lab;
-    m_pCamara = new cCamara();
+
+    miError(creaWindow())
 
     // Una vez que la ventana es creada, se utiliza el contexto de renderizado de la ventana
     // para las inicializaciones de openGL
-    // Debería ya estar puesto, pero lo ponemos nosotros para que se vea:
+    // Debería ya estar puesto, en el OnCreate, pero LO PONEMOS NOSOTROS PARA QUE SE VEA:
     m_mainWindow->setRenderContext();
     // Si no fuera así las sentencias de OpenGL fallarian: ... 
 
     miError(sOpenGL::initOpenGL());
 
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glClearColor(0.0, 1.0, 1.0, 1.0);
 
     m_pCubo = new cMalla();
@@ -189,21 +204,42 @@ int sVista3D::inicia(sLaberinto* lab)
     m_loc_model = m_pMainShader->getLocation(kModel.c_str());
     m_loc_view = m_pMainShader->getLocation(kView.c_str());
     m_loc_projection = m_pMainShader->getLocation(kProjection.c_str());
+    // No lo estamos usando
     m_loc_texSampler1 = m_pMainShader->getLocation(kTexSampler1.c_str());
 
     // Cube and floor positions
     m_cubePos = glm::vec3(-1.0f, 0.0f, 0.0f);
     m_floorPos = glm::vec3(0.0f, -1.0f, 0.0f);
-    m_pCamara->setPosCamara(glm::vec3(0.0f, 30.0f, -40.0f));
+
+    //----------------------------------------------------------------------
+    // Camara: posiciones iniciales
+    //----------------------------------------------------------------------
+    // Recuerda: Up esta con (0.0, 1.0, 0.0): la Y (1.0) es la altura
+    //----------------------------------------------------------------------
+    //m_pCamara = new cCamara(
+    //    glm::vec3(0.0f, 50.0f, -15.0f),
+    //    0.0f,
+    //    -70.0f
+    //);
+    //----------------------------------------------------------------------
+    m_pCamara = new cCamara(
+        glm::vec3(0.0f, 50.0f, 20.0f),
+        180.0f,
+        -70.0f
+    );
+    //----------------------------------------------------------------------
 
     sRenderObject* pPunto = m_pLaberinto->getObjectPunto();
     pPunto->m_pTextura = m_pTexPunto;
     pPunto->m_escala = glm::vec3(0.5, 0.5, 0.5);
     pPunto->m_pMalla = m_pCubo;
 
+    int size = m_pLaberinto->getSize();
+    float escala = (float)size * 1.5f;
+
     sRenderObject* pSuelo = m_pLaberinto->getObjectSuelo();
     pSuelo->m_pTextura = m_pTexSuelo;
-    pSuelo->m_escala = glm::vec3(20.0f, 0.01f, 20.0f);
+    pSuelo->m_escala = glm::vec3(escala, 0.01f, escala);
     pSuelo->m_pMalla = m_pCubo;
 
     sRenderObject* pMuro = m_pLaberinto->getObjectMuro();
@@ -228,18 +264,29 @@ int sVista3D::inicia(sLaberinto* lab)
 
     return 0;
 }
+//--------------------------------------------------------------------------
+#pragma endregion
 
 
+#pragma region Eventos de la Vista
+//--------------------------------------------------------------------------
+// Eventos de la Vista 3D
+//--------------------------------------------------------------------------
 int sVista3D::eventos()
 {
     int iRes = mensajes();
 
     return !iRes;
 }
+//--------------------------------------------------------------------------
+#pragma endregion
 
 
-bool bLanzaLaberintoFrame = false;
-int sVista3D::update()
+#pragma region Update de la Vista
+//--------------------------------------------------------------------------
+// Update de la Vista 3D
+//--------------------------------------------------------------------------
+int sVista3D::update(float fDeltaTime)
 {
     sGameWindow* pGameWindow = dynamic_cast<sGameWindow*>(m_mainWindow);
     if (pGameWindow)
@@ -274,7 +321,9 @@ int sVista3D::update()
             //--------------------------------------------------------------
             if (pTeclado->isUp(VK_SPACE))
             {
-                bLanzaLaberintoFrame = true;
+                //bPulsaste = true;
+                //contador++;
+                //cLog::print(" Contador Laberinto: %3d", contador);
             }
             //--------------------------------------------------------------
 
@@ -282,26 +331,68 @@ int sVista3D::update()
             // Movimientos de la Camara: teclas de Direccion:
             // - left, up, right, down 
             //--------------------------------------------------------------
-            if (pTeclado->isUp(VK_LEFT))
+            glm::vec3 offsetPos = glm::vec3(0.0f, 0.0f, 0.0f);
+            bool bCambia = false;
+
+            if (pTeclado->isDown(VK_LEFT))
             {
-                m_pCamara->izquierda();
+                offsetPos = -cRaton::getSpeed() * fDeltaTime * m_pCamara->getVecSide();
+                bCambia = true;
             }
-            if (pTeclado->isUp(VK_UP))
+            if (pTeclado->isDown(VK_UP))
             {
-                m_pCamara->arriba();
+                offsetPos = cRaton::getSpeed() * fDeltaTime * m_pCamara->getVecLook();
+                bCambia = true;
             }
-            if (pTeclado->isUp(VK_RIGHT))
+            if (pTeclado->isDown(VK_RIGHT))
             {
-                m_pCamara->derecha();
+                offsetPos = cRaton::getSpeed() * fDeltaTime * m_pCamara->getVecSide();
+                bCambia = true;
             }
-            if (pTeclado->isUp(VK_DOWN))
+            if (pTeclado->isDown(VK_DOWN))
             {
-                m_pCamara->abajo();
+                offsetPos = - cRaton::getSpeed() * fDeltaTime * m_pCamara->getVecLook();
+                bCambia = true;
+            }
+            //--------------------------------------------------------------
+            if (bCambia)
+            {
+                m_pCamara->move(offsetPos);
+            }
+            //--------------------------------------------------------------
+
+            //--------------------------------------------------------------
+            if (pTeclado->isUp('R'))
+            {
+                m_pCamara->reset();
+            }
+            if (pTeclado->isUp('Q'))
+            {
+                sOpenGL::toggle_Line_Fill();
             }
             //--------------------------------------------------------------
 
             // Hay que hacer reset para el siguiente control de eventos
             pTeclado->reset();
+        }
+
+        cRaton* pRaton = pGameWindow->m_pRaton;
+        if (pRaton)
+        {
+            if (pRaton->LeftButtonPressed())
+            {
+                glm::vec2 incAngle = pRaton->getDelta() * cRaton::getSensitivity();
+
+                m_pCamara->rotate(incAngle.x, incAngle.y);
+            }
+
+            if (pRaton->getDeltaWheel() > 0)
+            {
+                m_pCamara->mouseScroll((float) pRaton->getDeltaWheel(), cRaton::getSensitivity());
+            }
+
+            // Hacemos reset para el siguiente frame de eventos
+            pRaton->reset();
         }
     }
 
@@ -309,8 +400,14 @@ int sVista3D::update()
 
     return 0;
 }
+//--------------------------------------------------------------------------
+#pragma endregion
 
 
+#pragma region Render de la Vista
+//--------------------------------------------------------------------------
+// Render de la Vista 3D
+//--------------------------------------------------------------------------
 int sVista3D::render()
 {
     m_mainWindow->clean();
@@ -338,15 +435,7 @@ int sVista3D::render()
         //------------------------------------------------------------------
         // Laberinto
         //------------------------------------------------------------------
-        // renderLaberinto();
-        //------------------------------------------------------------------
-        lanzaLaberintoFrame();
-        //------------------------------------------------------------------
-        sRenderObject* pPunto = m_pLaberinto->getObjectPunto();
-        int size = m_pLaberinto->getSize();
-        cRect<float> rectDest;
-        calculaRect(pPunto->m_fila, pPunto->m_columna, size, &rectDest);
-        pPunto->render(m_pMainShader, m_loc_model, &rectDest);
+         renderLaberinto();
         //------------------------------------------------------------------
     }
 
@@ -358,11 +447,11 @@ int sVista3D::render()
 
 int sVista3D::renderLaberinto()
 {
-    sRenderObject* pPunto = m_pLaberinto->getObjectPunto();
     int size = m_pLaberinto->getSize();
+    cRect<float> rectDest;
+
     char** matriz = m_pLaberinto->getMatriz();
     char valor = 0;
-    cRect<float> rectDest;
     for (int fila = -1; fila < size + 1; fila++)
     {
         for (int columna = -1; columna < size + 1; columna++)
@@ -378,66 +467,13 @@ int sVista3D::renderLaberinto()
 
                 calculaRect(fila, columna, size, &rectDest);
                 renderChar(valor, &rectDest);
-                //cLog::print(" %d %d\n", fila, columna);
             }
         }
-        break;
     }
 
-    return 0;
-}
-
-
-int s_fila = 0;
-int s_columna = 0;
-bool finRenderLaberintoFrame = false;
-
-int sVista3D::lanzaLaberintoFrame()
-{
-    if (bLanzaLaberintoFrame)
-    {
-        rederLaberintoFrame();
-        bLanzaLaberintoFrame = false;
-    }
-    return 0;
-}
-
-int sVista3D::rederLaberintoFrame()
-{
-    int size = m_pLaberinto->getSize();
-    if (s_fila < size && s_columna < size && !finRenderLaberintoFrame)
-    {
-        char** matriz = m_pLaberinto->getMatriz();
-        cRect<float> rectDest;
-        char valor = 0;
-        if (s_fila<0 || s_fila>size - 1 || s_columna<0 || s_columna>size - 1)
-        {
-            valor = kVacio;
-        }
-        else
-        {
-            int iValor = matriz[s_fila][s_columna];
-            valor = static_cast<char>(iValor);
-
-            calculaRect(s_fila, s_columna, size, &rectDest);
-            renderChar(valor, &rectDest);
-            cLog::print(" %d %d\n", s_fila, s_columna);
-        }
-
-        //------------------------------------------------------------------
-        s_columna++;
-        if (s_columna > size - 1)
-        {
-            s_columna = -1;
-            s_fila++;
-            if (s_fila > size - 1)
-            {
-                s_fila = -1;
-                finRenderLaberintoFrame = true;
-            }
-        }
-        //------------------------------------------------------------------
-    }
+    sRenderObject* pPunto = m_pLaberinto->getObjectPunto();
+    calculaRect(pPunto->m_fila, pPunto->m_columna, size, &rectDest);
+    pPunto->render(m_pMainShader, m_loc_model, &rectDest);
 
     return 0;
 }
@@ -463,55 +499,25 @@ void sVista3D::renderChar(char car, cRect<float>* pRectDest)
     {
         case kNulo:
         case kVacio:
-            cLog::print(" ---");
             break;
 
         case kMuro:
-            cLog::print(" render Muro");
             pRender = m_pLaberinto->getObjectMuro();
             break;
 
         case kInicio:
-            cLog::print(" render Inicio");
             pRender = m_pLaberinto->getObjectInicio();
             break;
 
         case kFin:
-            cLog::print(" render Fin");
             pRender = m_pLaberinto->getObjectFin();
             break;
     }
     
     mDo(pRender)->render(m_pMainShader, m_loc_model, pRectDest);
 }
-
-
-int sVista3D::renderCubo()
-{
-    //m_pTexMuro->useTextura(0);
-    glm::vec3 pos = m_cubePos;
-    sRenderObject* pRender = m_pLaberinto->getObjectMuro();
-    int size = m_pLaberinto->getSize();
-    cRect<float> rectDest;
-    int columna = 0;
-    for (int i = 0; i < 5; i++)
-    {
-        // pos.x = m_cubePos.x + (2 * i);
-        calculaRect(0, columna, size, &rectDest);
-        renderChar(kMuro, &rectDest);
-        //pRender->render(m_pMainShader, m_loc_model, &rectDest);
-        columna++;
-        //glm::mat4 localModel{ 1.0 };
-        //m_model = glm::translate(localModel, pos);
-        //// Modificamos las matrices: con las loc anteriormente guardadas, pare evitarnos los find en el map de locations.
-        //m_pMainShader->SetUniform(m_loc_model, m_model);
-        //// Activo textura:
-        //// Y dibujamos el cubo que hemos guardado en m_pCubo:
-        //m_pCubo->drawMalla();
-    }
-
-    return 0;
-}
+//--------------------------------------------------------------------------
+#pragma endregion
 
 
 /*========================================================================*\

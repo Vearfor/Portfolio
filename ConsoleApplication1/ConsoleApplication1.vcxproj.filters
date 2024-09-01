@@ -113,6 +113,9 @@
     <ClCompile Include="..\BamTang05\src\tool\consola\cConsola.cpp">
       <Filter>Source\BamTang05\tool\consola</Filter>
     </ClCompile>
+    <ClCompile Include="..\BamTang05\src\tool\sMath.cpp">
+      <Filter>Source\BamTang05\tool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sConsoleWindow.h">
@@ -198,6 +201,9 @@
     </ClInclude>
     <ClInclude Include="..\BamTang05\src\tool\consola\cConsola.h">
       <Filter>Source\BamTang05\tool\consola</Filter>
+    </ClInclude>
+    <ClInclude Include="..\BamTang05\src\tool\sMath.h">
+      <Filter>Source\BamTang05\tool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
