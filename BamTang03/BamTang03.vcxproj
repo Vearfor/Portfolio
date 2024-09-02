@@ -197,7 +197,7 @@
     <ClCompile Include="src\sMyMaze.cpp" />
     <ClCompile Include="src\sRenderObject.cpp" />
     <ClCompile Include="src\sVistaConsola.cpp" />
-    <ClCompile Include="src\sVisualSDL.cpp" />
+    <ClCompile Include="src\sVistaSDL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cConio.h" />

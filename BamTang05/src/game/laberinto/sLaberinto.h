@@ -65,6 +65,9 @@ struct sLaberinto
     int abajo();
     int izquierda();
 
+    void checkHemosLlegado();
+    bool estaEnElFin() { return m_bEstaEnElFin; }
+
     static void destruyeMatriz(char** matriz, int size);
     static char** getCopiaMatriz(char** src_matriz, int size);
 
@@ -99,7 +102,10 @@ protected:
 
     sRenderObject* m_pObjCamara{ nullptr };
 
+    bool m_bEstaEnElFin{ false };
+
     int creaMatriz(int size);
+   
 };
 
 

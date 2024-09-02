@@ -100,7 +100,7 @@ struct sWindow
     : public cItem
 {
     sWindow();
-    ~sWindow();
+    virtual ~sWindow();
 
     int crea(
         int     iLeftP,
@@ -127,9 +127,11 @@ struct sWindow
     int setViewPort();
     int setViewPort(int x, int y, int width, int height);
 
+    glm::mat4 getPerspProjection();
+    glm::mat4 getOrthoProjection();
+    void generaMatrices(float anchoOnSize, float altoOnSize);
+
     HDC getDeviceContext(void) { return m_hDC; }
-    glm::mat4 getPerspProjection() { return m_projection; }
-    glm::mat4 getOrthoProjection() { return m_ortho; }
     HWND getWindow(void) { return m_hWindow; }
 
     static bool GetWindowRect(HWND hwnd, cRect<long>* pRectRes);
@@ -142,7 +144,7 @@ protected:
     int m_iBitsColor{ 0 };
     int m_iBitsDepth{ 0 };
     float m_fFov{ 45.0f };
-    float m_fPCercano{ 0.1f };
+    float m_fPCercano{ 0.01f };
     float m_fPLejano{ 100.0f };
     bool m_bRegistrada{ false };        // Indica si esta registrada.
     bool m_bVisible{ false };           // Visible o no la ventana.
@@ -152,22 +154,27 @@ protected:
     HGLRC m_hRc;                        // Contexto de renderizacion.
     DEVMODE	m_dmScreenSettings;         // Modo del dispositivo
     bool m_bFullDesktop{ false };       // Para marcar si tenemos que estar en pantalla completa. Recuerda que tenemos m_tVentana.bFull.
-    cRect<long> m_wCurrentRect;               // Guardamos los actuales: Area de rectangulo de la ventana. Al terminar de crear la ventana.
-    cRect<long> m_wInitRect;		            // Guardamos los iniciales, para recuperar despues de pantalla completa.
+    cRect<long> m_wCurrentRect;         // Guardamos los actuales: Area de rectangulo de la ventana. Al terminar de crear la ventana.
+    cRect<long> m_wInitRect;		    // Guardamos los iniciales, para recuperar despues de pantalla completa.
     bool m_bActiva{ false };
 
     // Del OnSize
     // No tiene mucho sentido, pero poco a poco ..
     int m_iScreenX{ 0 };                // Ancho absoluto, con el que se pensaron las posiciones de los controles
     int m_iScreenY{ 0 };                // Alto absoluto, con el que se pensaron las posiciones de los controles.
-    double  m_dAspectX{ 1.0 };          // Relacion resolucion absoluta X / resolucion relativa X
-    double  m_dAspectY{ 1.0 };          // Relacion resolucion absoluta Y / resolucion relativa Y
+    //----------------------------------------------------------------------
+    // Deben de informarse en el OnSize
+    // double  m_dAspectX{ 1.0 };          // Relacion resolucion absoluta X / resolucion relativa X
+    // double  m_dAspectY{ 1.0 };          // Relacion resolucion absoluta Y / resolucion relativa Y
+    // Estos aspect, no se aplican: por ahora ...
+    // m_dAspectX = (getScreenX() > 0) ? (double)getAnchoOnSize() / (double)getScreenX() : 1.0;
+    // m_dAspectY = (getScreenY() > 0) ? (double)getAltoOnSize() / (double)getScreenY() : 1.0;
+    //----------------------------------------------------------------------
     int m_iAnchoOnSize{ 0 };            // Ancho final que tienen las ventanas.
     int m_iAltoOnSize{ 0 };             // Alto final que tiene las ventanas.
 
-    // Que se modifica en cada OnSize:
-    glm::mat4 m_projection{ 1.0 };
-    glm::mat4 m_ortho{ 1.0 };
+    glm::mat4 m_perspective{ 1.0f };
+    glm::mat4 m_ortho{ 1.0f };
 
     sCreaVentana m_tVentana{};
 
@@ -191,8 +198,8 @@ protected:
     int	recuperaDesktop(bool bDestruirVentana = false);
     int	cambiaDesktop();
 
-    double  getAspectX(void) { return m_dAspectX; }
-    double  getAspectY(void) { return m_dAspectY; }
+    // double  getAspectX(void) { return m_dAspectX; }
+    // double  getAspectY(void) { return m_dAspectY; }
     void    setAnchoOnSize(int iValor) { m_iAnchoOnSize = iValor; }
     void    setAltoOnSize(int iValor) { m_iAltoOnSize = iValor; }
     int     getAnchoOnSize(void) { return m_iAnchoOnSize; }

@@ -274,6 +274,14 @@
     <ClInclude Include="src\tool\nExport.h" />
     <ClInclude Include="src\tool\sMath.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\comun\textures\grid.jpg" />
+    <Image Include="..\comun\textures\letraA_negro.png" />
+    <Image Include="..\comun\textures\letraB_negro.png" />
+    <Image Include="..\comun\textures\marca_circulo.png" />
+    <Image Include="..\comun\textures\punto_marca_00.png" />
+    <Image Include="..\comun\textures\wooden_crate.jpg" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

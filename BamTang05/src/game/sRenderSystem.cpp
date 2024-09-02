@@ -60,6 +60,7 @@ int sRenderSystem::update(float fDeltaTime)
         // Cambiamos a la vista 3D:
         m_pVista = m_pVista3D;
         m_pVista3D->m_mainWindow->muestraVentana();
+        m_pVista3D->ayudaVista3D();
     }
 
     return 0;

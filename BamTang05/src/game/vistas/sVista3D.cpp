@@ -8,6 +8,7 @@
 #include "../sGameWindow.h"
 #include "../../tool/cLog.h"
 #include "../../tool/consola/cConsola.h"
+#include "../../tool/consola/cConio.h"
 #include "../../swat/input/cTeclado.h"
 #include "../../swat/input/cRaton.h"
 #include "../../swat/cMalla.h"
@@ -16,6 +17,7 @@
 #include "../../swat/sOpenGL.h"
 #include "../../swat/cCamara.h"
 #include "../../swat/sRenderObject.h"
+//#include "../../swat/windows/sEscena.h"
 #include <GLM/glm.hpp>
 
 GLfloat trianguloVertices[] = {
@@ -112,9 +114,9 @@ sVista3D::~sVista3D()
 //--------------------------------------------------------------------------
 
 
-#pragma region Eventos de la Vista
+#pragma region Inicia la Vista
 //--------------------------------------------------------------------------
-// Eventos de la Vista 3D
+// Inicia la Vista 3D
 //--------------------------------------------------------------------------
 int sVista3D::creaWindow()
 {
@@ -129,7 +131,7 @@ int sVista3D::creaWindow()
         (int)ePosControl::eCENTER,
         (int)ePosControl::eCENTER,
         m_width, m_height,
-        0.1f, 1000.0f, 45.0f, 32, 32, false,
+        0.01f, 1000.0f, 45.0f, 32, 32, false,
         eEstiloW::eWindow,
         cConsola::getNombreProceso(), "Window OpenGL", nullptr));
 
@@ -231,7 +233,8 @@ int sVista3D::inicia(sLaberinto* lab)
 
     sRenderObject* pPunto = m_pLaberinto->getObjectPunto();
     pPunto->m_pTextura = m_pTexPunto;
-    pPunto->m_escala = glm::vec3(0.5, 0.5, 0.5);
+    // pPunto->m_pTextura = m_pTexCamara;
+    pPunto->m_escala = glm::vec3(0.65, 0.65, 0.65);
     pPunto->m_pMalla = m_pCubo;
 
     int size = m_pLaberinto->getSize();
@@ -289,114 +292,110 @@ int sVista3D::eventos()
 int sVista3D::update(float fDeltaTime)
 {
     sGameWindow* pGameWindow = dynamic_cast<sGameWindow*>(m_mainWindow);
-    if (pGameWindow)
+    miNulo(pGameWindow);
+
+    cTeclado* pTeclado = pGameWindow->m_pTeclado;
+    if (pTeclado)
     {
-        cTeclado* pTeclado = pGameWindow->m_pTeclado;
-        if (pTeclado)
+        if (pTeclado->isDown(VK_ESCAPE))
         {
-            if (pTeclado->isDown(VK_ESCAPE))
-            {
-                m_mainWindow->destruyeVentana();
-            }
-
-            //--------------------------------------------------------------
-            // Movimientos dentro del laberinto: teclas AWSD
-            //--------------------------------------------------------------
-            if (pTeclado->isUp('A'))
-            {
-                m_pLaberinto->izquierda();
-            }
-            if (pTeclado->isUp('W'))
-            {
-                m_pLaberinto->arriba();
-            }
-            if (pTeclado->isUp('D'))
-            {
-                m_pLaberinto->derecha();
-            }
-            if (pTeclado->isUp('S'))
-            {
-                m_pLaberinto->abajo();
-            }
-            //--------------------------------------------------------------
-            if (pTeclado->isUp(VK_SPACE))
-            {
-                //bPulsaste = true;
-                //contador++;
-                //cLog::print(" Contador Laberinto: %3d", contador);
-            }
-            //--------------------------------------------------------------
-
-            //--------------------------------------------------------------
-            // Movimientos de la Camara: teclas de Direccion:
-            // - left, up, right, down 
-            //--------------------------------------------------------------
-            glm::vec3 offsetPos = glm::vec3(0.0f, 0.0f, 0.0f);
-            bool bCambia = false;
-
-            if (pTeclado->isDown(VK_LEFT))
-            {
-                offsetPos = -cRaton::getSpeed() * fDeltaTime * m_pCamara->getVecSide();
-                bCambia = true;
-            }
-            if (pTeclado->isDown(VK_UP))
-            {
-                offsetPos = cRaton::getSpeed() * fDeltaTime * m_pCamara->getVecLook();
-                bCambia = true;
-            }
-            if (pTeclado->isDown(VK_RIGHT))
-            {
-                offsetPos = cRaton::getSpeed() * fDeltaTime * m_pCamara->getVecSide();
-                bCambia = true;
-            }
-            if (pTeclado->isDown(VK_DOWN))
-            {
-                offsetPos = - cRaton::getSpeed() * fDeltaTime * m_pCamara->getVecLook();
-                bCambia = true;
-            }
-            //--------------------------------------------------------------
-            if (bCambia)
-            {
-                m_pCamara->move(offsetPos);
-            }
-            //--------------------------------------------------------------
-
-            //--------------------------------------------------------------
-            if (pTeclado->isUp('R'))
-            {
-                m_pCamara->reset();
-            }
-            if (pTeclado->isUp('Q'))
-            {
-                sOpenGL::toggle_Line_Fill();
-            }
-            //--------------------------------------------------------------
-
-            // Hay que hacer reset para el siguiente control de eventos
-            pTeclado->reset();
+            m_mainWindow->destruyeVentana();
         }
 
-        cRaton* pRaton = pGameWindow->m_pRaton;
-        if (pRaton)
+        //--------------------------------------------------------------
+        // Movimientos dentro del laberinto: teclas AWSD
+        //--------------------------------------------------------------
+        if (pTeclado->isUp('A'))
         {
-            if (pRaton->LeftButtonPressed())
-            {
-                glm::vec2 incAngle = pRaton->getDelta() * cRaton::getSensitivity();
-
-                m_pCamara->rotate(incAngle.x, incAngle.y);
-            }
-
-            if (pRaton->getDeltaWheel() > 0)
-            {
-                m_pCamara->mouseScroll((float) pRaton->getDeltaWheel(), cRaton::getSensitivity());
-            }
-
-            // Hacemos reset para el siguiente frame de eventos
-            pRaton->reset();
+            m_pLaberinto->izquierda();
         }
+        if (pTeclado->isUp('W'))
+        {
+            m_pLaberinto->arriba();
+        }
+        if (pTeclado->isUp('D'))
+        {
+            m_pLaberinto->derecha();
+        }
+        if (pTeclado->isUp('S'))
+        {
+            m_pLaberinto->abajo();
+        }
+        //--------------------------------------------------------------
+        if (pTeclado->isUp(VK_SPACE))
+        {
+            //bPulsaste = true;
+            //contador++;
+            //cLog::print(" Contador Laberinto: %3d", contador);
+        }
+        //--------------------------------------------------------------
+
+        //--------------------------------------------------------------
+        // Movimientos de la Camara: teclas de Direccion:
+        // - left, up, right, down 
+        //--------------------------------------------------------------
+        if (pTeclado->isDown(VK_LEFT))
+        {
+            m_pCamara->izquierda(fDeltaTime);
+        }
+        if (pTeclado->isDown(VK_UP))
+        {
+            m_pCamara->adelante(fDeltaTime);
+        }
+        if (pTeclado->isDown(VK_RIGHT))
+        {
+            m_pCamara->derecha(fDeltaTime);
+        }
+        if (pTeclado->isDown(VK_DOWN))
+        {
+            m_pCamara->atras(fDeltaTime);
+        }
+        //--------------------------------------------------------------
+        if (pTeclado->isDown(VK_HOME))
+        {
+            m_pCamara->abajo(fDeltaTime);
+        }
+        if (pTeclado->isDown(VK_END))
+        {
+            m_pCamara->arriba(fDeltaTime);
+        }
+        //--------------------------------------------------------------
+
+        //--------------------------------------------------------------
+        if (pTeclado->isUp('R'))
+        {
+            m_pCamara->reset();
+        }
+        if (pTeclado->isUp('Q'))
+        {
+            sOpenGL::toggle_Line_Fill();
+        }
+        //--------------------------------------------------------------
+
+        // Hay que hacer reset para el siguiente control de eventos
+        pTeclado->reset();
     }
 
-    m_pCamara->update();
+    cRaton* pRaton = pGameWindow->m_pRaton;
+    if (pRaton)
+    {
+        if (pRaton->LeftButtonPressed())
+        {
+            m_pCamara->direccion(pRaton->getDelta(), fDeltaTime);
+        }
+
+        if (pRaton->getDeltaWheel() > 0)
+        {
+            m_pCamara->mouseScroll((float) pRaton->getDeltaWheel(), cRaton::getSensitivity());
+        }
+
+        // Hacemos reset para el siguiente frame de eventos
+        pRaton->reset();
+    }
+
+    m_pCamara->update(fDeltaTime);
+
+    controlFin();
 
     return 0;
 }
@@ -417,13 +416,13 @@ int sVista3D::render()
         //------------------------------------------------------------------
         m_pMainShader->use();
 
-        m_view = m_pCamara->getViewMatrix();
-        m_orthoProjection = m_mainWindow->getOrthoProjection();
-        m_perspProjection = m_mainWindow->getPerspProjection();
 
         // Set View
+        m_view = m_pCamara->getViewMatrix();
         m_pMainShader->SetUniform(m_loc_view, m_view);
-        // Set projection
+
+        // Set projection perspective
+        m_perspProjection = m_mainWindow->getPerspProjection();
         m_pMainShader->SetUniform(m_loc_projection, m_perspProjection);
 
         //------------------------------------------------------------------
@@ -435,7 +434,21 @@ int sVista3D::render()
         //------------------------------------------------------------------
         // Laberinto
         //------------------------------------------------------------------
-         renderLaberinto();
+            renderLaberinto();
+        //------------------------------------------------------------------
+
+        //------------------------------------------------------------------
+        // Object Camara
+        //------------------------------------------------------------------
+        // Set View
+        m_view = glm::mat4(1.0f);
+        m_pMainShader->SetUniform(m_loc_view, m_view);
+
+        // Set projection ortho
+        m_orthoProjection = m_mainWindow->getOrthoProjection();
+        m_pMainShader->SetUniform(m_loc_projection, m_orthoProjection);
+
+        m_pLaberinto->getObjectCamara()->render(m_pMainShader, m_loc_model, m_floorPos);
         //------------------------------------------------------------------
     }
 
@@ -518,6 +531,52 @@ void sVista3D::renderChar(char car, cRect<float>* pRectDest)
 }
 //--------------------------------------------------------------------------
 #pragma endregion
+
+
+//--------------------------------------------------------------------------
+// Ayuda Vista 3D
+//--------------------------------------------------------------------------
+int sVista3D::ayudaVista3D()
+{
+    cConio::SetColor(eTextColor::eTexVerde);
+    cLog::print("\n");
+    cLog::print(" Que la Ventana 3D tenga el foco\n");
+    cLog::print("\n");
+    cLog::print(" Para salir pulsa Esc\n");
+    cLog::print(" Utiliza las teclas: A, W, D y S, para moverte por el laberinto.\n");
+    cLog::print("\n");
+    cLog::print(" Con las teclas de direccion, moveras la camara:\n");
+    cLog::print("  - Up  : hacia adelante   (vector look)\n");
+    cLog::print("  - Down: hacia atras      (vector look)\n");
+    cLog::print("  - Izda: izquierda        (vector side)\n");
+    cLog::print("  - Dcha: derecha          (vector side)\n");
+    cLog::print("\n");
+    cLog::print("  - inicio/home:  bajas    (vector up)\n");
+    cLog::print("  - Fin/End    :  subes    (vector up)\n");
+    cLog::print("\n");
+    cLog::print("  - Click Izquierdo Raton pulsado: cambias direccion camara\n");
+    cLog::print("\n");
+    cLog::print("  - R:  reset, posicion inicial. Por si pierdes la referencia\n");
+    cLog::print("\n");
+    return 0;
+}
+//--------------------------------------------------------------------------
+
+
+void sVista3D::controlFin()
+{
+    if (m_pLaberinto->estaEnElFin() && !m_hemosLlegado)
+    {
+        sGameWindow* pWin = dynamic_cast<sGameWindow*>(m_mainWindow);
+        mDo(pWin)->OnSetFocus(m_pLaberinto);
+        m_hemosLlegado = true;
+        cConio::SetColor(eTextColor::eTexBlanco);
+        cLog::print("\n");
+        cLog::print("     Hemos llegado al Final\n");
+        cLog::print("\n");
+        cConio::SetColor(eTextColor::eTexNormal);
+    }
+}
 
 
 /*========================================================================*\

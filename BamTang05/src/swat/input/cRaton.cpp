@@ -11,8 +11,11 @@
 //--------------------------------------------------------------------------
 // Constructor & Destructor
 //--------------------------------------------------------------------------
-float cRaton::MOUSE_SENSITIVITY = 0.1f;
-float cRaton::MOUSE_SPEED = 5.0f;
+//float cRaton::MOUSE_SENSITIVITY = 0.1f;     // m_incAngle
+//float cRaton::MOUSE_SPEED = 5.0f;           // m_offsetPos
+//--------------------------------------------------------------------------
+float cRaton::MOUSE_SENSITIVITY = 10.0f;    // m_incAngle
+float cRaton::MOUSE_SPEED = 50.0f;          // m_offsetPos
 //--------------------------------------------------------------------------
 
 

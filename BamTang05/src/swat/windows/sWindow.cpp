@@ -3,6 +3,7 @@
 \*------------------------------------------------------------------------*/
 
 #include "sWindow.h"
+//#include "sEscena.h"
 #include "../sOpenGL.h"
 #include "../../tool/cTool.h"
 #include "../../tool/cLog.h"
@@ -574,10 +575,10 @@ int	sWindow::destruyeRenderContext(void)
             HGLRC	hRc;
 
             hRc = wglGetCurrentContext();
-            if (m_hRc == hRc)				// Deberia ser el mismo contexto que tenemos, pero puede que no.
-            {
-                cLog::traza(cLog::eTraza::nor, " Eliminamos el contexto de render actual\n");
-            }
+            //if (m_hRc == hRc)				// Deberia ser el mismo contexto que tenemos, pero puede que no.
+            //{
+            //    cLog::traza(cLog::eTraza::nor, " Eliminamos el contexto de render actual\n");
+            //}
 
             if (m_hDC)
             {
@@ -953,24 +954,15 @@ long sWindow::OnSize(int newWidth, int newHeight)
     setAnchoOnSize(newWidth);
     setAltoOnSize(newHeight);
 
-    m_dAspectX = (getScreenX() > 0) ? (double)getAnchoOnSize() / (double)getScreenX() : 1.0;
-    m_dAspectY = (getScreenY() > 0) ? (double)getAltoOnSize() / (double)getScreenY() : 1.0;
-
     //----------------------------------------------------------------------
-    // Jugamos con que no ponemos Viewport por defecto.
+    // Jugamos con que no ponemos Viewport por defecto ?
+    // Al maximizar no ocupa toda la pantalla, el viewport necesario
+    // en este caso.
     //----------------------------------------------------------------------
-    // glViewport(0, 0, getAnchoOnSize(), getAltoOnSize());
+    glViewport(0, 0, getAnchoOnSize(), getAltoOnSize());
     //----------------------------------------------------------------------
 
-    float fAspect = (getAltoOnSize() > 0) ? (float)getAnchoOnSize() / (float)getAltoOnSize() : 1.0f;
-
-    m_projection = glm::perspective<float>(glm::radians(m_fFov), fAspect, m_fPCercano, m_fPLejano);
-    //                          left  right                    bottom                  top   cercano             lejano.
-    // Tenemos pendiente probar el primer plano.
-    m_ortho = glm::ortho<float>(0.0f, (float)getAnchoOnSize(), (float)getAltoOnSize(), 0.0f, -100.0f, 100.0f);
-
-    // m_ortho = glm::ortho<float>(0.0f, (float)getAnchoOnSize(), (float)getAltoOnSize(), 0.0f, (float)m_dPCercano, (float)m_dPLejano);
-    //m_ortho = glm::ortho<float>(0.0f, (float)getAnchoOnSize(), 0.0f, (float)getAltoOnSize(), -100.0f, 100.0f);
+    generaMatrices((float)getAnchoOnSize(), (float)getAltoOnSize());
 
     return 0;
 }
@@ -1043,7 +1035,6 @@ long sWindow::myWindowProc(HWND hwnd, uint uiMsg, WPARAM wparam, LPARAM lparam)
             return (long) ::DefWindowProc(hwnd, uiMsg, wparam, lparam);
     }
 
-    //return (long) ::DefWindowProc(hwnd, uiMsg, wparam, lparam);
     return 0;
 }
 
@@ -1073,6 +1064,40 @@ cstatic bool sWindow::GetWindowRect(HWND hWindow, cRect<long>* pRectRes)
     return valor;
 }
 
+
+/*------------------------------------------------------------------------*\
+|* Funciones Public
+\*------------------------------------------------------------------------*/
+glm::mat4 sWindow::getPerspProjection()
+{
+    return m_perspective;
+}
+
+
+glm::mat4 sWindow::getOrthoProjection()
+{
+    return m_ortho;
+}
+
+
+//--------------------------------------------------------------------------
+// Genera Matrices de proyeccion
+//--------------------------------------------------------------------------
+void sWindow::generaMatrices(float anchoOnSize, float altoOnSize)
+{
+    float fAspect = (altoOnSize > 0) ? anchoOnSize / altoOnSize : 1.0f;
+
+    // float fov = (m_poCamara) ? m_poCamara->getZoom() : m_fFov;
+
+    m_perspective = glm::perspective<float>(glm::radians(m_fFov), fAspect, m_fPCercano, m_fPLejano);
+    //                          left  right        bottom top   cercano             lejano.
+    // Tenemos pendiente probar el primer plano.
+    m_ortho = glm::ortho<float>(0.0f, anchoOnSize, 0.0f, altoOnSize, -100.0f, 100.0f);
+
+    // m_ortho = glm::ortho<float>(0.0f, anchoOnSize, altoOnSize, 0.0f, m_fPCercano, m_fPLejano);
+    // m_ortho = glm::ortho<float>(0.0f, anchoOnSize, 0.0f, altoOnSize, -100.0f, 100.0f);
+
+}
 
 
 /*------------------------------------------------------------------------*\

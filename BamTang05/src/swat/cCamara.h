@@ -48,6 +48,10 @@ class cCamara
     float m_pitchInicial{ 0 };
     float m_fovInicial{ 45.0f };
 
+    glm::vec2 m_incAngle{ 0.0f, 0.0f };
+    glm::vec3 m_offsetPos{ 0.0f, 0.0f, 0.0f };
+    float incZoom{ 0.0f };
+
 public:
 
     cCamara(glm::vec3 position = Pos_Origin, float yaw = YAW, float pitch = PITCH);
@@ -58,10 +62,24 @@ public:
     );
     ~cCamara();
 
+    // El que toque con el vector look
+    void adelante(float fDeltaTime);
+    void atras(float fDeltaTime);
+    // El que toque con el vector side
+    void izquierda(float fDeltaTime);
+    void derecha(float fDeltaTime);
+    // El que toque con el vector Up (o el Z o el Y: segun se decida)
+    void arriba(float fDeltaTime);
+    void abajo(float fDeltaTime);
+
+    // Modifica los angulos con el desplazamiento del raton
+    void direccion(glm::vec2 vecDelta, float fDeltaTime);
+
     void move(glm::vec3 offset);
     void rotate(float offsetx, float offsety);
     void mouseScroll(float deltaWheel, float mouseSensivity);
-    void update();
+
+    void update(float fDeltaTime);
 
     glm::mat4 getViewMatrix();
 

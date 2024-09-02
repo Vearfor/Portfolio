@@ -80,6 +80,15 @@ int sLaberinto::createMaze2D(int size)
         cLog::error(" sLaberinto::createMaze2D Error: creaMatriz: en la creación de la matriz del laberinto");
         return -1;
     }
+
+    // Creo los objetos antes que el laberinto, para asignar la posicion de m_pFin:
+    m_pSuelo = new sRenderObject();
+    m_pMuro = new sRenderObject();
+    m_pInicio = new sRenderObject();
+    m_pFin = new sRenderObject();
+
+    m_pObjCamara = new sRenderObject();
+
     if (creaLaberinto())
     {
         cLog::error(" sLaberinto::createMaze2D Error: creaLaberinto: en la construccion del laberinto");
@@ -93,13 +102,6 @@ int sLaberinto::createMaze2D(int size)
     // sepa las condiciones del laberinto.
     m_pPunto->m_fila = 1;
     m_pPunto->m_columna = 1;
-
-    m_pSuelo = new sRenderObject();
-    m_pMuro = new sRenderObject();
-    m_pInicio = new sRenderObject();
-    m_pFin = new sRenderObject();
-
-    m_pObjCamara = new sRenderObject();
 
     return 0;
 }
@@ -134,6 +136,7 @@ int sLaberinto::arriba()
             m_pPunto->m_fila--;
         }
         //cLog::print(" arriba:     [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
+        checkHemosLlegado();
     }
     return 0;
 }
@@ -153,6 +156,7 @@ int sLaberinto::derecha()
             m_pPunto->m_columna++;
         }
         //cLog::print(" derecha:    [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
+        checkHemosLlegado();
     }
     return 0;
 }
@@ -172,6 +176,7 @@ int sLaberinto::abajo()
             m_pPunto->m_fila++;
         }
         //cLog::print(" abajo:      [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
+        checkHemosLlegado();
     }
     return 0;
 }
@@ -191,8 +196,18 @@ int sLaberinto::izquierda()
             m_pPunto->m_columna--;
         }
         //cLog::print(" izquierda:  [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
+        checkHemosLlegado();
     }
     return 0;
+}
+
+
+void sLaberinto::checkHemosLlegado()
+{
+    if (!m_bEstaEnElFin)
+    {
+        m_bEstaEnElFin = (m_pFin->m_fila == m_pPunto->m_fila && m_pFin->m_columna == m_pPunto->m_columna);
+    }
 }
 
 

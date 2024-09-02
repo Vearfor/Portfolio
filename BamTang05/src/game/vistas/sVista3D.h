@@ -68,7 +68,8 @@ struct sVista3D
 
     int creaWindow();
     int renderLaberinto();
-    int renderCubo();
+    int ayudaVista3D();
+    void controlFin();
 
     int m_width{ 0 };
     int m_height{ 0 };
@@ -106,6 +107,8 @@ struct sVista3D
     // Cube and floor positions
     glm::vec3 m_cubePos = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 m_floorPos = glm::vec3(0.0f, 0.0f, 0.0f);
+
+    bool m_hemosLlegado{ false };
 
     //--------------------------------------------------------------------------
     void calculaRect(int fila, int columna, int size, cRect<float>* pOutRect);

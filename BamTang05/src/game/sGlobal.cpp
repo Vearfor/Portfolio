@@ -8,8 +8,8 @@
 |* Statics
 \*------------------------------------------------------------------------*/
 int sGlobal::m_iDim = 5;
-int sGlobal::m_iWidth = 800;
-int sGlobal::m_iHeight = 600;
+int sGlobal::m_iWidth = 1024;
+int sGlobal::m_iHeight = 768;
 char sGlobal::vcNombrePrograma[] = "";
 /*------------------------------------------------------------------------*/
 

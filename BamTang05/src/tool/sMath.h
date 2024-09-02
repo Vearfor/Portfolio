@@ -72,7 +72,9 @@ const   float  cPi = 3.141592654f;
 //--------------------------------------------------------------------------
 struct sMath
 {
+    static glm::vec3 setZero(glm::vec3 vec3);
     static glm::vec3 normalize(glm::vec3 vector);
+    static float getFactorReduccion(float fFactorDecr, float fDeltaTime);
 };
 //--------------------------------------------------------------------------
 

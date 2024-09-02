@@ -25,6 +25,7 @@ const std::string kPathLetraB = "../BamTang03/recursos/letraB_negro.png";
 const std::string kPathMuro = "../BamTang03/recursos/muro.png";
 const std::string kPathVacio = "../BamTang03/recursos/negro.png";
 const std::string kPathPunto = "../BamTang03/recursos/punto_negro.png";
+//--------------------------------------------------------------------------
 const std::string kPathPuntoAmarillo = "../BamTang03/recursos/marca_circulo.png";
 //--------------------------------------------------------------------------
 

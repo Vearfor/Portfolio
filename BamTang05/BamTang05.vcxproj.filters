@@ -49,6 +49,9 @@
     <Filter Include="Source\src\game\vistas">
       <UniqueIdentifier>{b5d99b88-c21a-44f6-b335-8dc2fd934348}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Recursos\texturas">
+      <UniqueIdentifier>{6becb30c-53dd-45c7-b758-d40c5d1f133e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\comun\cmd\PostLinkGLEW.bat">
@@ -289,5 +292,25 @@
     <ClInclude Include="src\tool\sMath.h">
       <Filter>Source\src\tool</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\comun\textures\grid.jpg">
+      <Filter>Recursos\texturas</Filter>
+    </Image>
+    <Image Include="..\comun\textures\letraA_negro.png">
+      <Filter>Recursos\texturas</Filter>
+    </Image>
+    <Image Include="..\comun\textures\letraB_negro.png">
+      <Filter>Recursos\texturas</Filter>
+    </Image>
+    <Image Include="..\comun\textures\marca_circulo.png">
+      <Filter>Recursos\texturas</Filter>
+    </Image>
+    <Image Include="..\comun\textures\punto_marca_00.png">
+      <Filter>Recursos\texturas</Filter>
+    </Image>
+    <Image Include="..\comun\textures\wooden_crate.jpg">
+      <Filter>Recursos\texturas</Filter>
+    </Image>
   </ItemGroup>
 </Project>

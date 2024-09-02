@@ -76,13 +76,18 @@ void sGameWindow::OnSetFocus(sLaberinto* pLab)
         nombre += vcSize;
         nombre += "    Pulsa Esc para salir. A,W,S,D para moverse.";
 
+        if (m_pLaberinto->estaEnElFin())
+        {
+            nombre += "     [Hemos llegado al Final]";
+        }
+
         WCHAR wcNombre[LON_BUFF / 8];
         cTool::copiaMultibyteToUnicode(nombre, wcNombre, sizeof(wcNombre));
         SetWindowText(m_hWindow, wcNombre);
 
         m_pRaton->setCursorCentro();
-        m_pRaton->ocultar();
-        m_pRaton->atrapaCursor(this);
+        //m_pRaton->ocultar();
+        //m_pRaton->atrapaCursor(this);
     }
 }
 
@@ -107,8 +112,8 @@ void sGameWindow::OnKillFocus(sLaberinto* pLab)
         cTool::copiaMultibyteToUnicode(nombre, wcNombre, sizeof(wcNombre));
         SetWindowText(m_hWindow, wcNombre);
 
-        m_pRaton->mostrar();
-        m_pRaton->liberaCursor();
+        //m_pRaton->mostrar();
+        //m_pRaton->liberaCursor();
     }
 }
 

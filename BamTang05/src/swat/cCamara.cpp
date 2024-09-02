@@ -57,9 +57,60 @@ cCamara::~cCamara()
 //--------------------------------------------------------------------------
 // Resto de metodos
 //--------------------------------------------------------------------------
+// El que toque con el vector look
+//--------------------------------------------------------------------------
+void cCamara::adelante(float fDeltaTime)
+{
+    m_offsetPos = cRaton::getSpeed() * fDeltaTime * getVecLook();
+}
+
+void cCamara::atras(float fDeltaTime)
+{
+    m_offsetPos = - cRaton::getSpeed() * fDeltaTime * getVecLook();
+}
+//--------------------------------------------------------------------------
+// El que toque con el vector side
+//--------------------------------------------------------------------------
+void cCamara::izquierda(float fDeltaTime)
+{
+    m_offsetPos = - cRaton::getSpeed() * fDeltaTime * getVecSide();
+}
+
+void cCamara::derecha(float fDeltaTime)
+{
+    m_offsetPos = cRaton::getSpeed() * fDeltaTime * getVecSide();
+}
+//--------------------------------------------------------------------------
+// El que toque con el vector Up (o el Z o el Y: segun se decida)
+//--------------------------------------------------------------------------
+void cCamara::arriba(float fDeltaTime)
+{
+    m_offsetPos = cRaton::getSpeed() * fDeltaTime * getVecUp();
+}
+
+void cCamara::abajo(float fDeltaTime)
+{
+    m_offsetPos = - cRaton::getSpeed() * fDeltaTime * getVecUp();
+}
+//--------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------
+// Direccion dadas por yaw y pitch
+//--------------------------------------------------------------------------
+void cCamara::direccion(glm::vec2 vecDelta, float fDeltaTime)
+{
+    m_incAngle = vecDelta * cRaton::getSensitivity() * fDeltaTime;
+}
+//--------------------------------------------------------------------------
+
+
+//--------------------------------------------------------------------------
+// Funciones de update
+//--------------------------------------------------------------------------
 void cCamara::move(glm::vec3 offsetPos)
 {
-    m_posCamara += offsetPos;
+    if (offsetPos.length()>0)
+        m_posCamara += offsetPos;
 }
 
 
@@ -86,13 +137,24 @@ void cCamara::mouseScroll(float deltaWheel, float mouseSensivity)
     fov = glm::clamp(fov, 1.0f, 120.0f);
     setZoom(fov);
 }
+//--------------------------------------------------------------------------
 
 
 //--------------------------------------------------------------------------
 // Update: aplica los cambios, eventos ocurridos antes 
 //--------------------------------------------------------------------------
-void cCamara::update()
+void cCamara::update(float fDeltaTime)
 {
+    // aplicamos m_offsetPos si toca
+    move(m_offsetPos);
+    float fFactorO = sMath::getFactorReduccion(3.0f, fDeltaTime);
+    m_offsetPos *= fFactorO;
+
+    // aplicamos m_incAngle si toca
+    rotate(m_incAngle.x, m_incAngle.y);
+    float fFactorA = sMath::getFactorReduccion(3.0f, fDeltaTime);
+    m_incAngle *= fFactorA;
+
     float yawRadians = glm::radians(m_yaw);
     float pitchRadians = glm::radians(m_pitch);
 
@@ -134,7 +196,10 @@ void cCamara::reset()
     setPitch(m_pitchInicial);
     // ToDo: rehacer perspectiva ?
     m_fov = m_fovInicial;
-    update();
+
+    m_incAngle = glm::vec2( 0.0f );
+    m_offsetPos = glm::vec3( 0.0f );
+    incZoom = 0.0f;
 }
 
 

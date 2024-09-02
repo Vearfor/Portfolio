@@ -93,6 +93,9 @@ int sMyMaze::creaLaberinto()
     // El ultimo se marca como inicio 'B'
     m_matriz[m_last.m_fila][m_last.m_columna] = kFin;
 
+    m_pFin->m_fila = m_last.m_fila;
+    m_pFin->m_columna = m_last.m_columna;
+
     return 0;
 }
 
