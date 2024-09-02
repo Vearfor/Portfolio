@@ -32,7 +32,7 @@ int render();
 
 int main()
 {
-    cConsola::setNombreProceso("Probando Shader Triangulo Color");
+    cConsola::setNombreProceso("Shader Triangulo   " TITLE "   Para Terminar pulsa Esc");
     std::cout << "Hello World!\n";
 
     g_pMainWindow = new sConsoleWindow();

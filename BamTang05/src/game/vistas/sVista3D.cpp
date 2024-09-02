@@ -1,23 +1,22 @@
 /*========================================================================*\
 |* sVista3D.cpp
 \*========================================================================*/
-
+ 
 #include "sVista3D.h"
 #include "../sGlobal.h"
 #include "../laberinto/sMyMaze.h"
 #include "../sGameWindow.h"
-#include "../../tool/cLog.h"
-#include "../../tool/consola/cConsola.h"
-#include "../../tool/consola/cConio.h"
-#include "../../swat/input/cTeclado.h"
-#include "../../swat/input/cRaton.h"
-#include "../../swat/cMalla.h"
-#include "../../swat/texturas/cGestorTexturas.h"
-#include "../../swat/shaders/cGestorShaders.h"
-#include "../../swat/sOpenGL.h"
-#include "../../swat/cCamara.h"
-#include "../../swat/sRenderObject.h"
-//#include "../../swat/windows/sEscena.h"
+#include <tool/cLog.h>
+#include <tool/consola/cConsola.h>
+#include <tool/consola/cConio.h>
+#include <swat/input/cTeclado.h>
+#include <swat/input/cRaton.h>
+#include <swat/cMalla.h>
+#include <swat/texturas/cGestorTexturas.h>
+#include <swat/shaders/cGestorShaders.h>
+#include <swat/sOpenGL.h>
+#include <swat/cCamara.h>
+#include <swat/sRenderObject.h>
 #include <GLM/glm.hpp>
 
 GLfloat trianguloVertices[] = {

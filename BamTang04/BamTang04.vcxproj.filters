@@ -1,7 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Recursos">
+    <Filter Include="cmd">
+      <UniqueIdentifier>{d5de5360-47f9-4402-8565-f49dcf0afee4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="recursos">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
@@ -9,97 +12,42 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="cmd">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Source\src">
-      <UniqueIdentifier>{5a7011bf-1e30-4493-923a-1763af83d2aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Recursos\shaders">
-      <UniqueIdentifier>{b20accdb-323b-43a5-bdec-6488d8052239}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\src\game">
-      <UniqueIdentifier>{2f45d77e-b851-496c-b957-c1797dfee428}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\src\game\laberinto">
-      <UniqueIdentifier>{9f45ef15-60e3-411b-86aa-eada6e9aeb62}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\src\game\vistas">
-      <UniqueIdentifier>{b5d99b88-c21a-44f6-b335-8dc2fd934348}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Recursos\texturas">
-      <UniqueIdentifier>{6becb30c-53dd-45c7-b758-d40c5d1f133e}</UniqueIdentifier>
+      <UniqueIdentifier>{f791c3e3-1c48-4e6b-b354-cd83d78201ea}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\comun">
-      <UniqueIdentifier>{8b0f27be-a106-410a-98f2-f8788bb54144}</UniqueIdentifier>
+      <UniqueIdentifier>{d7b5fcc5-23d1-4d62-9da7-3443240fa348}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\comun\swat">
-      <UniqueIdentifier>{75da0ea6-e7d6-4de0-ab08-66561ab5bf41}</UniqueIdentifier>
+      <UniqueIdentifier>{fa08cfd0-ae57-4bfc-bc43-17e5937d4a90}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\comun\swat\input">
-      <UniqueIdentifier>{a5a03397-899a-49af-940e-dc9cac4ac694}</UniqueIdentifier>
+      <UniqueIdentifier>{d4aec1c3-44af-4027-9668-7cc688aa243e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\comun\swat\texturas">
-      <UniqueIdentifier>{f6d39e97-3a79-4191-b7f4-273d6184ec6c}</UniqueIdentifier>
+      <UniqueIdentifier>{f71014fc-2469-47eb-b431-852a8cc224e8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\comun\swat\windows">
-      <UniqueIdentifier>{b5499f2a-2802-48c5-9d70-4e54107f90ed}</UniqueIdentifier>
+      <UniqueIdentifier>{3abae25e-5253-45f0-ad36-6baaef7d9969}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\comun\swat\shaders">
-      <UniqueIdentifier>{12f66b54-3e4d-4f3b-a3ad-f9bebb17178f}</UniqueIdentifier>
+      <UniqueIdentifier>{de5aa270-a4c5-4e48-bdd0-e0b0ee6e90b5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\comun\tool">
-      <UniqueIdentifier>{cdfdb17a-3a63-40ad-9470-22dc38f9f668}</UniqueIdentifier>
+      <UniqueIdentifier>{bb8ee37a-d6ae-4617-9437-fac8e410360c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\comun\tool\consola">
-      <UniqueIdentifier>{9f738704-9157-420c-86f9-37266a26cfee}</UniqueIdentifier>
+      <UniqueIdentifier>{9f3c16f0-655c-4b26-8a6c-958131b35c4c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\comun\cmd\PostLinkGLEW.bat">
       <Filter>cmd</Filter>
     </None>
-    <None Include="..\comun\shaders\fragment_cubo.glsl">
-      <Filter>Recursos\shaders</Filter>
-    </None>
-    <None Include="..\comun\shaders\vertex_cubo.glsl">
-      <Filter>Recursos\shaders</Filter>
-    </None>
-    <None Include="..\comun\shaders\fragment_triangulo.glsl">
-      <Filter>Recursos\shaders</Filter>
-    </None>
-    <None Include="..\comun\shaders\vertex_triangulo.glsl">
-      <Filter>Recursos\shaders</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
+    <ClCompile Include="src\BamTang04.cpp">
       <Filter>Source\src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\sGame.cpp">
-      <Filter>Source\src\game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\sGameWindow.cpp">
-      <Filter>Source\src\game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\sGlobal.cpp">
-      <Filter>Source\src\game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\sRenderSystem.cpp">
-      <Filter>Source\src\game</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\vistas\sVista3D.cpp">
-      <Filter>Source\src\game\vistas</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\vistas\sVistaConsola.cpp">
-      <Filter>Source\src\game\vistas</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\laberinto\sLaberinto.cpp">
-      <Filter>Source\src\game\laberinto</Filter>
-    </ClCompile>
-    <ClCompile Include="src\game\laberinto\sMyMaze.cpp">
-      <Filter>Source\src\game\laberinto</Filter>
     </ClCompile>
     <ClCompile Include="..\comun\src\swat\cAtributo.cpp">
       <Filter>Source\comun\swat</Filter>
@@ -178,35 +126,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\game\sGame.h">
-      <Filter>Source\src\game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\sGameWindow.h">
-      <Filter>Source\src\game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\sGlobal.h">
-      <Filter>Source\src\game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\sRenderSystem.h">
-      <Filter>Source\src\game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\vistas\sVista.h">
-      <Filter>Source\src\game\vistas</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\vistas\sVista3D.h">
-      <Filter>Source\src\game\vistas</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\vistas\sVistaConsola.h">
-      <Filter>Source\src\game\vistas</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\laberinto\sLaberinto.h">
-      <Filter>Source\src\game\laberinto</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\laberinto\sMyMaze.h">
-      <Filter>Source\src\game\laberinto</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\laberinto\sPos.h">
-      <Filter>Source\src\game\laberinto</Filter>
+    <ClInclude Include="src\BamTang04.h">
+      <Filter>Source\src</Filter>
     </ClInclude>
     <ClInclude Include="..\comun\src\swat\cAtributo.h">
       <Filter>Source\comun\swat</Filter>
@@ -298,25 +219,5 @@
     <ClInclude Include="..\comun\src\tool\consola\cConsola.h">
       <Filter>Source\comun\tool\consola</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\comun\textures\grid.jpg">
-      <Filter>Recursos\texturas</Filter>
-    </Image>
-    <Image Include="..\comun\textures\letraA_negro.png">
-      <Filter>Recursos\texturas</Filter>
-    </Image>
-    <Image Include="..\comun\textures\letraB_negro.png">
-      <Filter>Recursos\texturas</Filter>
-    </Image>
-    <Image Include="..\comun\textures\marca_circulo.png">
-      <Filter>Recursos\texturas</Filter>
-    </Image>
-    <Image Include="..\comun\textures\punto_marca_00.png">
-      <Filter>Recursos\texturas</Filter>
-    </Image>
-    <Image Include="..\comun\textures\wooden_crate.jpg">
-      <Filter>Recursos\texturas</Filter>
-    </Image>
   </ItemGroup>
 </Project>

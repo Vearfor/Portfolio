@@ -7,7 +7,7 @@
 // Include
 //--------------------------------------------------------------------------
 #include "sPos.h"
-#include "../../tool/cRandom.hpp"
+#include <tool/cRandom.hpp>
 #include <vector>
 #include <string>
 //--------------------------------------------------------------------------
