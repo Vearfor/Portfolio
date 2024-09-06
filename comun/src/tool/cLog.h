@@ -6,6 +6,7 @@
 //--------------------------------------------------------------------------
 // Include
 //--------------------------------------------------------------------------
+#include <dll/nExport.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <string>
@@ -15,7 +16,7 @@
 //--------------------------------------------------------------------------
 // Class
 //--------------------------------------------------------------------------
-class cLog
+class _mExport cLog
 {
 public:
 
@@ -44,6 +45,7 @@ public:
     ~cLog();
 
     static FILE* m_pFile;
+    // Warning: 4251
     static std::string m_pPathLog;
     static eTraza m_eNivelTraza;
     static bool m_escribeLog;

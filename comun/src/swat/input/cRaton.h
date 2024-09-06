@@ -15,7 +15,7 @@
 // Class
 //--------------------------------------------------------------------------
 struct sWindow;
-class cRaton
+class _mExport cRaton
 {
     // Posiblemente este valor debiera ser de una clase cMouse/Raton
     static float MOUSE_SENSITIVITY;

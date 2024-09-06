@@ -11,7 +11,7 @@
 //==========================================================================
 // Includes
 //==========================================================================
-#include "nExport.h"
+#include <dll/nExport.h>
 #include <Windows.h>
 #include <stdio.h>
 #include <tchar.h>
@@ -24,6 +24,7 @@
 //==========================================================================
 #define LON_BUFF            1024
 #define cstatic
+#define coverride
 #define	AM_INICIO_MENSAJES  WM_USER + 1000
 //==========================================================================
 
@@ -56,6 +57,78 @@
 #define mbTrue(v)           ((!strcmp(v,"true"))? true: false)
 #define msTrue(s)           ((s)? "true": "false")
 //==========================================================================
+
+/*------------------------------------------------------------------------*\
+|* Macros para mantener/crear clases Singleton 
+\*------------------------------------------------------------------------*/
+//--------------------------------------------------------------------------
+// Declaracion de m_poInstancia y de Instancia:
+// 
+// En el Header, en la parte public de la clase ponemos:
+// 
+// mSingletonHeader(<nombre-clase-singleton>)
+// 
+// Y en el Cpp, ya debajo de constructor y destructor, ponemos:
+// 
+// mSingleton(<nombre-calse-singleton>)
+// 
+//--------------------------------------------------------------------------
+#define mSingletonDeleteHeader  \
+static void * Delete(void);\
+static bool Existe(void);
+//--------------------------------------------------------------------------
+#define	mSingletonHeader(Clase) \
+static Clase * m_poInstancia;	\
+static Clase * Instancia(void); \
+mSingletonDeleteHeader
+//--------------------------------------------------------------------------
+#define mSingleton(Clase)               \
+Clase * Clase::m_poInstancia = NULL;    \
+Clase * Clase::Instancia ( void )       \
+{                                       \
+    if	(m_poInstancia==NULL)           \
+    {                                   \
+        m_poInstancia = new Clase();    \
+    }                                   \
+    return m_poInstancia;               \
+}                                       \
+void * Clase::Delete(void)              \
+{                                       \
+    if (m_poInstancia)                  \
+    {                                   \
+        delete m_poInstancia;           \
+        m_poInstancia = NULL;           \
+    }                                   \
+    return NULL;                        \
+}                                       \
+bool Clase::Existe(void)                \
+{                                       \
+    return (!!m_poInstancia);           \
+}
+//--------------------------------------------------------------------------
+#define mSingletonDelete(Clase)     \
+void * Clase::Delete(void)          \
+{                                   \
+    if (m_poInstancia)              \
+    {                               \
+        delete m_poInstancia;       \
+        m_poInstancia = NULL;       \
+    }                               \
+    return NULL;                    \
+}                                   \
+bool Clase::Existe(void)            \
+{                                   \
+    return (!m_poInstancia);        \
+}
+//--------------------------------------------------------------------------
+#define mSingletonNull          \
+if (m_poInstancia == this)      \
+{                               \
+    m_poInstancia = NULL;       \
+}
+/*------------------------------------------------------------------------*/
+
+
 
 
 //==========================================================================

@@ -109,7 +109,7 @@ void cCamara::direccion(glm::vec2 vecDelta, float fDeltaTime)
 //--------------------------------------------------------------------------
 void cCamara::move(glm::vec3 offsetPos)
 {
-    if (offsetPos.length()>0)
+    if (!sMath::isZero(offsetPos))
         m_posCamara += offsetPos;
 }
 

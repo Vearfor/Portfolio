@@ -8,6 +8,7 @@
 // Includes
 //--------------------------------------------------------------------------
 #include "cModoGrafico.h"
+#include <dll/nExport.h>
 #include <vector>
 //--------------------------------------------------------------------------
 
@@ -15,7 +16,8 @@
 //--------------------------------------------------------------------------
 // cMonitor
 //--------------------------------------------------------------------------
-class cVecModosGraficos : public std::vector<cModoGrafico>
+class _mExport cVecModosGraficos
+    : public std::vector<cModoGrafico>
 {
 public:
 

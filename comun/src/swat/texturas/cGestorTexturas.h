@@ -15,7 +15,7 @@
 //--------------------------------------------------------------------------
 // Class
 //--------------------------------------------------------------------------
-class cGestorTexturas
+class _mExport cGestorTexturas
 {
     std::map<std::string, cTextura*> m_mapTexturas;
 

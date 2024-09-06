@@ -17,7 +17,7 @@
 //--------------------------------------------------------------------------
 // Class
 //--------------------------------------------------------------------------
-class iMensajes
+class _mExport iMensajes
 {
     static bool m_bFinPrograma; // Hemos recibido el mensaje de fin de programa
 

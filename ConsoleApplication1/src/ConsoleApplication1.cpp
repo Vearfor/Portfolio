@@ -8,7 +8,7 @@
 #include <tool/cTime.h>
 #include <swat/input/cTeclado.h>
 #include <swat/sOpenGL.h>
-#include <swat/cMalla.h>
+#include <swat/buffers/cMalla.h>
 #include <swat/shaders/cGestorShaders.h>
 
 

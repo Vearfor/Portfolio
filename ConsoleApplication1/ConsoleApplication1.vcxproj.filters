@@ -39,6 +39,12 @@
     <Filter Include="Source\src">
       <UniqueIdentifier>{e5aae8af-fe62-4c50-9b52-b1bcaf0e2c1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\comun\swat\buffers">
+      <UniqueIdentifier>{e716e087-63ae-4e60-ac86-1fa8c6921d53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\comun\dll">
+      <UniqueIdentifier>{2adf6654-ed20-4eda-adea-2a2e99a0ade8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\comun\src\tool\consola\cConio.cpp">
@@ -104,9 +110,6 @@
     <ClCompile Include="..\comun\src\swat\cCamara.cpp">
       <Filter>Source\comun\swat</Filter>
     </ClCompile>
-    <ClCompile Include="..\comun\src\swat\cMalla.cpp">
-      <Filter>Source\comun\swat</Filter>
-    </ClCompile>
     <ClCompile Include="..\comun\src\swat\cModel.cpp">
       <Filter>Source\comun\swat</Filter>
     </ClCompile>
@@ -121,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="src\sConsoleWindow.cpp">
       <Filter>Source\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\buffers\cMalla.cpp">
+      <Filter>Source\comun\swat\buffers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -202,9 +208,6 @@
     <ClInclude Include="..\comun\src\swat\cCamara.h">
       <Filter>Source\comun\swat</Filter>
     </ClInclude>
-    <ClInclude Include="..\comun\src\swat\cMalla.h">
-      <Filter>Source\comun\swat</Filter>
-    </ClInclude>
     <ClInclude Include="..\comun\src\swat\cModel.h">
       <Filter>Source\comun\swat</Filter>
     </ClInclude>
@@ -216,6 +219,12 @@
     </ClInclude>
     <ClInclude Include="src\sConsoleWindow.h">
       <Filter>Source\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\buffers\cMalla.h">
+      <Filter>Source\comun\swat\buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\dll\cDll.h">
+      <Filter>Source\comun\dll</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

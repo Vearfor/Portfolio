@@ -7,7 +7,7 @@
 #include "../tool/nComun.h"
 #include "shaders/cShader.h"
 #include "texturas/cTextura.h"
-#include "cMalla.h"
+#include "buffers/cMalla.h"
 #include <GLM/glm.hpp>
 #include <GLM/gtc/matrix_transform.hpp>
 

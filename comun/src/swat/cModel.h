@@ -7,6 +7,7 @@
 //--------------------------------------------------------------------------
 // Includes
 //--------------------------------------------------------------------------
+#include <dll/nExport.h>
 #include <string>
 //#include <fstream>
 #include <sstream>
@@ -31,7 +32,7 @@ class cShader;
 class cTextura;
 class cMalla;
 //--------------------------------------------------------------------------
-class cModel
+class _mExport cModel
 {
 public:
 	cModel(const char* pathModel = nullptr);

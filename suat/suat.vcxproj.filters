@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="recursos">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="source\src">
+      <UniqueIdentifier>{f42dcb4b-7221-4fca-a581-3f5d469f974c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\comun">
+      <UniqueIdentifier>{e6be9421-461e-4749-9997-4288941a91ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\comun\dll">
+      <UniqueIdentifier>{ad12cbe2-8b72-410f-8d2f-4b74cbb7f827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\comun\tool">
+      <UniqueIdentifier>{63b87b2a-97df-4c24-b684-d8f1b1418dc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\comun\tool\consola">
+      <UniqueIdentifier>{5a5f7afb-5fc0-4596-8341-11e443f8b54a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\comun\swat">
+      <UniqueIdentifier>{cb0b2bee-f44d-4517-9bbb-dd297028de43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\comun\swat\buffers">
+      <UniqueIdentifier>{05cf8017-ff39-47c0-b459-29d45cba8068}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\comun\swat\input">
+      <UniqueIdentifier>{d046c19a-6e95-4e27-aceb-a6b97c07de2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\comun\swat\shaders">
+      <UniqueIdentifier>{3c6d30a4-0ea6-413e-aed5-26fcb0cfbeac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\comun\swat\texturas">
+      <UniqueIdentifier>{8ee875fb-2276-4849-bc04-5d459859ba1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\comun\swat\windows">
+      <UniqueIdentifier>{152fd0c5-c5d6-42de-bbd0-d0b43f11f82f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cmd">
+      <UniqueIdentifier>{3d7ee57e-ff0f-4ba2-81d2-692119269e40}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\cSuatDll.cpp">
+      <Filter>source\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\consola\cConio.cpp">
+      <Filter>source\comun\tool\consola</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\consola\cConsola.cpp">
+      <Filter>source\comun\tool\consola</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\cItem.cpp">
+      <Filter>source\comun\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\cLog.cpp">
+      <Filter>source\comun\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\cRandom.cpp">
+      <Filter>source\comun\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\cTime.cpp">
+      <Filter>source\comun\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\cTool.cpp">
+      <Filter>source\comun\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\iMensajes.cpp">
+      <Filter>source\comun\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\sMath.cpp">
+      <Filter>source\comun\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\dll\cDll.cpp">
+      <Filter>source\comun\dll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\buffers\cMalla.cpp">
+      <Filter>source\comun\swat\buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\input\cRaton.cpp">
+      <Filter>source\comun\swat\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\input\cTeclado.cpp">
+      <Filter>source\comun\swat\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\windows\cModoGrafico.cpp">
+      <Filter>source\comun\swat\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\windows\cMonitor.cpp">
+      <Filter>source\comun\swat\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\windows\cVecModosGraficos.cpp">
+      <Filter>source\comun\swat\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\windows\sWindow.cpp">
+      <Filter>source\comun\swat\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\texturas\cGestorTexturas.cpp">
+      <Filter>source\comun\swat\texturas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\texturas\cTextura.cpp">
+      <Filter>source\comun\swat\texturas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\shaders\cGestorShaders.cpp">
+      <Filter>source\comun\swat\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\shaders\cShader.cpp">
+      <Filter>source\comun\swat\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\cAtributo.cpp">
+      <Filter>source\comun\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\cCamara.cpp">
+      <Filter>source\comun\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\cModel.cpp">
+      <Filter>source\comun\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\sOpenGL.cpp">
+      <Filter>source\comun\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\sRenderObject.cpp">
+      <Filter>source\comun\swat</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\cSuatDll.h">
+      <Filter>source\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\consola\cConio.h">
+      <Filter>source\comun\tool\consola</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\consola\cConsola.h">
+      <Filter>source\comun\tool\consola</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\cItem.h">
+      <Filter>source\comun\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\cLog.h">
+      <Filter>source\comun\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\cRandom.hpp">
+      <Filter>source\comun\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\cTime.h">
+      <Filter>source\comun\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\cTool.h">
+      <Filter>source\comun\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\iMensajes.h">
+      <Filter>source\comun\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\nComun.h">
+      <Filter>source\comun\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\nMensajes.h">
+      <Filter>source\comun\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\sMath.h">
+      <Filter>source\comun\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\dll\cDll.h">
+      <Filter>source\comun\dll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\dll\nDllMain.h">
+      <Filter>source\comun\dll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\dll\nExport.h">
+      <Filter>source\comun\dll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\buffers\cMalla.h">
+      <Filter>source\comun\swat\buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\input\cRaton.h">
+      <Filter>source\comun\swat\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\input\cTeclado.h">
+      <Filter>source\comun\swat\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\input\nCommonKeys.h">
+      <Filter>source\comun\swat\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\windows\cModoGrafico.h">
+      <Filter>source\comun\swat\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\windows\cMonitor.h">
+      <Filter>source\comun\swat\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\windows\cVecModosGraficos.h">
+      <Filter>source\comun\swat\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\windows\sWindow.h">
+      <Filter>source\comun\swat\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\windows\tRect.h">
+      <Filter>source\comun\swat\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\texturas\cGestorTexturas.h">
+      <Filter>source\comun\swat\texturas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\texturas\cTextura.h">
+      <Filter>source\comun\swat\texturas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\shaders\cGestorShaders.h">
+      <Filter>source\comun\swat\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\shaders\cShader.h">
+      <Filter>source\comun\swat\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\cAtributo.h">
+      <Filter>source\comun\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\cCamara.h">
+      <Filter>source\comun\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\cModel.h">
+      <Filter>source\comun\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\sOpenGL.h">
+      <Filter>source\comun\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\sRenderObject.h">
+      <Filter>source\comun\swat</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\comun\cmd\PostLinkGLEW.bat">
+      <Filter>cmd</Filter>
+    </None>
+  </ItemGroup>
+</Project>

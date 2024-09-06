@@ -12,6 +12,7 @@
 #include <GL/glew.h>
 #include <GLM/glm.hpp>
 #include <unordered_map>
+#include <dll/nExport.h>
 //--------------------------------------------------------------------------
 
 
@@ -47,7 +48,7 @@ struct sVertex_posTexNor
 //--------------------------------------------------------------------------
 // Class
 //--------------------------------------------------------------------------
-class cMalla
+class _mExport cMalla
 {
 public:
 

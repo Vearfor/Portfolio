@@ -191,9 +191,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\comun\src\swat\buffers\cMalla.cpp" />
     <ClCompile Include="..\comun\src\swat\cAtributo.cpp" />
     <ClCompile Include="..\comun\src\swat\cCamara.cpp" />
-    <ClCompile Include="..\comun\src\swat\cMalla.cpp" />
     <ClCompile Include="..\comun\src\swat\cModel.cpp" />
     <ClCompile Include="..\comun\src\swat\input\cRaton.cpp" />
     <ClCompile Include="..\comun\src\swat\input\cTeclado.cpp" />
@@ -220,9 +220,10 @@
     <ClCompile Include="src\sConsoleWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\comun\src\dll\cDll.h" />
+    <ClInclude Include="..\comun\src\swat\buffers\cMalla.h" />
     <ClInclude Include="..\comun\src\swat\cAtributo.h" />
     <ClInclude Include="..\comun\src\swat\cCamara.h" />
-    <ClInclude Include="..\comun\src\swat\cMalla.h" />
     <ClInclude Include="..\comun\src\swat\cModel.h" />
     <ClInclude Include="..\comun\src\swat\input\cRaton.h" />
     <ClInclude Include="..\comun\src\swat\input\cTeclado.h" />

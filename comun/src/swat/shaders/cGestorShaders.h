@@ -15,7 +15,7 @@
 //--------------------------------------------------------------------------
 // Class
 //--------------------------------------------------------------------------
-class cGestorShaders
+class _mExport cGestorShaders
 {
     std::map<std::string, cShader*> m_mapShaders;
 

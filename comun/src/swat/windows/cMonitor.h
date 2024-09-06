@@ -10,6 +10,7 @@
 #include "cVecModosGraficos.h"
 #include "tRect.h"
 #include "../../tool/cItem.h"
+#include <dll/nExport.h>
 #include <string>
 //--------------------------------------------------------------------------
 
@@ -17,7 +18,8 @@
 //--------------------------------------------------------------------------
 // cMonitor
 //--------------------------------------------------------------------------
-class cMonitor : public cItem
+class _mExport cMonitor
+    : public cItem
 {
     static  std::vector<cMonitor>* m_pvMonitor;
     static  int     m_iNumMonitors;

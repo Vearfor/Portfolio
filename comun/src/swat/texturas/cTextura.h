@@ -8,6 +8,7 @@
 // Includes
 //--------------------------------------------------------------------------
 #include "../sOpenGL.h"
+#include <dll/nExport.h>
 #include <vector>
 #include <string>
 //--------------------------------------------------------------------------
@@ -46,7 +47,7 @@ struct sResultText
 class cShader;
 class cMaterial;
 //--------------------------------------------------------------------------
-class cTextura
+class _mExport cTextura
 {
     static sResultText genTexturaSimple(int width, int height, int componentes, unsigned char* image, bool generateMipMaps = true);
     static sResultText genTexturaMap(int width, int height, int componentes, unsigned char* image, bool generateMipMaps = true);
@@ -68,6 +69,13 @@ class cTextura
     int m_heightTextura{ 0 };
     int m_bytesPorPixelTextura{ 0 };
 
+    //-------------------------------------------------------------------------
+    // De Activa o Desactiva
+    //-------------------------------------------------------------------------
+    bool m_bActiveTex{ false };         // Esta ya activa la textura
+    bool m_bActiveBlend{ false };       // Si textura color transparente, indica si esta activa para, activar o desactivar.
+    //-------------------------------------------------------------------------
+
 public:
 
     cTextura(std::string nombre = "", GLuint idTex = 0, textureType type = textureType::TexSimple);
@@ -85,6 +93,12 @@ public:
 
     void setMaterial(cMaterial*);
     cMaterial* getMaterial();
+
+    //----------------------------------------------------------------------
+    void	activa(bool activeSampler = false, GLenum unitTextura = GL_TEXTURE0);
+    void	desActiva(void);
+    bool	estaActivaTex2D(void);
+    //----------------------------------------------------------------------
 
     int getIdTex() { return m_iTex; }
     const char* getNombre() { return m_nombreTextura.c_str(); }

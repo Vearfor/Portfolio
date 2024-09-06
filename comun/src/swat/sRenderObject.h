@@ -18,7 +18,7 @@ class cTextura;
 class cMalla;
 class cShader;
 //--------------------------------------------------------------------------
-struct sRenderObject
+struct _mExport sRenderObject
 {
     sRenderObject();
     ~sRenderObject();
@@ -36,6 +36,10 @@ struct sRenderObject
     // Así que vamos a crear estos elementos como miembros de sLaberinto
     // y agregaremos los elementos que luego seran necesarios para 
     // renderizarlos.
+
+    // ACOPLADO !!
+    // Esta acoplado con Laberinto, y si esto tiene que ir a una libreria
+    // habría que QUITARLO:
 
     // Fila y columna seran la posicion que tengan en el laberinto:
     int m_fila{-1};

@@ -12,6 +12,7 @@
 #include "../../tool/nComun.h"
 #include "../../tool/cItem.h"
 #include <GLM/gtc/matrix_transform.hpp>
+#include <swat/sOpenGL.h>
 //--------------------------------------------------------------------------
 
 
@@ -96,7 +97,7 @@ struct sCreaVentana
 
 
 /*------------------------------------------------------------------------*/
-struct sWindow
+struct _mExport sWindow
     : public cItem
 {
     sWindow();
@@ -129,12 +130,17 @@ struct sWindow
 
     glm::mat4 getPerspProjection();
     glm::mat4 getOrthoProjection();
+    GLfloat* getOrthoProjectionPtr();
     void generaMatrices(float anchoOnSize, float altoOnSize);
+    bool begin();
+    void end();
 
     HDC getDeviceContext(void) { return m_hDC; }
     HWND getWindow(void) { return m_hWindow; }
+    cRect<long>& getCurrentRect(void) { return m_wCurrentRect; }
 
     static bool GetWindowRect(HWND hwnd, cRect<long>* pRectRes);
+    static bool GetClientRect(HWND hwnd, cRect<long>* pClientRes);
 
 protected:
 
@@ -174,7 +180,14 @@ protected:
     int m_iAltoOnSize{ 0 };             // Alto final que tiene las ventanas.
 
     glm::mat4 m_perspective{ 1.0f };
+    //----------------------------------------------------------------------
+    // Vamos a cargar la proyeccion ortogonal con los antiguos metodos
+    //----------------------------------------------------------------------
     glm::mat4 m_ortho{ 1.0f };
+    float m_vfProyOrtogonal[16];	// Matriz de proyeccion en ortogonal	:	2D
+    //----------------------------------------------------------------------
+    bool m_begin{ false };
+    eMatrixModo m_eMatrixMode;
 
     sCreaVentana m_tVentana{};
 

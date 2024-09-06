@@ -1,35 +1,83 @@
 /*------------------------------------------------------------------------*\
 |* BamTang04.cpp
 \*------------------------------------------------------------------------*/
-//
-// .cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
-//
 
 #include "BamTang04.h"
+#include "sGame.h"
 #include <tool/consola/cConsola.h>
+#include <tool/consola/cConio.h>
+#include <tool/cLog.h>
+#include <tool/cTime.h>
 #include <iostream>
+
+
+//--------------------------------------------------------------------------
+// Prototipos
+//--------------------------------------------------------------------------
+void presentacion();
+//--------------------------------------------------------------------------
 
 
 int main()
 {
-    cConsola::setNombreProceso("Fisicas   " TITLE);
+    cConsola::SetActiva(true);
+    cConsola::setNombreProceso("FISICAS   " TITLE);
 
-    std::cout << "\n";
-    std::cout << "Hello World!  " << cConsola::getNombreProceso() << "\n";
+    presentacion();
+
+    // que haya game: la lista de bolas lanzadas pertenecera al game
+    // al game asociaremos un init, un 'eventos', un 'update', y un 'render':
+    sGame juego;
+    cTime time(60);
+
+    for (juego.init(); juego.isRunning(); juego.eventos())
+    {
+        juego.update(time.getDeltaTime());
+        juego.render();
+        time.espera(true);
+    }
+
+    cConio::SetColor(eTextColor::eTexNormal);
+    cConsola::PulsaTecla(" Pulsa tecla para terminar ");
     std::cout << "\n";
 
     return 0;
 }
 
-// Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
-// Depurar programa: F5 o menú Depurar > Iniciar depuración
 
-// Sugerencias para primeros pasos: 1. Use la ventana del Explorador de soluciones para agregar y administrar archivos
-//   2. Use la ventana de Team Explorer para conectar con el control de código fuente
-//   3. Use la ventana de salida para ver la salida de compilación y otros mensajes
-//   4. Use la ventana Lista de errores para ver los errores
-//   5. Vaya a Proyecto > Agregar nuevo elemento para crear nuevos archivos de código, o a Proyecto > Agregar elemento existente para agregar archivos de código existentes al proyecto
-//   6. En el futuro, para volver a abrir este proyecto, vaya a Archivo > Abrir > Proyecto y seleccione el archivo .sln
+void presentacion()
+{
+    cConio::SetColor(eTextColor::eTexAmarillo);
+    cConio::Cls();
+    cLog::print("\n");
+    cLog::print(" Lo que hay que hacer:\n");
+    cLog::print("\n");
+    cConio::SetColor(eTextColor::eTexCeleste);
+    cLog::print("  + Empezemos dibujando el recuadro\n");
+    cLog::print("    y mover un circulo.\n");
+    cLog::print("  + El origen de disparo con una flecha que indique la direccion\n");
+    cLog::print("  + Diferentes longitudes de flecha para diferentes velocidades.\n");
+    cLog::print("  + posibilidad con OpenGL Clasico/No Moderno ?, la libreria glew3.dll no\n");
+    cLog::print("   seria necesaria.\n");
+    cLog::print(" \n");
+    cLog::print("  + Asociar a la tecla de Espacio la funcion 'shootball'.\n");
+    cLog::print("\n");
+    cLog::print("  + ya veremos:\n");
+    cLog::print("         colisiones con las paredes.\n");
+    cLog::print("         colisiones con las otras pelotas\n");
+    cLog::print("         como afecta la gravedad\n");
+    cLog::print("         + agregar un coeficiente de friccion\n");
+    cLog::print("         + elasticidad: para los rebotes.\n");
+    cLog::print(" \n");
+    cLog::print("  + si se detienen solo puede ser por gravedad en el suelo\n");
+    cLog::print("    (activar/desativar gravedad)\n");
+    cLog::print("  + desaparecer despues de un tiempo de parada.\n");
+    cLog::print("    (al desaparecer y haber hueco se caen las que hay)\n");
+    cLog::print("\n");
+    cConio::SetColor(eTextColor::eTexAmarillo);
+    cConsola::PulsaTecla(" Pulsa tecla para continuar ");
+    cConio::Cls();
+}
 
 
 /*------------------------------------------------------------------------*\

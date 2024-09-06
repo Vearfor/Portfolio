@@ -414,5 +414,98 @@ cMaterial* cTextura::getMaterial()
 
 
 /*========================================================================*\
+|* Codigo No OpenGL Moderno
+\*========================================================================*/
+//--------------------------------------------------------------------------
+// Activamos la textura para apartir de aqui poder dibujar la textura.
+//--------------------------------------------------------------------------
+void cTextura::activa(bool activeSampler, GLenum unitTextura)
+{
+    if (m_iTex == 0)
+    {
+        //carga();
+    }
+
+    if (m_iTex > 0)
+    {
+        //------------------------------------------------------------------
+        // Si Blend
+        //------------------------------------------------------------------
+        //if (getTipoTextura() == eTipoTextura::eCOL0)
+        //{
+        //    m_bActiveBlend = false;
+        //    if (glIsEnabled(GL_BLEND))
+        //    {
+        //        this->
+        //            m_bActiveBlend = true;
+        //    }
+        //    else
+        //    {
+        //        glEnable(GL_BLEND);
+        //        glEnable(GL_ALPHA_TEST);
+        //        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);      // La funcion de blending, no se si es la que uso.
+        //    }
+        //}
+        //------------------------------------------------------------------
+
+        //------------------------------------------------------------------
+        // Si activeSampler
+        //------------------------------------------------------------------
+        if (activeSampler)
+        {
+            glActiveTexture(unitTextura);
+        }
+        else
+        {
+            if (!glIsEnabled(GL_TEXTURE_2D))
+            {
+                glEnable(GL_TEXTURE_2D);
+                m_bActiveTex = false;
+            }
+            else
+            {
+                m_bActiveTex = true;
+            }
+        }
+        //------------------------------------------------------------------
+        glBindTexture(GL_TEXTURE_2D, m_iTex);
+        //------------------------------------------------------------------
+    }
+}
+
+
+//--------------------------------------------------------------------------
+// Activamos la textura para apartir de aqui poder dibujar la textura.
+//--------------------------------------------------------------------------
+void cTextura::desActiva(void)
+{
+    if (!m_bActiveTex)
+        glDisable(GL_TEXTURE_2D);
+
+    // Deberia volver m_bActiveTex a true ???
+
+    if (!m_bActiveBlend)
+    {
+        glDisable(GL_BLEND);
+        glDisable(GL_ALPHA_TEST);
+    }
+    m_bActiveBlend = false;
+    //------------------------------------------------------------------
+    glBindTexture(GL_TEXTURE_2D, 0);
+    //------------------------------------------------------------------
+}
+
+
+//--------------------------------------------------------------------------
+// Para decirnos si estaba habilitada o no GL_TEXTURE_2D
+//--------------------------------------------------------------------------
+bool cTextura::estaActivaTex2D(void)
+{
+    return m_bActiveTex;
+}
+/*========================================================================*/
+
+
+/*========================================================================*\
 |* Fin de cTextura.cpp
 \*========================================================================*/

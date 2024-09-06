@@ -103,7 +103,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glew32d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)/comun/lib/$(Platform)/$(Configuration)/;$(SolutionDir)/comun/OpenGL/Glew/lib/$(Platform)/</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -127,7 +127,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glew32d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)/comun/lib/$(Platform)/$(Configuration)/;$(SolutionDir)/comun/OpenGL/Glew/lib/$(Platform)/</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -147,7 +147,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)/comun/lib/$(Platform)/$(Configuration)/;$(SolutionDir)/comun/OpenGL/Glew/lib/$(Platform)/</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -174,7 +174,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)/comun/lib/$(Platform)/$(Configuration)/;$(SolutionDir)/comun/OpenGL/Glew/lib/$(Platform)/</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -188,65 +188,29 @@
     <None Include="..\comun\cmd\PostLinkGLEW.bat" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\comun\src\swat\cAtributo.cpp" />
-    <ClCompile Include="..\comun\src\swat\cCamara.cpp" />
-    <ClCompile Include="..\comun\src\swat\cMalla.cpp" />
-    <ClCompile Include="..\comun\src\swat\cModel.cpp" />
-    <ClCompile Include="..\comun\src\swat\input\cRaton.cpp" />
-    <ClCompile Include="..\comun\src\swat\input\cTeclado.cpp" />
-    <ClCompile Include="..\comun\src\swat\shaders\cGestorShaders.cpp" />
-    <ClCompile Include="..\comun\src\swat\shaders\cShader.cpp" />
-    <ClCompile Include="..\comun\src\swat\sOpenGL.cpp" />
-    <ClCompile Include="..\comun\src\swat\sRenderObject.cpp" />
-    <ClCompile Include="..\comun\src\swat\texturas\cGestorTexturas.cpp" />
-    <ClCompile Include="..\comun\src\swat\texturas\cTextura.cpp" />
-    <ClCompile Include="..\comun\src\swat\windows\cModoGrafico.cpp" />
-    <ClCompile Include="..\comun\src\swat\windows\cMonitor.cpp" />
-    <ClCompile Include="..\comun\src\swat\windows\cVecModosGraficos.cpp" />
-    <ClCompile Include="..\comun\src\swat\windows\sWindow.cpp" />
-    <ClCompile Include="..\comun\src\tool\cItem.cpp" />
-    <ClCompile Include="..\comun\src\tool\cLog.cpp" />
-    <ClCompile Include="..\comun\src\tool\consola\cConio.cpp" />
-    <ClCompile Include="..\comun\src\tool\consola\cConsola.cpp" />
-    <ClCompile Include="..\comun\src\tool\cRandom.cpp" />
-    <ClCompile Include="..\comun\src\tool\cTime.cpp" />
-    <ClCompile Include="..\comun\src\tool\cTool.cpp" />
-    <ClCompile Include="..\comun\src\tool\iMensajes.cpp" />
-    <ClCompile Include="..\comun\src\tool\sMath.cpp" />
     <ClCompile Include="src\BamTang04.cpp" />
+    <ClCompile Include="src\sBall.cpp" />
+    <ClCompile Include="src\sCollisionSystem.cpp" />
+    <ClCompile Include="src\sGame.cpp" />
+    <ClCompile Include="src\sGameWindow.cpp" />
+    <ClCompile Include="src\sGlobal.cpp" />
+    <ClCompile Include="src\sOrigen.cpp" />
+    <ClCompile Include="src\sPhysicsSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\comun\src\swat\cAtributo.h" />
-    <ClInclude Include="..\comun\src\swat\cCamara.h" />
-    <ClInclude Include="..\comun\src\swat\cMalla.h" />
-    <ClInclude Include="..\comun\src\swat\cModel.h" />
-    <ClInclude Include="..\comun\src\swat\input\cRaton.h" />
-    <ClInclude Include="..\comun\src\swat\input\cTeclado.h" />
-    <ClInclude Include="..\comun\src\swat\input\nCommonKeys.h" />
-    <ClInclude Include="..\comun\src\swat\shaders\cGestorShaders.h" />
-    <ClInclude Include="..\comun\src\swat\shaders\cShader.h" />
-    <ClInclude Include="..\comun\src\swat\sOpenGL.h" />
-    <ClInclude Include="..\comun\src\swat\sRenderObject.h" />
-    <ClInclude Include="..\comun\src\swat\texturas\cGestorTexturas.h" />
-    <ClInclude Include="..\comun\src\swat\texturas\cTextura.h" />
-    <ClInclude Include="..\comun\src\swat\windows\cModoGrafico.h" />
-    <ClInclude Include="..\comun\src\swat\windows\cMonitor.h" />
-    <ClInclude Include="..\comun\src\swat\windows\cVecModosGraficos.h" />
-    <ClInclude Include="..\comun\src\swat\windows\sWindow.h" />
-    <ClInclude Include="..\comun\src\swat\windows\tRect.h" />
-    <ClInclude Include="..\comun\src\tool\cItem.h" />
-    <ClInclude Include="..\comun\src\tool\cLog.h" />
-    <ClInclude Include="..\comun\src\tool\consola\cConio.h" />
-    <ClInclude Include="..\comun\src\tool\consola\cConsola.h" />
-    <ClInclude Include="..\comun\src\tool\cRandom.hpp" />
-    <ClInclude Include="..\comun\src\tool\cTime.h" />
-    <ClInclude Include="..\comun\src\tool\cTool.h" />
-    <ClInclude Include="..\comun\src\tool\iMensajes.h" />
-    <ClInclude Include="..\comun\src\tool\nComun.h" />
-    <ClInclude Include="..\comun\src\tool\nExport.h" />
-    <ClInclude Include="..\comun\src\tool\nMensajes.h" />
-    <ClInclude Include="..\comun\src\tool\sMath.h" />
     <ClInclude Include="src\BamTang04.h" />
+    <ClInclude Include="src\sBall.h" />
+    <ClInclude Include="src\sCollisionSystem.h" />
+    <ClInclude Include="src\sGame.h" />
+    <ClInclude Include="src\sGameWindow.h" />
+    <ClInclude Include="src\sGlobal.h" />
+    <ClInclude Include="src\sOrigen.h" />
+    <ClInclude Include="src\sPhysicsSystem.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\suat\suat.vcxproj">
+      <Project>{a8b25f3b-d218-4554-ae9a-bf6413ee5aff}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

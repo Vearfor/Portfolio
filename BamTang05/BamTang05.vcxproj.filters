@@ -55,6 +55,12 @@
     <Filter Include="Source\comun\tool\consola">
       <UniqueIdentifier>{9f738704-9157-420c-86f9-37266a26cfee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\comun\swat\buffers">
+      <UniqueIdentifier>{0670f549-93bd-4ceb-8db3-6c3afec7bdb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\comun\dll">
+      <UniqueIdentifier>{dc78bc27-0161-45bc-b3b6-372f2a63b5c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\comun\cmd\PostLinkGLEW.bat">
@@ -105,9 +111,6 @@
       <Filter>Source\comun\swat</Filter>
     </ClCompile>
     <ClCompile Include="..\comun\src\swat\cCamara.cpp">
-      <Filter>Source\comun\swat</Filter>
-    </ClCompile>
-    <ClCompile Include="..\comun\src\swat\cMalla.cpp">
       <Filter>Source\comun\swat</Filter>
     </ClCompile>
     <ClCompile Include="..\comun\src\swat\cModel.cpp">
@@ -176,6 +179,9 @@
     <ClCompile Include="..\comun\src\tool\consola\cConsola.cpp">
       <Filter>Source\comun\tool\consola</Filter>
     </ClCompile>
+    <ClCompile Include="..\comun\src\swat\buffers\cMalla.cpp">
+      <Filter>Source\comun\swat\buffers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\sGame.h">
@@ -212,9 +218,6 @@
       <Filter>Source\comun\swat</Filter>
     </ClInclude>
     <ClInclude Include="..\comun\src\swat\cCamara.h">
-      <Filter>Source\comun\swat</Filter>
-    </ClInclude>
-    <ClInclude Include="..\comun\src\swat\cMalla.h">
       <Filter>Source\comun\swat</Filter>
     </ClInclude>
     <ClInclude Include="..\comun\src\swat\cModel.h">
@@ -283,9 +286,6 @@
     <ClInclude Include="..\comun\src\tool\nComun.h">
       <Filter>Source\comun\tool</Filter>
     </ClInclude>
-    <ClInclude Include="..\comun\src\tool\nExport.h">
-      <Filter>Source\comun\tool</Filter>
-    </ClInclude>
     <ClInclude Include="..\comun\src\tool\nMensajes.h">
       <Filter>Source\comun\tool</Filter>
     </ClInclude>
@@ -297,6 +297,12 @@
     </ClInclude>
     <ClInclude Include="..\comun\src\tool\consola\cConsola.h">
       <Filter>Source\comun\tool\consola</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\buffers\cMalla.h">
+      <Filter>Source\comun\swat\buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\dll\nExport.h">
+      <Filter>Source\comun\dll</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

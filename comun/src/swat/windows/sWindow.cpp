@@ -349,6 +349,15 @@ int sWindow::crea(void* pEstructuraVentana)
     }
 
     sWindow::GetWindowRect(m_hWindow, &m_wCurrentRect);
+    cLog::print("\n");
+    cLog::print(" [%s][%s]\n", pCreaVentana->vcWindowName, pCreaVentana->vcClassName);
+    cLog::print(" Left  : %4d\n", m_wCurrentRect.left);
+    cLog::print(" Top   : %4d\n", m_wCurrentRect.top);
+    cLog::print(" Right : %4d\n", m_wCurrentRect.right);
+    cLog::print(" Bottom: %4d\n", m_wCurrentRect.bottom);
+    cLog::print(" Ancho : %4d\n", m_wCurrentRect.getAncho());
+    cLog::print(" Alto  : %4d\n", m_wCurrentRect.getAlto());
+    cLog::print("\n");
 
     enPantallaCompleta();
 
@@ -1065,6 +1074,29 @@ cstatic bool sWindow::GetWindowRect(HWND hWindow, cRect<long>* pRectRes)
 }
 
 
+static bool GetClientRect(HWND hWindow, cRect<long>* pClientRes)
+{
+    bool valor = true;
+    if (hWindow && pClientRes)
+    {
+        RECT rect;
+        bool valor = static_cast<bool>(::GetClientRect(hWindow, &rect));
+        if (valor)
+        {
+            pClientRes->left = rect.left;
+            pClientRes->top = rect.top;
+            pClientRes->right = rect.right;
+            pClientRes->bottom = rect.bottom;
+        }
+        else
+        {
+            cLog::error(" Error: sWindow::GetClientRect:  ::GetClientRect");
+        }
+    }
+    return valor;
+}
+
+
 /*------------------------------------------------------------------------*\
 |* Funciones Public
 \*------------------------------------------------------------------------*/
@@ -1080,6 +1112,12 @@ glm::mat4 sWindow::getOrthoProjection()
 }
 
 
+GLfloat* sWindow::getOrthoProjectionPtr()
+{
+    return (GLfloat *) &m_vfProyOrtogonal;
+}
+
+
 //--------------------------------------------------------------------------
 // Genera Matrices de proyeccion
 //--------------------------------------------------------------------------
@@ -1087,17 +1125,93 @@ void sWindow::generaMatrices(float anchoOnSize, float altoOnSize)
 {
     float fAspect = (altoOnSize > 0) ? anchoOnSize / altoOnSize : 1.0f;
 
-    // float fov = (m_poCamara) ? m_poCamara->getZoom() : m_fFov;
-
     m_perspective = glm::perspective<float>(glm::radians(m_fFov), fAspect, m_fPCercano, m_fPLejano);
-    //                          left  right        bottom top   cercano             lejano.
-    // Tenemos pendiente probar el primer plano.
-    m_ortho = glm::ortho<float>(0.0f, anchoOnSize, 0.0f, altoOnSize, -100.0f, 100.0f);
-
+   
+    //----------------------------------------------------------------------
+    // Tenemos pendiente probar el primer plano: no sabemos si funciona
+    //----------------------------------------------------------------------
+    // m_ortho = glm::ortho<float>(0.0f, anchoOnSize, 0.0f, altoOnSize, m_fPCercano, m_fPLejano);
+    // glOrtho(0.0f, (GLfloat)anchoOnSize, 0.0f, (GLfloat)altoOnSize, m_fPCercano, m_fPLejano);
+    // glOrtho(0.0f, (GLfloat)anchoOnSize, 0.0f, (GLfloat)altoOnSize, -10.0f, m_fPLejano);
+    //----------------------------------------------------------------------
+    sOpenGL::pushMatrix(eMatrixModo::eGL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0.0f, (GLfloat)anchoOnSize, 0.0f, (GLfloat)altoOnSize, -10.0f, m_fPLejano);
+    glGetFloatv(GL_PROJECTION_MATRIX, m_vfProyOrtogonal);
+    sOpenGL::popMatrix(eMatrixModo::eGL_PROJECTION);
+    //-----------------------------------------------------------------------
     // m_ortho = glm::ortho<float>(0.0f, anchoOnSize, altoOnSize, 0.0f, m_fPCercano, m_fPLejano);
     // m_ortho = glm::ortho<float>(0.0f, anchoOnSize, 0.0f, altoOnSize, -100.0f, 100.0f);
-
+    //-----------------------------------------------------------------------
 }
+
+
+//--------------------------------------------------------------------------
+// Begin End
+//--------------------------------------------------------------------------
+bool sWindow::begin()
+{
+    if (!m_begin)
+    {
+        //------------------------------------------------------------------
+        int iRend;
+        glGetIntegerv(GL_RENDER_MODE, &iRend);					// El modo debe de ser el de renderizacion
+        if (iRend != GL_RENDER)
+            return false;										//
+        //------------------------------------------------------------------
+        // Establece la proyeccion ortogonal para escribir en primer plano.
+        //------------------------------------------------------------------
+        {
+            m_eMatrixMode = sOpenGL::getMatrixModo();           // Guarda el modo de la matriz
+            sOpenGL::pushMatrix(eMatrixModo::eGL_PROJECTION);   // Guardamos en Pila la Matriz de Proyeccion
+            glLoadMatrixf(m_vfProyOrtogonal);                   // Cargamos la matriz ortogonal, para escribir
+            sOpenGL::pushMatrix(eMatrixModo::eGL_MODELVIEW);   // Guardamos en Pila la Matriz de Modelización.
+            glLoadIdentity();                                   // Se inicializa.
+        }
+        //------------------------------------------------------------------
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        //------------------------------------------------------------------
+        //_bTex2D = cOpenGL::isEnabled(GL_TEXTURE_2D);   // Antes activamos texturas, ahora no, no creo que haga falta.
+        //_bLuz = cOpenGL::disable(GL_LIGHTING);         // Desativamos luces
+        //_bDepth = cOpenGL::disable(GL_DEPTH_TEST);     // Desactivamos test de profundidad.
+        //------------------------------------------------------------------
+        m_begin = true;
+        //------------------------------------------------------------------
+    }
+    return m_begin;
+}
+
+//--------------------------------------------------------------------------
+// Termina la escritura en primer plano
+//--------------------------------------------------------------------------
+void sWindow::end(void)
+{
+    if (m_begin)
+    {
+        {
+            //--------------------------------------------------------------
+            // Recupera la proyeccion en perspectiva original: establecida
+            // en Viewport.
+            //--------------------------------------------------------------
+            sOpenGL::popMatrix(eMatrixModo::eGL_MODELVIEW);     //  glMatrixMode(GL_MODELVIEW);     cOpenGL::popMatrix();
+            //--------------------------------------------------------------
+            sOpenGL::popMatrix(eMatrixModo::eGL_PROJECTION);    //  glMatrixMode(GL_PROJECTION);    cOpenGL::popMatrix();
+            //--------------------------------------------------------------
+            sOpenGL::setMatrixModo(m_eMatrixMode);               // glMatrixMode(m_eMatrixMode);     // Dejamos el modo de matriz que estuviese.
+            //--------------------------------------------------------------
+        }
+        //------------------------------------------------------------------
+        //cOpenGL::restore(_bDepth, GL_DEPTH_TEST);          // Restablecemos el test de profundidad.
+        //cOpenGL::restore(_bLuz, GL_LIGHTING);              // Restablecemos la iluminacion.
+        //cOpenGL::restore(_bTex2D, GL_TEXTURE_2D);          // Restablecemos las texturas, si las hubieramos cambiado
+        //------------------------------------------------------------------
+        glPopAttrib();
+        //------------------------------------------------------------------
+        m_begin = false;
+        //------------------------------------------------------------------
+    }
+}
+//--------------------------------------------------------------------------
 
 
 /*------------------------------------------------------------------------*\

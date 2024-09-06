@@ -198,9 +198,9 @@
     <None Include="..\comun\shaders\vertex_triangulo.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\comun\src\swat\buffers\cMalla.cpp" />
     <ClCompile Include="..\comun\src\swat\cAtributo.cpp" />
     <ClCompile Include="..\comun\src\swat\cCamara.cpp" />
-    <ClCompile Include="..\comun\src\swat\cMalla.cpp" />
     <ClCompile Include="..\comun\src\swat\cModel.cpp" />
     <ClCompile Include="..\comun\src\swat\input\cRaton.cpp" />
     <ClCompile Include="..\comun\src\swat\input\cTeclado.cpp" />
@@ -234,9 +234,10 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\comun\src\dll\nExport.h" />
+    <ClInclude Include="..\comun\src\swat\buffers\cMalla.h" />
     <ClInclude Include="..\comun\src\swat\cAtributo.h" />
     <ClInclude Include="..\comun\src\swat\cCamara.h" />
-    <ClInclude Include="..\comun\src\swat\cMalla.h" />
     <ClInclude Include="..\comun\src\swat\cModel.h" />
     <ClInclude Include="..\comun\src\swat\input\cRaton.h" />
     <ClInclude Include="..\comun\src\swat\input\cTeclado.h" />
@@ -261,7 +262,6 @@
     <ClInclude Include="..\comun\src\tool\cTool.h" />
     <ClInclude Include="..\comun\src\tool\iMensajes.h" />
     <ClInclude Include="..\comun\src\tool\nComun.h" />
-    <ClInclude Include="..\comun\src\tool\nExport.h" />
     <ClInclude Include="..\comun\src\tool\nMensajes.h" />
     <ClInclude Include="..\comun\src\tool\sMath.h" />
     <ClInclude Include="src\game\laberinto\sLaberinto.h" />

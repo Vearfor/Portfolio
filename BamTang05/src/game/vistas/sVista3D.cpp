@@ -11,7 +11,7 @@
 #include <tool/consola/cConio.h>
 #include <swat/input/cTeclado.h>
 #include <swat/input/cRaton.h>
-#include <swat/cMalla.h>
+#include <swat/buffers/cMalla.h>
 #include <swat/texturas/cGestorTexturas.h>
 #include <swat/shaders/cGestorShaders.h>
 #include <swat/sOpenGL.h>

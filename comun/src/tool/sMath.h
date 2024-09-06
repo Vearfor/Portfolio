@@ -70,12 +70,39 @@ const   float  cPi = 3.141592654f;
 //--------------------------------------------------------------------------
 // struct porque no tengo claro que sea fija o permanente
 //--------------------------------------------------------------------------
-struct sMath
+struct _mExport sMath
 {
-    static glm::vec3 setZero(glm::vec3 vec3);
     static glm::vec3 normalize(glm::vec3 vector);
     static float getFactorReduccion(float fFactorDecr, float fDeltaTime);
+    static float* getMatriz(glm::mat4 mat);
+
+    static glm::vec2 setZero(glm::vec2 vec);
+    static glm::vec3 setZero(glm::vec3 vec);
+    static glm::vec4 setZero(glm::vec4 vec);
+
+    static bool isZero(glm::vec2 vec);
+    static bool isZero(glm::vec3 vec);
+    static bool isZero(glm::vec4 vec);
+
+    static float modulo(glm::vec2 vec);
+    static float modulo(glm::vec3 vec);
+    static float modulo(glm::vec4 vec);
+
+    static float getAngulo(glm::vec2 vector);
 };
+//--------------------------------------------------------------------------
+
+
+//--------------------------------------------------------------------------
+template<class T> inline T deg2rad(T deg)
+{
+    return deg * (T)PI / 180;
+}
+
+template<class T> inline T rad2deg(T rad)
+{
+    return rad * 180 / (T)PI;
+}
 //--------------------------------------------------------------------------
 
 
