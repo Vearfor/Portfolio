@@ -6,6 +6,7 @@
 #include "sGameWindow.h"
 #include "sGlobal.h"
 #include "sOrigen.h"
+#include "sInputSystem.h"
 #include "sCollisionSystem.h"
 #include "sPhysicsSystem.h"
 #include <swat/input/cTeclado.h>
@@ -89,6 +90,7 @@ int sGame::init()
 
     auto& rect = m_pWindow->getCurrentRect();
 
+    m_pInput = new sInputSystem();
     m_pCollision = new sCollisionSystem(rect.getAncho(), rect.getAlto());
     m_pPhysics = new sPhysicsSystem();
     // Para que el systema de collision pueda actualizar sus limites:
@@ -129,77 +131,8 @@ int sGame::eventos()
 //--------------------------------------------------------------------------
 int sGame::update(float fDeltaTime)
 {
-    cTeclado* pTeclado = m_pWindow->m_pTeclado;
-    if (pTeclado)
-    {
-        /*----------------------------------------------------------------*\
-        |* There is the call of asked function
-        \*----------------------------------------------------------------*/
-        if (pTeclado->isUp(VK_SPACE))
-        {
-            shootBall();
-        }
-        /*----------------------------------------------------------------*/
-
-        if (pTeclado->isDown(VK_ESCAPE))
-        {
-            m_pWindow->destruyeVentana();
-        }
-
-        if (pTeclado->isUp('P'))
-        {
-            m_esPausa = !m_esPausa;
-        }
-
-        if (pTeclado->isUp('G'))
-        {
-            sBall::m_hayGravedad = !sBall::m_hayGravedad;
-        }
-
-        if (pTeclado->isUp('F'))
-        {
-            sBall::m_hayFriccion = !sBall::m_hayFriccion;
-        }
-
-        if (pTeclado->isUp('T'))
-        {
-            m_esTest = !m_esTest;
-        }
-
-        /*----------------------------------------------------------------*\
-        |* Directions Keys: to move origin object
-        \*----------------------------------------------------------------*/
-        if (pTeclado->isDown(VK_LEFT))
-        {
-            m_pOrigen->izquierda(fDeltaTime);
-        }
-        if (pTeclado->isDown(VK_RIGHT))
-        {
-            m_pOrigen->derecha(fDeltaTime);
-        }
-        if (pTeclado->isDown(VK_UP))
-        {
-            m_pOrigen->arriba(fDeltaTime);
-        }
-        if (pTeclado->isDown(VK_DOWN))
-        {
-            m_pOrigen->abajo(fDeltaTime);
-        }
-        /*----------------------------------------------------------------*/
-        if (pTeclado->isDown(VK_ADD))
-        {
-            m_pOrigen->cambiaDir(eIncrGrados::eSuma);
-        }
-        if (pTeclado->isDown(VK_SUBTRACT))
-        {
-            m_pOrigen->cambiaDir(eIncrGrados::eResta);
-        }
-        /*----------------------------------------------------------------*/
-
-        pTeclado->reset();
-    }
-
     /*--------------------------------------------------------------------*/
+    m_pInput->update(this, fDeltaTime);
     m_pCollision->update(this, fDeltaTime);
     m_pPhysics->update(this, fDeltaTime);
     /*--------------------------------------------------------------------*/
@@ -361,6 +294,21 @@ void sGame::setCaption(float fDeltaTime)
         SetWindowText(m_pWindow->getWindow(), wcTitulo);
     }
 }
+
+
+bool sGame::selectedOrigin(glm::vec2 posRaton)
+{
+    bool selected = false;
+    if (m_pOrigen)
+    {
+        glm::vec2 myRaton = { posRaton.x, m_height - posRaton.y };
+        glm::vec2 vdiff = m_pOrigen->m_posicion - myRaton;
+        float dist = sMath::modulo(vdiff) - sGlobal::m_windowCaptionSize;
+        selected = (dist < m_pOrigen->m_radio);
+    }
+    return selected;
+}
+
 //--------------------------------------------------------------------------
 #pragma endregion
 

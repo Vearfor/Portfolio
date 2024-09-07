@@ -46,6 +46,9 @@
     <ClCompile Include="src\sOrigen.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\sInputSystem.cpp">
+      <Filter>Source\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BamTang04.h">
@@ -70,6 +73,9 @@
       <Filter>Source\src</Filter>
     </ClInclude>
     <ClInclude Include="src\sOrigen.h">
+      <Filter>Source\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sInputSystem.h">
       <Filter>Source\src</Filter>
     </ClInclude>
   </ItemGroup>

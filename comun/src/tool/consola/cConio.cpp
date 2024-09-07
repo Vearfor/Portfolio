@@ -62,7 +62,7 @@ long  * cConio::m_plNumLeidos = &cConio::m_lNumLeidos;
 //--------------------------------------------------------------------------
 // Abrimos el servicio de la consola
 //--------------------------------------------------------------------------
-int	cConio::open	( void )
+cstatic int	cConio::open	( void )
 {
 	if	(!m_bIniciado)
 	{

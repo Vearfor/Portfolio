@@ -7,6 +7,7 @@
 /*------------------------------------------------------------------------*\
 |* Includes
 \*------------------------------------------------------------------------*/
+#include <GLM/glm.hpp>
 #include <tool/iMensajes.h>
 #include <vector>
 /*------------------------------------------------------------------------*/
@@ -20,6 +21,7 @@ struct sBall;
 struct sOrigen;
 struct sPhysicsSystem;
 struct sCollisionSystem;
+struct sInputSystem;
 /*------------------------------------------------------------------------*/
 struct sGame
     : public iMensajes
@@ -38,17 +40,23 @@ struct sGame
     void shootBall();
     void releaseBalls();
     void setCaption(float fDeltaTime);
+    bool selectedOrigin(glm::vec2 posRaton);
 
     std::vector<sBall*>& getVecBolas() { return m_vecBolas; }
+    void toggleTest() { m_esTest = !m_esTest; }
+    bool hayTest() { return m_esTest; }
     void togglePausa() { m_esPausa = !m_esPausa; }
     bool hayPausa() { return m_esPausa; }
     void setDestruccion(bool hay) { m_hayDestruccion = hay; }
     bool hayDestruccion() { return m_hayDestruccion; }
+    sGameWindow* getMainWindow() { return m_pWindow; }
+    sOrigen* getMainOrigin() { return m_pOrigen; }
 
 private:
 
-    sPhysicsSystem* m_pPhysics{ nullptr };
+    sInputSystem* m_pInput{ nullptr };
     sCollisionSystem* m_pCollision{ nullptr };
+    sPhysicsSystem* m_pPhysics{ nullptr };
     bool m_bIsRunning{ false };
     sGameWindow* m_pWindow{ nullptr };
     int m_width{ 0 };

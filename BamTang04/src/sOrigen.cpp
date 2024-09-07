@@ -31,7 +31,7 @@ coverride int sOrigen::checkLimites(float fDeltaTime, int width, int height)
     if (m_posicion.x + inc.x < m_radio)
         m_vecVelocidad.x = -m_vecVelocidad.x * sGlobal::m_fElasticidad;
 
-    if (m_posicion.y + inc.y > height - sGlobal::m_windowCaptionSize)
+    if (m_posicion.y + inc.y > height - (sGlobal::m_windowCaptionSize + m_radio))
         m_vecVelocidad.y = -m_vecVelocidad.y * sGlobal::m_fElasticidad;
 
     if (m_posicion.y + inc.y < m_radio)

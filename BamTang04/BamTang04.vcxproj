@@ -194,6 +194,7 @@
     <ClCompile Include="src\sGame.cpp" />
     <ClCompile Include="src\sGameWindow.cpp" />
     <ClCompile Include="src\sGlobal.cpp" />
+    <ClCompile Include="src\sInputSystem.cpp" />
     <ClCompile Include="src\sOrigen.cpp" />
     <ClCompile Include="src\sPhysicsSystem.cpp" />
   </ItemGroup>
@@ -204,6 +205,7 @@
     <ClInclude Include="src\sGame.h" />
     <ClInclude Include="src\sGameWindow.h" />
     <ClInclude Include="src\sGlobal.h" />
+    <ClInclude Include="src\sInputSystem.h" />
     <ClInclude Include="src\sOrigen.h" />
     <ClInclude Include="src\sPhysicsSystem.h" />
   </ItemGroup>
