@@ -3,7 +3,7 @@
 //--------------------------------------------------------------------------
 
 #include "cAtributo.h"
-// #include "../../Util/cToken.h"
+#include <tool/cToken.h>
 
 
 //--------------------------------------------------------------------------
@@ -13,10 +13,10 @@ cAtributo::cAtributo(void)
 {
 }
 
-cAtributo::cAtributo(const cAtributo& oCopia)
+cAtributo::cAtributo(const cAtributo & oCopia)
     : m_sOrigen(oCopia.m_sOrigen)
     , m_sNombre(oCopia.m_sNombre)
-    //, m_oValor(oCopia.m_oValor)
+    , m_oValor(oCopia.m_oValor)
 {
 }
 
@@ -30,90 +30,90 @@ cAtributo::~cAtributo(void)
 //--------------------------------------------------------------------------
 // Resto de metodos
 //--------------------------------------------------------------------------
-void cAtributo::setNombre(std::string& sNombre)
+void cAtributo::setNombre(sString & sNombre)
 {
     m_sNombre = sNombre;
 }
 
 
-std::string& cAtributo::getNombre(void)
+sString & cAtributo::getNombre(void)
 {
     return m_sNombre;
 }
 
 
-//void cAtributo::setValor(std::string& sValor)
-//{
-//    m_oValor.setValor(sValor.Cad());
-//}
-//
-//
-//void cAtributo::setValor(cValor& oValor)
-//{
-//    m_oValor.copia(oValor);
-//}
-
-
-//cValor& cAtributo::getValor(void)
-//{
-//    return m_oValor;
-//}
-
-
-//void cAtributo::setValorOrigen(std::string& sValor)
-//{
-//    m_oValorOrigen.setValor(sValor.Cad());
-//}
-//
-//cValor& cAtributo::getValorOrigen(void)
-//{
-//    return m_oValorOrigen;
-//}
-
-
-void cAtributo::setOrigen(char* pcOrigen)
+void cAtributo::setValor(sString & sValor)
 {
-    //m_sOrigen = pcOrigen;
-    //if (!m_sOrigen.EsVacia())
-    //{
-    //    cToken oTok;
-    //    char* pcCad;
-    //    bool bOk = false;
-
-    //    pcCad = oTok.Str(pcOrigen, 0, "=");
-    //    if (pcCad && oTok.hasToken())
-    //    {
-    //        m_sNombre = pcCad;
-    //        m_sNombre.trim();
-
-    //        pcCad = oTok.Str();
-    //        if (pcCad && oTok.esFin())
-    //        {
-    //            std::string sValor;
-    //            sValor = pcCad;
-    //            sValor.trim();
-    //            sValor.trim('\"');
-
-    //            setValor(sValor);
-    //            setValorOrigen(sValor);
-    //            bOk = true;
-    //        }
-    //    }
-
-    //    if (!bOk)
-    //    {
-    //        std::string sValor;
-
-    //        m_sNombre = "unknown";
-    //        sValor.format("[%s]", m_sOrigen.Cad());
-
-    //        setValor(sValor);
-    //    }
-    //}
+    m_oValor.setValor(sValor.c_str());
 }
 
 
-std::string& cAtributo::getOrigen(void)
+void cAtributo::setValor(cValor &oValor)
+{
+    m_oValor.copia(oValor);
+}
+
+
+cValor & cAtributo::getValor(void)
+{
+    return m_oValor;
+}
+
+
+void cAtributo::setValorOrigen(sString & sValor)
+{
+    m_oValorOrigen.setValor(sValor.c_str());
+}
+
+cValor & cAtributo::getValorOrigen(void)
+{
+    return m_oValorOrigen;
+}
+
+
+void cAtributo::setOrigen(char * pcOrigen)
+{
+    m_sOrigen = pcOrigen;
+    if (!m_sOrigen.empty())
+    {
+        cToken oTok;
+        char * pcCad;
+        bool bOk = false;
+
+        pcCad = oTok.Str(pcOrigen, 0, "=");
+        if (pcCad && oTok.hasToken())
+        {
+            m_sNombre = pcCad;
+            m_sNombre.trim();
+
+            pcCad = oTok.Str();
+            if (pcCad && oTok.esFin())
+            {
+                sString sValor;
+                sValor = pcCad;
+                sValor.trim();
+                sValor.trim('\"');
+
+                setValor(sValor);
+                setValorOrigen(sValor);
+                bOk = true;
+            }
+        }
+
+        if (!bOk)
+        {
+            sString sValor;
+
+            m_sNombre = "unknown";
+            sValor.format("[%s]", m_sOrigen.c_str());
+
+            setValor(sValor);
+        }
+    }
+}
+
+
+sString & cAtributo::getOrigen(void)
 {
     return m_sOrigen;
 }

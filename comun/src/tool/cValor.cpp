@@ -4,12 +4,7 @@
 
 
 #include "cValor.h"
-#include "nComun.h"
-#include "cTool.h"
-
-//#include "cString.h"
-//#include "cUtil.h"
-//#include "../Files/cFile.h"
+#include <tool/cTool.h>
 
 
 //--------------------------------------------------------------------------
@@ -104,14 +99,12 @@ void cValor::copia( const cValor & oValor )
 void cValor::copiaInterna(const cValor & oValor)
 {
     m_eTipo = oValor.m_eTipo;
-    //cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), oValor.m_vcOrigen);
     mCopia(m_vcOrigen, oValor.m_vcOrigen);
     m_sNoString = "";
 
     switch (m_eTipo)
     {
         case eTipoValor::eSTRING:
-            // cString::strcpy(m_uValor.vcValor, sizeof(m_uValor.vcValor), oValor.m_uValor.vcValor);
             cargaString(oValor.m_uValor.psValor->c_str());
             break;
 
@@ -152,7 +145,6 @@ bool cValor::operator == ( const cValor & oValor )
 	switch(m_eTipo)
 	{
 		case eTipoValor::eSTRING:
-            // bIgual = (!cString::strcmp(m_uValor.vcValor, sizeof(m_uValor.vcValor), oValor.m_uValor.vcValor));
             if (m_uValor.psValor && oValor.m_uValor.psValor)
             {
                 std::string sValor1 = *m_uValor.psValor;
@@ -194,7 +186,6 @@ bool cValor::operator == ( const cValor & oValor )
 //--------------------------------------------------------------------------
 void cValor::setOrigen(const char * pcOrigen)
 {
-    //cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), pcOrigen);
     mCopia(m_vcOrigen, pcOrigen);
 }
 
@@ -210,7 +201,6 @@ void cValor::inicioValor(int iValor)
 
     m_eTipo = eTipoValor::eLONG;
     m_uValor.lValor = iValor;
-    //cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), "inicioValor int");
     mCopia(m_vcOrigen, "inicioValor int");
 
     m_sNoString = "";
@@ -224,7 +214,6 @@ void cValor::inicioValor(double dValor)
 
     m_eTipo = eTipoValor::eDOUBLE;
     m_uValor.dValor = dValor;
-    // cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), "inicioValor double");
     mCopia(m_vcOrigen, "inicioValor double");
 
     m_sNoString = "";
@@ -235,7 +224,6 @@ void cValor::inicioValor(bool bValor)
 {
     m_eTipo = eTipoValor::eBOOL;
     m_uValor.bValor = bValor;
-    //cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), "inicioValor bool");
     mCopia(m_vcOrigen, "inicioValor bool");
 
     m_sNoString = "";
@@ -255,7 +243,6 @@ void cValor::inicioValor(const char * pcValor)
     {
         m_eTipo = eTipoValor::eLONG;
         m_uValor.lValor = 0;
-        // cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), "inicioValor Cadena Nula");
         mCopia(m_vcOrigen, "inicioValor Cadena Nula");
     }
     else
@@ -264,7 +251,6 @@ void cValor::inicioValor(const char * pcValor)
         {
             m_eTipo = eTipoValor::eBOOL;
             m_uValor.bValor = !!mbTrue(pcValor);
-            // cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), "inicioValor Cadena Booleana");
             mCopia(m_vcOrigen, "inicioValor Cadena Booleana");
         }
         else
@@ -275,23 +261,18 @@ void cValor::inicioValor(const char * pcValor)
                 {
                     m_eTipo = eTipoValor::eLONG;
                     m_uValor.lValor = atol(pcValor);
-                    //cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), "inicioValor Cadena Entera");
                     mCopia(m_vcOrigen, "inicioValor Cadena Entera");
                 }
                 else
                 {
                     m_eTipo = eTipoValor::eDOUBLE;
                     m_uValor.dValor = atof(pcValor);
-                    //cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), "inicioValor Cadena Double");
                     mCopia(m_vcOrigen, "inicioValor Cadena Double");
                 }
             }
             else
             {
-                // m_eTipo = eTipoValor::eSTRING;
-                // strncpy_s(m_uValor.vcValor, sizeof(m_uValor.vcValor), pcValor, sizeof(m_uValor.vcValor)-1);
                 cargaString(pcValor);
-                //cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), "inicioValor Cadena Simple");
                 mCopia(m_vcOrigen, "inicioValor Cadena Simple");
             }
         }
@@ -311,9 +292,8 @@ void cValor::reset ( int iValor )
     m_uValor.lValor = iValor;
 
     m_sNoString = "";
-    // m_sNoString.limpia();
+    m_sNoString.clear();    // ¿Esto hace lo mismo?
 
-    // cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), "reset int");
     mCopia(m_vcOrigen, "reset int");
 }
 
@@ -325,9 +305,8 @@ void cValor::reset ( double dValor )
     m_uValor.dValor = dValor;
 
     m_sNoString = "";
-    // m_sNoString.limpia();
+    m_sNoString.clear();    // ¿Esto hace lo mismo?
 
-    // cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), "reset double");
     mCopia(m_vcOrigen, "reset double");
 }
 
@@ -350,7 +329,6 @@ void cValor::setValor ( int p_iValor )
 	m_eTipo = eTipoValor::eLONG;
 	m_uValor.lValor = p_iValor;
     m_sNoString = "";
-    //cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), "Entero");
     mCopia(m_vcOrigen, "Entero");
 }
 
@@ -360,7 +338,6 @@ void cValor::setValor ( long p_lValor )
 	m_eTipo = eTipoValor::eLONG;
 	m_uValor.lValor = p_lValor;
     m_sNoString = "";
-    //cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), "Long");
     mCopia(m_vcOrigen, "Long");
 }
 
@@ -370,7 +347,6 @@ void cValor::setValor ( bool p_bValor )
 	m_eTipo = eTipoValor::eBOOL;
 	m_uValor.bValor = p_bValor;
     m_sNoString = "";
-    //cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), "Bool");
     mCopia(m_vcOrigen, "Bool");
 }
 
@@ -380,7 +356,6 @@ void cValor::setValor ( double p_dValor )
 	m_eTipo = eTipoValor::eDOUBLE;
 	m_uValor.dValor = p_dValor;
     m_sNoString = "";
-    //cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), "Double");
     mCopia(m_vcOrigen, "Double");
 }
 
@@ -390,7 +365,6 @@ void cValor::setValor(void * p_vValor)
     m_eTipo = eTipoValor::eVOID;
     m_uValor.pVoid = p_vValor;
     m_sNoString = "";
-    //cString::strcpy(m_vcOrigen, sizeof(m_vcOrigen), "Puntero");
     mCopia(m_vcOrigen, "Puntero");
 }
 
@@ -439,8 +413,7 @@ void  *	cValor::getParam ( void )
 		case eTipoValor::eSTRING:
             if (m_uValor.psValor)
             {
-                // pvParam = (void*)m_uValor.psValor->Cad();     // m_uValor.vcValor;
-                pvParam = (void*)m_uValor.psValor->c_str();     // m_uValor.vcValor;
+                pvParam = (void *) m_uValor.psValor->c_str();     // m_uValor.vcValor;
             }
 			break;
 
@@ -477,35 +450,33 @@ void  *	cValor::getParam ( void )
 //--------------------------------------------------------------------------
 const char * cValor::getString()
 {
-	char * pcRes = NULL;
+	const char * pcRes = NULL;
 
     switch (m_eTipo)
     {
         case eTipoValor::eSTRING:
             if (m_uValor.psValor)
             {
-                // pcRes = m_uValor.psValor->Cad();
-                //pcRes = m_uValor.psValor->c_str();
+                pcRes = m_uValor.psValor->c_str();
             }
             break;
 
         case eTipoValor::eBOOL:
             {
-                // ToDo format
-                //m_sNoString.format("%s", msTrue(m_uValor.bValor));
-                //pcRes = m_sNoString.c_str();
+                m_sNoString.format("%s", msTrue(m_uValor.bValor));
+                pcRes = m_sNoString.c_str();
             }
             break;
         case eTipoValor::eLONG:
             {
-                //m_sNoString.format("%d", m_uValor.lValor);
-                //pcRes = m_sNoString.c_str();
+                m_sNoString.format("%d", m_uValor.lValor);
+                pcRes = m_sNoString.c_str();
             }
             break;
         case eTipoValor::eDOUBLE:
             {
-                //m_sNoString.format("%f", m_uValor.dValor);
-                //pcRes = m_sNoString.c_str();
+                m_sNoString.format("%f", m_uValor.dValor);
+                pcRes = m_sNoString.c_str();
             }
             break;
 
@@ -598,47 +569,46 @@ bool cValor::esValido	( void )
 //--------------------------------------------------------------------------
 // Necesitamos la representacion escrita de 
 //--------------------------------------------------------------------------
-const char * cValor::toString ( std::string & sReserva, const char * pcFormat )
+const char * cValor::toString ( sString & sReserva, const char * pcFormat )
 {
-  //  cString sFormato;
-  //  switch(m_eTipo)
-  //  {
-		//case eTipoValor::eSTRING:
-  //          sFormato = (pcFormat)? pcFormat: "%s";
-  //          sReserva.format(sFormato.Cad(), (m_uValor.psValor) ? m_uValor.psValor->Cad() : "nulo");
-  //          break;
+    sString sFormato;
+    switch(m_eTipo)
+    {
+		case eTipoValor::eSTRING:
+            sFormato = (pcFormat)? pcFormat: "%s";
+            sReserva.format(sFormato.c_str(), (m_uValor.psValor) ? m_uValor.psValor->c_str() : "nulo");
+            break;
 
-		//case eTipoValor::eDOUBLE:
-  //          sFormato = (pcFormat)? pcFormat: "%f";
-  //          sReserva.format(sFormato.Cad(), m_uValor.dValor);
-		//	break;
+		case eTipoValor::eDOUBLE:
+            sFormato = (pcFormat)? pcFormat: "%f";
+            sReserva.format(sFormato.c_str(), m_uValor.dValor);
+			break;
 
-		//case eTipoValor::eLONG:
-  //          sFormato = (pcFormat)? pcFormat: "%ld";
-  //          sReserva.format(sFormato.Cad(), m_uValor.lValor);
-		//	break;
+		case eTipoValor::eLONG:
+            sFormato = (pcFormat)? pcFormat: "%ld";
+            sReserva.format(sFormato.c_str(), m_uValor.lValor);
+			break;
 
-		//case eTipoValor::eBOOL:
-  //          sFormato = (pcFormat) ? pcFormat : "%s";
-  //          sReserva.format(sFormato.Cad(), msTrue(m_uValor.bValor));
-		//	break;
+		case eTipoValor::eBOOL:
+            sFormato = (pcFormat) ? pcFormat : "%s";
+            sReserva.format(sFormato.c_str(), msTrue(m_uValor.bValor));
+			break;
 
-		//case eTipoValor::eLISTA:
-  //          sFormato = (pcFormat) ? pcFormat : "<lista>";
-  //          sReserva.format(sFormato.Cad());
-		//	break;
+		case eTipoValor::eLISTA:
+            sFormato = (pcFormat) ? pcFormat : "<lista>";
+            sReserva.format(sFormato.c_str());
+			break;
 
-		//case eTipoValor::eVOID:
-  //          sFormato = (pcFormat) ? pcFormat : "<void>";
-  //          sReserva.format(sFormato.Cad());
-		//	break;
+		case eTipoValor::eVOID:
+            sFormato = (pcFormat) ? pcFormat : "<void>";
+            sReserva.format(sFormato.c_str());
+			break;
 
-		//default:
-		//	break;
-  //  }
+		default:
+			break;
+    }
 
-  //  return (const char *) sReserva.Cad();
-    return nullptr;
+    return (const char *) sReserva.c_str();
 }
 
 

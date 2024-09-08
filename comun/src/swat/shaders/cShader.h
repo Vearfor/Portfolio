@@ -74,6 +74,8 @@ public:
     static char* SetNombre(char* nombre, int iSizeNombre, const char* formato, ...);
     static char* SetPatron(char* patron, int iSizePatron, const char* nombre, const char* nomVariable);
     //----------------------------------------------------------------------
+    static void use(GLuint iProgram);
+    //----------------------------------------------------------------------
 };
 //--------------------------------------------------------------------------
 

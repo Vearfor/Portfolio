@@ -7,47 +7,44 @@
 //--------------------------------------------------------------------------
 // Includes
 //--------------------------------------------------------------------------
-//#include "../../Util/cString.h"
-// #include "../../Util/cValor.h"
-//--------------------------------------------------------------------------
-#include <string>
+#include <tool/cValor.h>
 //--------------------------------------------------------------------------
 
 
 //--------------------------------------------------------------------------
 // Class
 //--------------------------------------------------------------------------
-//class cFile;
+class cFile;
 //--------------------------------------------------------------------------
-class cAtributo
+class _mExport cAtributo
 {
 protected:
 
-    std::string     m_sOrigen;      // <nombre>="<valor>"
-    std::string     m_sNombre;      // nombre
-    //cValor      m_oValor;       // valor
-    //cValor      m_oValorOrigen; // Si teniamos un valor inicial, este lo guardamos aqui: para tener el nombre de un identificador.
+    sString     m_sOrigen;      // <nombre>="<valor>"
+    sString     m_sNombre;      // nombre
+    cValor      m_oValor;       // valor
+    cValor      m_oValorOrigen; // Si teniamos un valor inicial, este lo guardamos aqui: para tener el nombre de un identificador.
 
 public:
 
     cAtributo(void);
-    cAtributo(const cAtributo& oCopia);
+    cAtributo(const cAtributo & oCopia);
     virtual ~cAtributo(void);
 
-    void setOrigen(char* pcNombre);
-    std::string& getOrigen(void);
+    void setOrigen(char * pcNombre);
+    sString & getOrigen(void);
 
-    void setNombre(std::string& sNombre);
-    std::string& getNombre(void);
+    void setNombre(sString & sNombre);
+    sString & getNombre(void);
 
-    //void setValor(std::string& sValor);
-    //void setValor(cValor& oValor);
-    //cValor& getValor(void);
+    void setValor(sString & sValor);
+    void setValor(cValor & oValor);
+    cValor & getValor(void);
 
-    //void setValorOrigen(std::string& sValor);
-    //cValor& getValorOrigen(void);
+    void setValorOrigen(sString & sValor);
+    cValor & getValorOrigen(void);
 
-    //void escribe(cFile* poFile, int iNivelAnidamiento);
+    void escribe(cFile * poFile, int iNivelAnidamiento);
 };
 //--------------------------------------------------------------------------
 

@@ -128,6 +128,15 @@
     <ClCompile Include="..\comun\src\swat\buffers\cMalla.cpp">
       <Filter>Source\comun\swat\buffers</Filter>
     </ClCompile>
+    <ClCompile Include="..\comun\src\tool\cToken.cpp">
+      <Filter>Source\comun\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\cValor.cpp">
+      <Filter>Source\comun\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\sString.cpp">
+      <Filter>Source\comun\tool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\comun\src\tool\consola\cConio.h">
@@ -225,6 +234,15 @@
     </ClInclude>
     <ClInclude Include="..\comun\src\dll\cDll.h">
       <Filter>Source\comun\dll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\cToken.h">
+      <Filter>Source\comun\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\cValor.h">
+      <Filter>Source\comun\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\sString.h">
+      <Filter>Source\comun\tool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

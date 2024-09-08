@@ -131,6 +131,12 @@
     <ClCompile Include="..\comun\src\tool\cValor.cpp">
       <Filter>source\comun\tool</Filter>
     </ClCompile>
+    <ClCompile Include="..\comun\src\tool\sString.cpp">
+      <Filter>source\comun\tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\cToken.cpp">
+      <Filter>source\comun\tool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cSuatDll.h">
@@ -233,6 +239,12 @@
       <Filter>source\comun\swat</Filter>
     </ClInclude>
     <ClInclude Include="..\comun\src\tool\cValor.h">
+      <Filter>source\comun\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\sString.h">
+      <Filter>source\comun\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\cToken.h">
       <Filter>source\comun\tool</Filter>
     </ClInclude>
   </ItemGroup>

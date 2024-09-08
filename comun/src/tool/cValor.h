@@ -9,15 +9,15 @@
 // - eLISTA	: Apenas estan trabajados y son punteros a void.
 // - eVOID	:
 //
-//--------------------------------------------------------------------------
+//--------------------------------------------------------------------------include 
 
 
 #pragma once
 //--------------------------------------------------------------------------
 // Includes
 //--------------------------------------------------------------------------
-//#include "cString.h"
-//--------------------------------------------------------------------------
+#include "sString.h"
+#include <tool/nComun.h>
 #include <string>
 //--------------------------------------------------------------------------
 
@@ -54,16 +54,20 @@ enum class eTipoValor
 //--------------------------------------------------------------------------
 // Tipos
 //--------------------------------------------------------------------------
-typedef union UValor
+// Warning a quitar:
+// - warning C4624: 'UValor': el destructor se definió implícitamente como
+//                            eliminado
+//--------------------------------------------------------------------------
+union UValor
 {
-	bool	 bValor	 ;
-	long	 lValor	 ;
-	double	 dValor	 ;
+	bool bValor;
+	long lValor;
+	double dValor;
 	std::string* psValor;
- 	void    * pLista ;
-	void    * pVoid	 ;
+	void* pLista;
+	void* pVoid;
 
-} UValor;
+};
 //--------------------------------------------------------------------------
 typedef void * Param;
 //--------------------------------------------------------------------------
@@ -73,15 +77,13 @@ typedef void * Param;
 // Class: Antiguos miValor unido con UValor
 // typedef struct miValor
 //--------------------------------------------------------------------------
-class cValor
+class _mExport cValor
 {
 	UValor      m_uValor	;
 	eTipoValor  m_eTipo		;
 	char        m_vcOrigen	[64];
 
-    // Respuesta GetString() si no es eSTRING;
-    // cString     m_sNoString;
-	std::string m_sNoString;
+	sString	m_sNoString{ "" };
 
     void deleteString(void);
     void cargaString(const char * pcValor);
@@ -89,9 +91,8 @@ class cValor
     void inicioValor(int iValor = 0);
     void inicioValor(double dValor);
     void inicioValor(bool bValor);
-	//void inicioValor(const cString& sValor);
-	void inicioValor(const std::string& sValor);
-	void inicioValor(const char * pcValor);
+    void inicioValor(const std::string & sValor);
+    void inicioValor(const char * pcValor);
 
     void copiaInterna(const cValor & oValor);
 
@@ -104,8 +105,7 @@ public:
     cValor  ( double dValor );
     cValor  ( bool bValor );
     cValor  ( const char * pcValor );
-	// cValor(const cString& oString);
-	cValor(const std::string& oString);
+    cValor  ( const std::string & oString );
 	cValor	( const cValor & oOrigen );
 	virtual ~cValor	(void);
 
@@ -139,8 +139,7 @@ public:
 	void  *	getVoid				( void );
 	bool	esValido			( void );
 	bool	esNoValido			( void );
-	// const char* toString(cString& sReserva, const char* pcFormat = NULL);
-	const char* toString(std::string& sReserva, const char* pcFormat = NULL);
+    const char * toString       ( sString & sReserva, const char * pcFormat = NULL );
 
 	//template<typename T> void	Set	( T tValor );
 	//template<typename T> T		Get ( void );
