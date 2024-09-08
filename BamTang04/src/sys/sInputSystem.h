@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------*\
-|* sCollisionSystem.h
+|* sInputSystem.h
 \*------------------------------------------------------------------------*/
 
 #pragma once
@@ -10,24 +10,20 @@
 
 /*------------------------------------------------------------------------*/
 struct sGame;
-struct sBall;
 /*------------------------------------------------------------------------*/
-struct sCollisionSystem
+struct sInputSystem
 {
-    sCollisionSystem(int width, int height);
-    ~sCollisionSystem();
+    sInputSystem();
+    ~sInputSystem();
 
-    void updateLimits(int width, int height);
     int update(sGame*, float fDeltaTime);
-    bool checkCollision(float fDeltaTime, sBall* bola1, sBall* bola2);
-    void collision(sBall* pBola1, sBall* pBola2);
-    void collision_0(sBall* pBola1, sBall* pBola2);
 
-    static int m_iWidth;
-    static int m_iHeight;
+private:
+
+    int getHeight();
 };
 /*------------------------------------------------------------------------*/
 
 /*------------------------------------------------------------------------*\
-|* Fin de sCollisionSystem.h
+|* Fin de sInputSystem.h
 \*------------------------------------------------------------------------*/

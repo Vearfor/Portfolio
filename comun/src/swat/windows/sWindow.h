@@ -138,6 +138,8 @@ struct _mExport sWindow
     HDC getDeviceContext(void) { return m_hDC; }
     HWND getWindow(void) { return m_hWindow; }
     cRect<long>& getCurrentRect(void) { return m_wCurrentRect; }
+    int getAnchoOnSize(void);
+    int getAltoOnSize(void);
 
     static bool GetWindowRect(HWND hwnd, cRect<long>* pRectRes);
     static bool GetClientRect(HWND hwnd, cRect<long>* pClientRes);
@@ -213,10 +215,8 @@ protected:
 
     // double  getAspectX(void) { return m_dAspectX; }
     // double  getAspectY(void) { return m_dAspectY; }
-    void    setAnchoOnSize(int iValor) { m_iAnchoOnSize = iValor; }
-    void    setAltoOnSize(int iValor) { m_iAltoOnSize = iValor; }
-    int     getAnchoOnSize(void) { return m_iAnchoOnSize; }
-    int     getAltoOnSize(void) { return m_iAltoOnSize; }
+    void    setAnchoOnSize(int iValor);
+    void    setAltoOnSize(int iValor);
     void    setScreenX(int iValor) { m_iScreenX = iValor; }
     void    setScreenY(int iValor) { m_iScreenY = iValor; }
     int     getScreenX(void) { return m_iScreenX; }

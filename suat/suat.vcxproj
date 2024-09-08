@@ -215,6 +215,7 @@
     <ClCompile Include="..\comun\src\tool\cRandom.cpp" />
     <ClCompile Include="..\comun\src\tool\cTime.cpp" />
     <ClCompile Include="..\comun\src\tool\cTool.cpp" />
+    <ClCompile Include="..\comun\src\tool\cValor.cpp" />
     <ClCompile Include="..\comun\src\tool\iMensajes.cpp" />
     <ClCompile Include="..\comun\src\tool\sMath.cpp" />
     <ClCompile Include="src\cSuatDll.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="..\comun\src\tool\cRandom.hpp" />
     <ClInclude Include="..\comun\src\tool\cTime.h" />
     <ClInclude Include="..\comun\src\tool\cTool.h" />
+    <ClInclude Include="..\comun\src\tool\cValor.h" />
     <ClInclude Include="..\comun\src\tool\iMensajes.h" />
     <ClInclude Include="..\comun\src\tool\nComun.h" />
     <ClInclude Include="..\comun\src\tool\nMensajes.h" />

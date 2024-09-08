@@ -3,11 +3,11 @@
 \*------------------------------------------------------------------------*/
 
 #include "sInputSystem.h"
-#include "sGame.h"
-#include "sGameWindow.h"
-#include "sOrigen.h"
-#include "sGlobal.h"
-#include "sCollisionSystem.h"
+#include "sRenderSystem.h"
+#include "../sGame.h"
+#include "../sGameWindow.h"
+#include "../sOrigen.h"
+#include "../sGlobal.h"
 #include <swat/input/cTeclado.h>
 #include <swat/input/cRaton.h>
 
@@ -19,13 +19,14 @@ sInputSystem::sInputSystem()
 
 sInputSystem::~sInputSystem()
 {
+    cLog::print(" Destructor sInputSystem\n");
 }
 /*------------------------------------------------------------------------*/
 
 
 int sInputSystem::update(sGame* pGame, float fDeltaTime)
 {
-    sGameWindow* pWindow = pGame->getMainWindow();
+    sGameWindow* pWindow = pGame->getRender()->getMainWindow();
     sOrigen* pOrigen = pGame->getMainOrigin();
     cTeclado* pTeclado = pWindow->m_pTeclado;
     if (pTeclado)
@@ -117,7 +118,7 @@ int sInputSystem::update(sGame* pGame, float fDeltaTime)
                 pOrigen->m_posicion =
                 {
                     pMouse->getLastPos().x,
-                    (sCollisionSystem::m_iHeight - sGlobal::m_windowCaptionSize) - pMouse->getLastPos().y
+                    getHeight() - pMouse->getLastPos().y
                 };
             }
         }
@@ -125,6 +126,16 @@ int sInputSystem::update(sGame* pGame, float fDeltaTime)
 
     return 0;
 }
+
+
+/*------------------------------------------------------------------------*\
+|* Hacemos el uso de la instancia sGame:
+\*------------------------------------------------------------------------*/
+int sInputSystem::getHeight()
+{
+    return sGame::instancia()->getRender()->getHeight();
+}
+/*------------------------------------------------------------------------*/
 
 
 /*------------------------------------------------------------------------*\

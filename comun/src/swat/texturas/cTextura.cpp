@@ -70,7 +70,6 @@ cstatic sResultText cTextura::genTexturaSimple(int width, int height, int compon
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
     if (generateMipMaps)
         glGenerateMipmap(GL_TEXTURE_2D);
-    //SOIL_free_image_data(image);
     stbi_image_free(image);
     glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -100,7 +99,6 @@ cstatic sResultText cTextura::genTexturaMap(int width, int height, int component
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
     if (generateMipMaps)
         glGenerateMipmap(GL_TEXTURE_2D);
-    //SOIL_free_image_data(image);
     stbi_image_free(image);
     glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -127,10 +125,19 @@ cstatic sResultText cTextura::genTexturaModel(int width, int height, int compone
     // Filter
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+
+    glTexImage2D(
+        GL_TEXTURE_2D,      // Target
+        0,                  // Level
+        GL_RGB,             // internal format
+        width, height,
+        0,                  // border: width of a border 
+        GL_RGB,             // output format :
+        GL_UNSIGNED_BYTE,   // type          : como estan dentro del buffer, unsigned byte y RGB.
+        image               // image data: the raw image
+    );
     if (generateMipMaps)
         glGenerateMipmap(GL_TEXTURE_2D);
-    //SOIL_free_image_data(image);
     stbi_image_free(image);
     glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -197,8 +204,13 @@ int cTextura::genCubeMap(std::vector<const GLchar*> faces)
 
             for (i = 0; i < imagenes.size(); i++)
             {
-                glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, imagenes[i].width, imagenes[i].height, 0, GL_RGB, GL_UNSIGNED_BYTE, imagenes[i].image);
-                // SOIL_free_image_data(imagenes[i].image);
+                glTexImage2D(
+                    GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 
+                    0, GL_RGB, 
+                    imagenes[i].width, imagenes[i].height,
+                    0, GL_RGB,
+                    GL_UNSIGNED_BYTE, 
+                    imagenes[i].image);
                 stbi_image_free(imagenes[i].image);
             }
             glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
@@ -234,13 +246,11 @@ cstatic sResultText cTextura::cargaTextura(textureType type, const char* pcFiche
     switch (type)
     {
         case textureType::TexSimple:
-            // forceCanals = (int)SOIL_LOAD_RGBA;
-            forceCanals = (int)STBI_rgb_alpha;
+            forceCanals = (int)STBI_rgb_alpha;      // RGBA
             break;
         case textureType::TexMap:
         case textureType::TexModel:
-            // forceCanals = (int)SOIL_LOAD_RGB;
-            forceCanals = (int)STBI_rgb;
+            forceCanals = (int)STBI_rgb;            // RGB
             break;
         case textureType::TexCube:
             std::cerr << "\nError::cargaTextura:: El TexCube se hace con cTextura::genCubeMap" << std::endl;
@@ -316,8 +326,14 @@ cstatic int cTextura::invertImage(unsigned char* imageData, int width, int heigh
 // - hace que la textura de la caja de madera sea la activa en el shader
 // glActiveTexture(GL_TEXTURE0 + texUnit);   // texunit de 0 a 32 (31 ?)
 // glBindTexture(GL_TEXTURE_2D, mTexture);   // mTexture el identificador opengl generado con  glGenTextures
-// 
 //--------------------------------------------------------------------------
+/*------------------------------------------------------------------------*\
+|* Concepto de Texture Unit (unidad de textura)
+|* - piece of hw que tiene access a una texture image
+|*   para activar multiples niveles/efectos se podrian activar distintas
+|*   Texture Unit, GL_TEXTURE1, GL_TEXTURE2, ...
+|*   ... por ahora nos quedamos generalmente con la GL_TEXTURE0 ...
+\*------------------------------------------------------------------------*/
 int cTextura::useTextura(int texUnit, GLint samplerLoc, int valorSampler)
 {
     if (m_iTex > 0)
@@ -334,14 +350,18 @@ int cTextura::useTextura(int texUnit, GLint samplerLoc, int valorSampler)
                 glBindTexture(GL_TEXTURE_2D, m_iTex);
             }
 
+            // y no deberia ser el valor del sampler, sino el valor del samplerLoc > -1
+            // el que diga si esto se activa o no.
             if (valorSampler > 0)
             {
-                // Segun he visto, esto, puede que sobre ???
+                //--------------------------------------------------------------
                 // Segun parece no hace falta: hasta nuevo aviso.
-                //cShader::SetUniform(samplerLoc, valorSampler);
+                //GLint iLoc = pShader->getLocation(nameUniform);
+                //cShader::SetUniform(iLoc, valorSampler);
                 // 
                 // No parece que la textura necesite el uniform sobre su 'texSampler1'
                 // En origen no tengo ni el m_nameLoc que nos daria su location.
+                //--------------------------------------------------------------
             }
         }
     }
@@ -365,12 +385,14 @@ int  cTextura::useTextura(int texUnit, cShader* pShader, const char* nameUniform
                 glBindTexture(GL_TEXTURE_2D, m_iTex);
             }
 
+            //--------------------------------------------------------------
             // Segun parece no hace falta: hasta nuevo aviso.
             //GLint iLoc = pShader->getLocation(nameUniform);
             //cShader::SetUniform(iLoc, valorSampler);
             // 
             // No parece que la textura necesite el uniform sobre su 'texSampler1'
             // En origen no tengo ni el m_nameLoc que nos daria su location.
+            //--------------------------------------------------------------
         }
     }
     return 0;

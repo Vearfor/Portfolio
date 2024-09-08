@@ -45,10 +45,11 @@ void cRandom::reset ( void )
 //--------------------------------------------------------------------------
 // Inicialización con cambio de Semilla si es que se pone diferente.
 //--------------------------------------------------------------------------
-void cRandom::inicia ( long ulSemillaP )
+int cRandom::inicia ( long ulSemillaP )
 {
 	setSemilla(ulSemillaP);
     reset();
+	return 0;
 }
 
 

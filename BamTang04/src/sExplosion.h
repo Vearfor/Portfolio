@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------*\
-|* sBall.h
+|* sExplosion.h
 \*------------------------------------------------------------------------*/
 
 #pragma once
@@ -7,70 +7,57 @@
 |* Includes
 \*------------------------------------------------------------------------*/
 #include <GLM/glm.hpp>
+#include <vector>
 /*------------------------------------------------------------------------*/
 
 
 /*------------------------------------------------------------------------*\
 |* Enumerados
 \*------------------------------------------------------------------------*/
-enum class eIncrGrados
+/*------------------------------------------------------------------------*/
+
+
+/*------------------------------------------------------------------------*\
+|* struct sTrozo
+\*------------------------------------------------------------------------*/
+struct sTrozo
 {
-    eSuma,
-    eResta
+    glm::vec2 m_pos{ 0.0f, 0.0f };
+    float m_fdir{ 0.0f };
+    float m_fradio{ 0.0f };
+    float m_velocidad{ 0.0f };
+    bool rectObola{ false };
+    float m_fRotate{ 0.0f };
 };
 /*------------------------------------------------------------------------*/
 
 
 /*------------------------------------------------------------------------*\
-|* struct sBall
+|* struct sExplosion
 \*------------------------------------------------------------------------*/
 struct sRenderSystem;
-struct sExplosion;
+struct sBall;
 /*------------------------------------------------------------------------*/
-struct sBall
+struct sExplosion
 {
-    sBall();
-    virtual ~sBall();
+    sExplosion(sBall* pBola);
+    virtual ~sExplosion();
 
-    virtual int update(float fDeltaTime);
-    virtual int render(float fDeltaTime);
-    virtual int checkLimites(float fDeltaTime, int width, int height);
-    virtual int checkPosicion(int width, int hight);
-    virtual int checkParada(float fDeltaTime);
-    virtual int matarBola(float fDeltaTime);
+    int update(float fDeltaTime);
+    int render(float fDeltaTime);
 
-    void render_normal();
-    void render_explosion(float fDeltaTime);
-    void cambiaDir(eIncrGrados incr);
-
-    int m_bolaId{ -1 };
+    int m_explId{ -1 };
     glm::vec2 m_posicion{ 0.0f, 0.0f };
     float m_radio{ 1.0f };
     glm::vec4 m_color{ 1.0f, 0.0f, 0.0f, 1.0f };
     float m_fdir{ 0.0f };
     glm::vec2 m_vecVelocidad{ 0.0f, 0.0f };
-    bool m_estaColisionando{ false };
-    bool m_check{ false };
-    bool m_parando{ false };
-    bool m_explotando{ false };
-    bool m_destruir{ false };
     float m_tiempo{ 0.0f };
-    sExplosion* m_pExplosion{ nullptr };
-
-    static glm::vec2 calcIncremento(float fDeltaTime, glm::vec2 velBola);
-
-    static bool m_hayGravedad;
-    static bool m_hayFriccion;
-    static int s_countBolas;
-
-private:
-
-    int getWidth();
-    int getHeight();
+    std::vector<sTrozo> m_vecTrozo{};
 };
 /*------------------------------------------------------------------------*/
 
 
 /*------------------------------------------------------------------------*\
-|* Fin de sBall.h
+|* Fin de sExplosion.h
 \*------------------------------------------------------------------------*/

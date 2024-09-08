@@ -20,8 +20,22 @@ int sOpenGL::m_iLevelMatrixVista = 0;
 int sOpenGL::m_iLevelMatrixProyeccion = 0;
 int sOpenGL::m_iLevelMatrixTextura = 0;
 eMatrixModo sOpenGL::m_eMatrixModo = eMatrixModo::eGL_MODELVIEW;
+//--------------------------------------------------------------------------
+bool sOpenGL::m_bTransparencia = true;
+bool sOpenGL::m_bProfundidad = true;
+bool sOpenGL::m_bTextura2D = true;
+//--------------------------------------------------------------------------
+bool sOpenGL::m_bCullFace = true;
+GLenum sOpenGL::m_eCullFaceMode = GL_BACK;      // Tambien: GL_FRONT, GL_FRONT_AND_BACK
+GLenum sOpenGL::m_eFrontFace = GL_CCW;          // Tambien: GL_CW, GL_CCW
+//--------------------------------------------------------------------------
+float sOpenGL::m_vfSize_puntos[] = { 0.1f, 1.0f };
+float sOpenGL::m_fInc_puntos = 0.1f;
+//--------------------------------------------------------------------------
 float sOpenGL::m_vfWidth_lineas[] = { 0.1f, 1.0f };
 float sOpenGL::m_fInc_lineas = 0.1f;
+//--------------------------------------------------------------------------
+glm::vec4 sOpenGL::m_vCurrentColor{ 1.0f, 1.0f, 1.0f, 1.0f };
 //--------------------------------------------------------------------------
 
 
@@ -36,10 +50,27 @@ cstatic int sOpenGL::initOpenGL()
 			cLog::error(" Error: sOpenGL::initOpenGL: glewInit: Fallo la inicializacion de Glew\n");
 		}
 
+        cLog::traza(cLog::eTraza::min, " initOpenGL: Valores iniciales por defecto\n");
+
+        int iValor;
+        float fValor;
+        //----------------------------------------------------------------------
+        // Tamanio del punto.
+        //----------------------------------------------------------------------
+        glEnable(GL_POINT_SMOOTH);
+        glGetFloatv(GL_POINT_SIZE_RANGE, m_vfSize_puntos);
+        glGetFloatv(GL_POINT_SIZE_GRANULARITY, &m_fInc_puntos);
+
+        fValor = m_vfSize_puntos[0] + ((m_vfSize_puntos[0] == 0) ? m_fInc_puntos : 0);
+        glPointSize(fValor);
+        //----------------------------------------------------------------------
+        cLog::traza(cLog::eTraza::min, " - Habilitado 'point smooth'\n");
+        cLog::traza(cLog::eTraza::min, " - Point size: %6.3f\n", fValor);
+        //----------------------------------------------------------------------
+
         //----------------------------------------------------------------------
         // Tamanio de la linea.
         //----------------------------------------------------------------------
-        float fValor;
         glEnable(GL_LINE_SMOOTH);
         glGetFloatv(GL_LINE_WIDTH, &fValor);
         glGetFloatv(GL_LINE_WIDTH_RANGE, m_vfWidth_lineas);
@@ -51,14 +82,95 @@ cstatic int sOpenGL::initOpenGL()
 
         glLineWidth(fValor);
         //----------------------------------------------------------------------
+        cLog::traza(cLog::eTraza::min, " - Habilitado 'line smooth'\n");
+        cLog::traza(cLog::eTraza::min, " - Line width: %6.3f\n", fValor);
+        //----------------------------------------------------------------------
 
-		// Al menos establecemos el estado inicial de OpenGL
-		glEnable(GL_DEPTH_TEST);
+        //----------------------------------------------------------------------
+        // Cull Face: Eliminacion de caras.
+        //----------------------------------------------------------------------
+        m_bCullFace = (bool) glIsEnabled(GL_CULL_FACE);
+        glGetIntegerv(GL_CULL_FACE_MODE, &iValor);
+        m_eCullFaceMode = iValor;
+        //----------------------------------------------------------------------
+        cLog::traza(cLog::eTraza::min, " - Habilitado 'cull_face' %s\n", msTrue(m_bCullFace));
+        //----------------------------------------------------------------------
+        //  glCullFace(GL_BACK);    // GL_BACK: borrara la trasera.
+        //----------------------------------------------------------------------
 
+        //----------------------------------------------------------------------
+        // Front Face
+        // Que determina la cara Frontal o Trasera: .
+        //  glFrontFace(GL_CCW);	// GL_CCW counterclockwise:
+        //                             indica la cara frontal: 
+        //                             en sentido contrario agujas del reloj
+        //----------------------------------------------------------------------
+        glGetIntegerv(GL_FRONT_FACE, &iValor);
+        m_eFrontFace = iValor;
+        //----------------------------------------------------------------------
+        cLog::traza(cLog::eTraza::min, " - Front Face '%s'\n", sOpenGL::getNombreOpenGL(iValor));
+        //----------------------------------------------------------------------
+
+        //----------------------------------------------------------------------
+        // Current Color
+        //----------------------------------------------------------------------
+        m_vCurrentColor = sOpenGL::getColor();
+        //----------------------------------------------------------------------
+        cLog::traza(cLog::eTraza::min, " - Current Color  { %6.3f, %6.3f, %6.3f, %6.3f }\n",
+            m_vCurrentColor.r,
+            m_vCurrentColor.g,
+            m_vCurrentColor.b,
+            m_vCurrentColor.a
+        );
+        //----------------------------------------------------------------------
+
+        //----------------------------------------------------------------------
+        // Test de profuncidad
+        //----------------------------------------------------------------------
+        sOpenGL::Act_depth();
+        //----------------------------------------------------------------------
+        cLog::traza(cLog::eTraza::min, " - Habilitado 'test profundidad' %s\n", msTrue(m_bProfundidad));
+        //----------------------------------------------------------------------
+
+        cLog::traza(cLog::eTraza::min, "\n");
 		m_bIniciado = true;
 	}
 
 	return 0;
+}
+
+
+//--------------------------------------------------------------------------
+// Encapsulamos los valores fijos de las luces
+// ClearColor, AmbientColor, no se utiliza
+//--------------------------------------------------------------------------
+cstatic int sOpenGL::inicioLuces(glm::vec4 vAmbientColor)
+{
+    float vfLuzAmbiente[4];
+    vfLuzAmbiente[0] = vAmbientColor.r;
+    vfLuzAmbiente[1] = vAmbientColor.g;
+    vfLuzAmbiente[2] = vAmbientColor.b;
+    vfLuzAmbiente[3] = vAmbientColor.a;
+
+    // Pero parece que esta suministra una luz ambiente general
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, vfLuzAmbiente);
+    // Esta sola pata la Luz0 es suficiente
+    //// Y esta la refuerza, por la existencia de la luz
+    glLightfv(GL_LIGHT0, GL_AMBIENT, vfLuzAmbiente);
+    Act_lighting();
+
+    // When light is enabled, glColor3f has no effect ???? ...  puede que sea cierto ...
+    // Esto es cuando No hay GL_LIGHTING, y funciona glColor
+    // Por ahora, creo, que es incompatible con el GL_LIGHTING, no dice lo mismo el pu.. libro.
+    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+    Act_colorMaterial();
+
+    glShadeModel(GL_SMOOTH);
+    // Pues no necesito esto para las esferas con cuadricas ...
+    // glEnable(GL_NORMALIZE);  // Para forzar la normalizacion de los vectores normales
+    // No creo que tenga sentido ...
+
+    return 0;
 }
 
 
@@ -106,17 +218,17 @@ cstatic eMatrixModo sOpenGL::pushMatrix(eMatrixModo eModo)
     setMatrixModo(eModo);
     switch (m_eMatrixModo)
     {
-    case eMatrixModo::eGL_MODELVIEW:
-        m_iLevelMatrixVista++;
-        break;
-    case eMatrixModo::eGL_PROJECTION:
-        m_iLevelMatrixProyeccion++;
-        break;
-    case eMatrixModo::eGL_TEXTURE:
-        m_iLevelMatrixTextura++;
-        break;
-    default:
-        break;
+        case eMatrixModo::eGL_MODELVIEW:
+            m_iLevelMatrixVista++;
+            break;
+        case eMatrixModo::eGL_PROJECTION:
+            m_iLevelMatrixProyeccion++;
+            break;
+        case eMatrixModo::eGL_TEXTURE:
+            m_iLevelMatrixTextura++;
+            break;
+        default:
+            break;
     }
     glPushMatrix();
 
@@ -129,17 +241,17 @@ cstatic eMatrixModo sOpenGL::popMatrix(eMatrixModo eModo)
     setMatrixModo(eModo);
     switch (eModo)
     {
-    case eMatrixModo::eGL_MODELVIEW:
-        m_iLevelMatrixVista--;
-        break;
-    case eMatrixModo::eGL_PROJECTION:
-        m_iLevelMatrixProyeccion--;
-        break;
-    case eMatrixModo::eGL_TEXTURE:
-        m_iLevelMatrixTextura--;
-        break;
-    default:
-        break;
+        case eMatrixModo::eGL_MODELVIEW:
+            m_iLevelMatrixVista--;
+            break;
+        case eMatrixModo::eGL_PROJECTION:
+            m_iLevelMatrixProyeccion--;
+            break;
+        case eMatrixModo::eGL_TEXTURE:
+            m_iLevelMatrixTextura--;
+            break;
+        default:
+            break;
     }
 
     // si fueran menor que 0, algun error se esta produciendo:
@@ -154,15 +266,15 @@ cstatic int sOpenGL::getLevelPushMatrix(eMatrixModo eModo)
     int iLevel = 0;
     switch (eModo)
     {
-    case eMatrixModo::eGL_MODELVIEW:
-        iLevel = m_iLevelMatrixVista;
-        break;
-    case eMatrixModo::eGL_PROJECTION:
-        iLevel = m_iLevelMatrixProyeccion;
-        break;
-    case eMatrixModo::eGL_TEXTURE:
-        iLevel = m_iLevelMatrixTextura;
-        break;
+        case eMatrixModo::eGL_MODELVIEW:
+            iLevel = m_iLevelMatrixVista;
+            break;
+        case eMatrixModo::eGL_PROJECTION:
+            iLevel = m_iLevelMatrixProyeccion;
+            break;
+        case eMatrixModo::eGL_TEXTURE:
+            iLevel = m_iLevelMatrixTextura;
+            break;
     }
     return iLevel;
 }
@@ -174,15 +286,15 @@ cstatic void sOpenGL::setMatrixModo(eMatrixModo eModo)
     {
         switch (eModo)
         {
-        case eMatrixModo::eGL_MODELVIEW:
-            glMatrixMode(GL_MODELVIEW);
-            break;
-        case eMatrixModo::eGL_PROJECTION:
-            glMatrixMode(GL_PROJECTION);
-            break;
-        case eMatrixModo::eGL_TEXTURE:
-            glMatrixMode(GL_TEXTURE);
-            break;
+            case eMatrixModo::eGL_MODELVIEW:
+                glMatrixMode(GL_MODELVIEW);
+                break;
+            case eMatrixModo::eGL_PROJECTION:
+                glMatrixMode(GL_PROJECTION);
+                break;
+            case eMatrixModo::eGL_TEXTURE:
+                glMatrixMode(GL_TEXTURE);
+                break;
         }
         m_eMatrixModo = eModo;
     }
@@ -196,16 +308,16 @@ cstatic eMatrixModo sOpenGL::getMatrixModo(void)
     eMatrixModo eModo = eMatrixModo::eGL_MODELVIEW;
     switch (iMatrixMode)
     {
-    case GL_PROJECTION:
-        eModo = eMatrixModo::eGL_PROJECTION;
-        break;
-    case GL_TEXTURE:
-        eModo = eMatrixModo::eGL_TEXTURE;
-        break;
+        case GL_PROJECTION:
+            eModo = eMatrixModo::eGL_PROJECTION;
+            break;
+        case GL_TEXTURE:
+            eModo = eMatrixModo::eGL_TEXTURE;
+            break;
 
-    case GL_MODELVIEW:
-    default:
-        break;
+        case GL_MODELVIEW:
+        default:
+            break;
     }
 
     if (m_eMatrixModo != eModo)
@@ -304,28 +416,135 @@ cstatic void sOpenGL::flecha(glm::vec3 centro, float fradio, float fdir, glm::ve
 // Rectangulo (poligono relleno: Area)
 // (P_X, P_Y) :: Coordenada superior izquierda
 //--------------------------------------------------------------------------
-cstatic int	sOpenGL::textura(double x, double y, double z, double dAncho, double dAlto, cTextura* p_poTex)
+cstatic int	sOpenGL::textura(float x, float y, float z, float dAncho, float dAlto, cTextura* poTex)
 {
-    if (p_poTex)
+    if (poTex)
     {
-        //p_poTex->activa();
+        float fOne = 1.0f;
+        poTex->activa();
         glBegin(GL_QUADS);
         {
-            glTexCoord2f(1, 1);
-            glVertex3d(x + dAncho, y, 0.0f);	// Se empieza con dos puntos
+            //--------------------------------------------------------------
+            // Esta es la buena, hay que quedarse con cual es:
+            //  Front Face CCW o el CW:
+            // - Cull Face esta habilitado,
+            // - El mode es el GL_BACK (La que se oculta)
+            // - Y el front face es: GL_CCW
+            //--------------------------------------------------------------
+            glTexCoord2f(0.0f, fOne);                   //
+            glVertex3f(x, y - dAlto, 0.0f);             // left + top
 
-            glTexCoord2f(0, 1);
-            glVertex3d(x, y, 0.0f);	//
+            glTexCoord2f(fOne, fOne);                   //
+            glVertex3f(x + dAncho, y - dAlto, 0.0f);	// right + top, Se empieza con dos puntos:
 
-            glTexCoord2f(0, 0);
-            glVertex3d(x, y - dAlto, 0.0f);	// Luego cada punto es el cierre de un triangulo
+            glTexCoord2f(fOne, 0.0f);                   // y se continua, cerrando un primer triangulo
+            glVertex3f(x + dAncho, y, 0.0f);	        // right + top
 
-            glTexCoord2f(1, 0);
-            glVertex3d(x + dAncho, y - dAlto, 0.0f);	//
+            glTexCoord2f(0.0f, 0.0f);                   // y se termina, cerrando un segundo triangulo
+            glVertex3f(x, y, 0.0f);	                    // left + top
         }
         glEnd();
-        //p_poTex->desActiva();
+        poTex->desActiva();
     }
+    return 0;
+
+    ////    // Lo que no se es si la normal asi esta bien
+    ////    glNormal3d(0.0, 0.0, 1.0);                    // Se empieza con dos puntos
+    ////    glVertex3d(x          , y         , z);       //  0       2       // Luego cada punto es el cierre de un triangulo
+    ////    glVertex3d(x          , y - dIncY , z);       //  |       |
+    ////    glVertex3d(x + dIncX  , y         , z);       //  |       |
+    ////    glVertex3d(x + dIncX  , y - dIncY , z);       //  1       3       //
+}
+
+
+//--------------------------------------------------------------------------
+// Rectangulo (lineas)
+// (P_X, P_Y) :: Coordenada superior izquierda
+//--------------------------------------------------------------------------
+cstatic int	sOpenGL::rectangulo(
+    eCoordRectangulo eCoord,
+    GLenum eTipoLine,           // GL_FILL, GL_LINE
+    glm::vec3 posOrigin,
+    float fAncho, float fAlto,
+    glm::vec4 vColor,
+    float frotate)
+{
+    //------------------------------------------------------------------
+    mGlKeepEstado(bLighting, GL_LIGHTING);
+    mGlKeepEstado(bTextura2D, GL_TEXTURE_2D);
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_LIGHTING);
+    //------------------------------------------------------------------
+    glColor4f(vColor.r, vColor.g, vColor.b, vColor.a);
+    //------------------------------------------------------------------
+    float fz = posOrigin.z;
+    glm::vec3 pTopLeft;
+    glm::vec3 pBotRight;
+    //------------------------------------------------------------------
+    sOpenGL::pushMatrix();
+    {
+        glTranslatef(posOrigin.x, posOrigin.y, posOrigin.z);
+        glRotatef(frotate, 0.0f, 0.0f, 1.0f);
+        switch (eCoord)
+        {
+            case eCoordRectangulo::eTopLeft:
+                // Centro - Esquina Superior Izquierda del rectangulo
+                pTopLeft.x = 0;
+                pTopLeft.y = 0;
+
+                pBotRight.x = fAncho;
+                pBotRight.y = fAlto;
+                break;
+
+            case eCoordRectangulo::eCenter:
+                // Centro - Centro del rectangulo
+                pTopLeft.x = -fAncho / 2.0f;
+                pTopLeft.y = -fAlto / 2.0f;
+
+                pBotRight.x = fAncho / 2.0f;
+                pBotRight.y = fAlto / 2.0f;
+                break;
+        }
+        GLenum queBegin;
+        switch (eTipoLine)
+        {
+            case GL_FILL:
+                {
+                    queBegin = GL_QUADS;
+                    glBegin(GL_QUADS);      // GL_TRIANGLE_STRIP
+                    {
+                        glNormal3f(0.0f, 0.0f, 1.0f);
+
+                        glVertex3f(pTopLeft.x, pTopLeft.y, fz);
+                        glVertex3f(pBotRight.x, pTopLeft.y, fz);
+                        glVertex3f(pBotRight.x, pBotRight.y, fz);
+                        glVertex3f(pTopLeft.x, pBotRight.y, fz);
+                    }
+                    glEnd();
+                }
+                break;
+
+            case GL_LINE:
+                {
+                    queBegin = GL_LINE_LOOP;
+                    glBegin(GL_LINE_LOOP);
+                    {
+                        glVertex3f(pTopLeft.x, pTopLeft.y, fz);
+                        glVertex3f(pBotRight.x, pTopLeft.y, fz);
+                        glVertex3f(pBotRight.x, pBotRight.y, fz);
+                        glVertex3f(pTopLeft.x, pBotRight.y, fz);
+                        glVertex3f(pTopLeft.x, pTopLeft.y, fz);
+                    }
+                    glEnd();
+                }
+                break;
+        }
+    }
+    sOpenGL::popMatrix();
+    //------------------------------------------------------------------
+    mGlRecEstado(bLighting, GL_LIGHTING);
+    mGlRecEstado(bTextura2D, GL_TEXTURE_2D);
+
     return 0;
 }
 
@@ -435,6 +654,328 @@ cstatic int	sOpenGL::textura(double x, double y, double z, double dAncho, double
 //    return 0;
 //}
 //--------------------------------------------------------------------------
+
+
+//----------------------------------------------------------------------
+cstatic int sOpenGL::Act_blend(glm::vec4 vColor, GLenum z_sfactor, GLenum z_dfactor, bool bActiva)
+{
+    if (bActiva)
+    {
+        float fAlfa = vColor.a;
+        m_bTransparencia = false;
+        if (fAlfa < 1.0f)
+        {
+            if (!glIsEnabled(GL_BLEND))
+            {
+                glEnable(GL_BLEND);
+                m_bTransparencia = true;		// Hay que deshabilitar la transparencia.
+            }
+            glBlendFunc(z_sfactor, z_dfactor);
+        }
+    }
+    return 0;
+}
+
+cstatic int sOpenGL::Act_blend(GLenum z_sfactor, GLenum z_dfactor, bool bActiva)
+{
+    if (bActiva)
+    {
+        m_bTransparencia = false;
+        if (!glIsEnabled(GL_BLEND))
+        {
+            glEnable(GL_BLEND);
+            m_bTransparencia = true;		// Hay que deshabilitar la transparencia.
+        }
+        glBlendFunc(z_sfactor, z_dfactor);
+    }
+    return 0;
+}
+
+cstatic int sOpenGL::Des_blend(bool bActiva)
+{
+    if (bActiva)
+    {
+        if (m_bTransparencia)
+            glDisable(GL_BLEND);
+        m_bTransparencia = false;
+    }
+    else
+    {
+        if (glIsEnabled(GL_BLEND))
+        {
+            glDisable(GL_BLEND);
+            m_bTransparencia = true;
+        }
+    }
+    return 0;
+}
+
+//----------------------------------------------------------------------
+cstatic int sOpenGL::Act_depth(bool bActiva)
+{
+    if (bActiva)
+    {
+        if (!glIsEnabled(GL_DEPTH_TEST))
+        {
+            glEnable(GL_DEPTH_TEST);
+            m_bProfundidad = true;		// Hay que deshabilitar la profundidad.
+        }
+    }
+    else
+    {
+        if (m_bProfundidad)
+        {
+            glEnable(GL_DEPTH_TEST);
+            m_bProfundidad = false;
+        }
+    }
+    return 0;
+}
+
+cstatic int sOpenGL::Des_depth(bool bActiva)
+{
+    if (bActiva)
+    {
+        if (m_bProfundidad)
+        {
+            glDisable(GL_DEPTH_TEST);
+            m_bProfundidad = false;
+        }
+    }
+    else
+    {
+        if (glIsEnabled(GL_DEPTH_TEST))
+        {
+            glDisable(GL_DEPTH_TEST);
+            m_bProfundidad = true;
+        }
+    }
+    return 0;
+}
+
+//----------------------------------------------------------------------
+cstatic int sOpenGL::Act_tex2d(bool bActiva)
+{
+    if (bActiva)
+    {
+        if (!glIsEnabled(GL_TEXTURE_2D))
+        {
+            glEnable(GL_TEXTURE_2D);
+            m_bTextura2D = true;
+        }
+    }
+    else
+    {
+        if (m_bTextura2D)
+        {
+            glEnable(GL_TEXTURE_2D);
+            m_bTextura2D = false;
+        }
+    }
+    return 0;
+}
+
+cstatic int sOpenGL::Act_tex2d(int iTex, bool bActiva)
+{
+    if (bActiva)
+    {
+        if (iTex > 0)
+        {
+            if (!glIsEnabled(GL_TEXTURE_2D))
+            {
+                glEnable(GL_TEXTURE_2D);
+                m_bTextura2D = true;		// Hay que deshabilitar la textura luego.
+            }
+            else
+            {
+                m_bTextura2D = false;
+            }
+            glBindTexture(GL_TEXTURE_2D, iTex);
+        }
+    }
+    else
+    {
+        if (iTex > 0)
+        {
+            if (m_bTextura2D)
+            {
+                glEnable(GL_TEXTURE_2D);
+                m_bTextura2D = false;
+            }
+            glBindTexture(GL_TEXTURE_2D, iTex);
+        }
+    }
+    return 0;
+}
+
+cstatic int sOpenGL::Des_tex2d(bool bActiva)
+{
+    if (bActiva)
+    {
+        if (m_bTextura2D)
+        {
+            glDisable(GL_TEXTURE_2D);
+            m_bTextura2D = false;
+        }
+    }
+    else
+    {
+        if (glIsEnabled(GL_TEXTURE_2D))
+        {
+            glDisable(GL_TEXTURE_2D);
+            m_bTextura2D = true;
+        }
+    }
+    glBindTexture(GL_TEXTURE_2D, 0);
+    return 0;
+}
+
+cstatic bool sOpenGL::estaActivaTex2D(void)
+{
+    m_bTextura2D = glIsEnabled(GL_TEXTURE_2D);
+    return m_bTextura2D;
+}
+
+//--------------------------------------------------------------------------
+// Activamos / Desactivamos : Culling : GL_CULL_FACE.
+//
+// Condiciones por defecto:
+//  glCullFace(GL_BACK);		// GL_BACK: borrara la trasera.
+//  glFrontFace(GL_CCW);		// GL_CCW counterclockwise: indica la cara frontal: en sentido contrario a las agujas del reloj
+//----------------------------------------------------------------------
+cstatic int sOpenGL::Act_cull(void)
+{
+    if (!glIsEnabled(GL_CULL_FACE))
+    {
+        glEnable(GL_CULL_FACE);		// Elimina el calculo de caras posteriores
+        m_bCullFace = true;
+    }
+    return 0;
+}
+
+cstatic int sOpenGL::Des_cull(void)
+{
+    if (m_bCullFace)
+    {
+        glDisable(GL_CULL_FACE);
+        m_bCullFace = false;
+    }
+    return 0;
+}
+
+//----------------------------------------------------------------------
+cstatic int sOpenGL::Act_lighting(void)
+{
+    if (!glIsEnabled(GL_LIGHTING))
+    {
+        glEnable(GL_LIGHTING);
+    }
+    return 0;
+}
+
+cstatic int sOpenGL::Des_lighting(void)
+{
+    if (glIsEnabled(GL_LIGHTING))
+    {
+        glDisable(GL_LIGHTING);
+    }
+    return 0;
+}
+
+//----------------------------------------------------------------------
+cstatic int sOpenGL::Act_colorMaterial(void)
+{
+    if (!glIsEnabled(GL_COLOR_MATERIAL))
+    {
+        glEnable(GL_COLOR_MATERIAL);
+    }
+    return 0;
+}
+
+cstatic int sOpenGL::Des_colorMaterial(void)
+{
+    if (glIsEnabled(GL_COLOR_MATERIAL))
+    {
+        glDisable(GL_COLOR_MATERIAL);
+    }
+    return 0;
+}
+//----------------------------------------------------------------------
+
+
+//--------------------------------------------------------------------------
+// Funciones de Color:
+// - ...
+// - quizas pendiente de hacer un gestor de colores.
+//--------------------------------------------------------------------------
+cstatic int sOpenGL::color(glm::vec4 vColor)
+{
+    glColor4f(vColor.r, vColor.g, vColor.b, vColor.a);
+    m_vCurrentColor = vColor;
+    return 0;
+}
+
+cstatic glm::vec4 sOpenGL::getColor()
+{
+    float vValor[4];
+    glGetFloatv(GL_CURRENT_COLOR, vValor);
+    m_vCurrentColor.r = vValor[0];
+    m_vCurrentColor.g = vValor[1];
+    m_vCurrentColor.b = vValor[2];
+    m_vCurrentColor.a = vValor[3];
+    return m_vCurrentColor;
+}
+//--------------------------------------------------------------------------
+
+
+//--------------------------------------------------------------------------
+// Funciones de activacion y desativacion
+// Guardan el estado, y con Restore se restaura el valor anterior
+//--------------------------------------------------------------------------
+cstatic bool sOpenGL::enable(GLenum glItem)
+{
+    GLboolean bFlag = glIsEnabled(glItem);
+    glEnable(glItem);
+    return !!bFlag;
+}
+
+
+cstatic bool sOpenGL::disable(GLenum glItem)
+{
+    GLboolean bFlag = glIsEnabled(glItem);
+    glDisable(glItem);
+    return !!bFlag;
+}
+
+
+cstatic void sOpenGL::restore(bool bFlag, GLenum glItem)
+{
+    if (bFlag)
+    {
+        if (!glIsEnabled(glItem))
+        {
+            glEnable(glItem);
+        }
+    }
+    else
+    {
+        if (glIsEnabled(glItem))
+        {
+            glDisable(glItem);
+        }
+    }
+}
+
+
+//--------------------------------------------------------------------------
+// Y con esta, solo preguntamos por el estado,, pero no lo modifica
+//--------------------------------------------------------------------------
+cstatic bool sOpenGL::isEnabled(GLenum glItem)
+{
+    GLboolean bFlag = glIsEnabled(glItem);
+    return !!bFlag;
+}
+
 
 
 //--------------------------------------------------------------------------

@@ -20,8 +20,7 @@ struct sOrigen
     sOrigen();
     ~sOrigen();
 
-    virtual int render() override;
-    virtual int checkLimites(float fDeltaTime, int width, int height) override;
+    virtual int render(float fDeltaTime) override;
 
     int izquierda(float fDeltaTime);
     int derecha(float fDeltaTime);

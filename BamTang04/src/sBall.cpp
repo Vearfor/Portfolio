@@ -4,8 +4,9 @@
 
 #include "sBall.h"
 #include "sGlobal.h"
-#include "sCollisionSystem.h"
 #include "sGame.h"
+#include "sys/sRenderSystem.h"
+#include "sExplosion.h"
 #include <swat/sOpenGL.h>
 #include <tool/sMath.h>
 #include <tool/cLog.h>
@@ -27,6 +28,7 @@ sBall::sBall()
 
 sBall::~sBall()
 {
+    delete m_pExplosion;
     cLog::print(" Destructor sBall\n");
 }
 
@@ -39,13 +41,14 @@ int sBall::checkLimites(float fDeltaTime, int width, int height)
 {
     glm::vec2 inc = sBall::calcIncremento(fDeltaTime, m_vecVelocidad);
 
-    if (m_posicion.x + inc.x > width - (2.0f*m_radio))
+    if (m_posicion.x + inc.x > width - m_radio)
         m_vecVelocidad.x = -m_vecVelocidad.x * sGlobal::m_fElasticidad;
 
     if (m_posicion.x + inc.x < m_radio)
         m_vecVelocidad.x = -m_vecVelocidad.x * sGlobal::m_fElasticidad;
 
-    if (m_posicion.y + inc.y > height - (m_radio + sGlobal::m_windowCaptionSize))
+    // if (m_posicion.y + inc.y > height + m_radio - sGlobal::m_windowCaptionSize)
+    if (m_posicion.y + inc.y > height - m_radio)
         m_vecVelocidad.y = -m_vecVelocidad.y * sGlobal::m_fElasticidad;
 
     if (m_posicion.y + inc.y < m_radio)
@@ -62,14 +65,14 @@ int sBall::checkLimites(float fDeltaTime, int width, int height)
 //--------------------------------------------------------------------------
 int sBall::checkPosicion(int width, int height)
 {
-    if (m_posicion.x > width - (2.0f * m_radio))
-        m_posicion.x = width - (2.0f * m_radio);
+    if (m_posicion.x > width - m_radio)
+        m_posicion.x = width - m_radio;
 
     if (m_posicion.x < m_radio)
         m_posicion.x = m_radio;
 
-    if (m_posicion.y > height - sGlobal::m_windowCaptionSize)
-        m_posicion.y = (float)(height - sGlobal::m_windowCaptionSize);
+    if (m_posicion.y > height)
+        m_posicion.y = (float)(height - m_radio);
 
     if (m_posicion.y < m_radio)
         m_posicion.y = m_radio;
@@ -102,12 +105,7 @@ int sBall::checkParada(float fDeltaTime)
         if (!m_parando)
         {
             m_parando = true;
-            //cLog::print(" Empezamos a parar el circulo: %ld\n", m_bolaId);
         }
-        //else
-        //{
-        //    cLog::print(" - %ld: %6.3f\n", m_bolaId, fVel);
-        //}
         //------------------------------------------------------------------
         // A la mierda: si estamos por debajo de 1.0f, velocidad a cero:
         //------------------------------------------------------------------
@@ -134,6 +132,17 @@ cstatic glm::vec2 sBall::calcIncremento(float fDeltaTime, glm::vec2 velBola)
 
 int sBall::update(float fDeltaTime)
 {
+    if (m_explotando)
+    {
+        if (m_pExplosion->update(fDeltaTime))
+        {
+            // Cuando termine el tiempo de explosion:
+            m_destruir = true;
+            sGame::instancia()->setDestruccion(m_destruir);
+        }
+        return 0;
+    }
+
     sMath::setZero(m_vecVelocidad);
     if (!sMath::isZero(m_vecVelocidad))
     {
@@ -157,7 +166,7 @@ int sBall::update(float fDeltaTime)
         m_posicion = m_posicion + inc;
 
         // Hay que hacerlo en el momento: no podemos permitir que se hayan quedado fuera de los limites:
-        checkPosicion(sCollisionSystem::m_iWidth, sCollisionSystem::m_iHeight);
+        checkPosicion(getWidth(), getHeight());
         checkParada(fDeltaTime);
     }
     else
@@ -174,7 +183,7 @@ int sBall::matarBola(float fDeltaTime)
     // Si es cero: temporizador de borrado.
     if (m_parando)
     {
-        //cLog::print(" Hemos parado: %ld\n", m_bolaId);
+        cLog::print(" Hemos parado: %ld\n", m_bolaId);
         m_parando = false;
         m_tiempo = 0.0f;
     }
@@ -183,27 +192,54 @@ int sBall::matarBola(float fDeltaTime)
     if (m_bolaId > 0)
     {
         m_tiempo += fDeltaTime;
-        //cLog::print(" - Tiempo: %6.3f\n", m_tiempo);
-
-        // Podemos destruir todas las bolas, menos la bola de origen.
-        // Despues de 20 segundos.
-        m_destruir = ((m_tiempo > sGlobal::m_fTiempoDestruccion) && m_bolaId > 0);
-        sGame::instancia()->setDestruccion(m_destruir);
+        m_explotando = ((m_tiempo > sGlobal::m_fTiempoDestruccion) && m_bolaId > 0);
     }
 
     return 0;
 }
 
 
-int sBall::render()
+int sBall::render(float fDeltaTime)
+{
+    if (m_explotando)
+        render_explosion(fDeltaTime);
+    else
+        render_normal();
+
+    return 0;
+}
+
+
+void sBall::render_normal()
 {
     float radioInt =
         (!sBall::m_hayGravedad) ? m_radio - 0.8f :
         (!sBall::m_hayFriccion) ? 0.0f :
         3.0f;
 
-    sOpenGL::circulo(glm::vec3(m_posicion.x, m_posicion.y,  0.0f), m_radio, m_color, radioInt);
-    return 0;
+    sOpenGL::circulo(glm::vec3(m_posicion.x, m_posicion.y, 0.0f), m_radio, m_color, radioInt);
+}
+
+
+void sBall::render_explosion(float fDeltaTime)
+{
+    /*--------------------------------------------------------------------*\ 
+    |* Rompemos en trozos y todos se van alejando del centro.
+    |* a(t) = A
+    |* v(t) = Vo + At
+    |* x(t) = Xo + VoT + (1 / 2)At2
+    |* Aplicamos la funcion del espacio a cada trozito:
+    |* y cada trozo tendra su direccion.
+    \*--------------------------------------------------------------------*/
+    if (m_pExplosion)
+    {
+        m_pExplosion->render(fDeltaTime);
+    }
+    else
+    {
+        m_pExplosion = new sExplosion(this);
+    }
+    /*--------------------------------------------------------------------*/
 }
 
 
@@ -225,6 +261,22 @@ void sBall::cambiaDir(eIncrGrados incr)
             break;
     }
 }
+
+
+/*------------------------------------------------------------------------*\
+|* Hacemos el uso de la instancia sGame:
+\*------------------------------------------------------------------------*/
+int sBall::getWidth()
+{
+    return sGame::instancia()->getRender()->getWidth();
+}
+
+
+int sBall::getHeight()
+{
+    return sGame::instancia()->getRender()->getWidth();
+}
+/*------------------------------------------------------------------------*/
 
 
 /*------------------------------------------------------------------------*\

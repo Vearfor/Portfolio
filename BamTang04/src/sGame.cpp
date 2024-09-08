@@ -6,14 +6,17 @@
 #include "sGameWindow.h"
 #include "sGlobal.h"
 #include "sOrigen.h"
-#include "sInputSystem.h"
-#include "sCollisionSystem.h"
-#include "sPhysicsSystem.h"
+#include "sys/sRenderSystem.h"
+#include "sys/sInputSystem.h"
+#include "sys/sCollisionSystem.h"
+#include "sys/sPhysicsSystem.h"
 #include <swat/input/cTeclado.h>
 #include <swat/sOpenGL.h>
+#include <swat/texturas/cGestorTexturas.h>
 #include <tool/consola/cConsola.h>
 #include <tool/sMath.h>
 #include <tool/cTool.h>
+#include <tool/cRandom.hpp>
 
 
 /*------------------------------------------------------------------------*\
@@ -43,7 +46,9 @@ sGame::~sGame()
     releaseBalls();
     delete m_pCollision;
     delete m_pPhysics;
-    delete m_pWindow;
+    delete m_pInput;
+    delete m_pRender;
+    delete m_pMotor;
     m_instancia = nullptr;
 
     cLog::print(" Destructor sGame\n");
@@ -72,37 +77,29 @@ sGame::~sGame()
 //--------------------------------------------------------------------------
 int sGame::init()
 {
-    m_pWindow = new sGameWindow(m_width, m_height);
-
-    miError(m_pWindow->crea(
-        0, 0,
-        m_width, m_height,
-        0.01f, 100.0f, 45.0f,
-        32, 32,
-        false,
-        eEstiloW::eCaption,
-        cConsola::getNombreProceso(),
-        "OpenGL Window Class",
-        nullptr
-    ));
-
-    m_pWindow->muestraVentana();
-
-    auto& rect = m_pWindow->getCurrentRect();
-
+    m_pMotor = new cRandom();
+    m_pRender = new sRenderSystem(m_width, m_height);
     m_pInput = new sInputSystem();
-    m_pCollision = new sCollisionSystem(rect.getAncho(), rect.getAlto());
+    m_pCollision = new sCollisionSystem();
     m_pPhysics = new sPhysicsSystem();
-    // Para que el systema de collision pueda actualizar sus limites:
-    m_pWindow->m_pCollision = m_pCollision;
 
-    miError(sOpenGL::initOpenGL());
+    miError(
+        m_pMotor->inicia()      ||
+        m_pRender->init()       ||
+        sOpenGL::initOpenGL()
+    );
 
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 
     cLog::print("\n");
 
     createOrigin();
+
+    const std::string kDirTexturas = "../comun/textures";
+    const std::string kTextura = "aries01.jpg";
+    miError(cGestorTexturas::Instancia()->CargaTextura(kTextura.c_str(), kDirTexturas.c_str()));
+
+    m_pTextura = cGestorTexturas::Instancia()->GetTextura(kTextura.c_str());
 
     m_bIsRunning = true;
     return 0;
@@ -132,11 +129,12 @@ int sGame::eventos()
 int sGame::update(float fDeltaTime)
 {
     /*--------------------------------------------------------------------*/
+    setCaption(fDeltaTime);
+    /*--------------------------------------------------------------------*/
     m_pInput->update(this, fDeltaTime);
     m_pCollision->update(this, fDeltaTime);
     m_pPhysics->update(this, fDeltaTime);
-    /*--------------------------------------------------------------------*/
-    setCaption(fDeltaTime);
+    m_pRender->update(this, fDeltaTime);
     /*--------------------------------------------------------------------*/
 
     /*--------------------------------------------------------------------*/
@@ -152,18 +150,13 @@ int sGame::update(float fDeltaTime)
 //--------------------------------------------------------------------------
 int sGame::render()
 {
-    m_pWindow->clean();
-
-    m_pWindow->begin();     // Escritura/dibujado en Primer plano
-    {
-        for (auto* pBall : m_vecBolas)
-        {
-            pBall->render();
-        }
-    }
-    m_pWindow->end();       // Termina la escritura en primer plano
-
-    m_pWindow->swap();
+    //
+    // Lo dejo, para que se vea que estaba,
+    // por cuestiones organizativas, pero ya aqui no vamos a hacer nada
+    // - saber donde estan las cosas es lo mas importante
+    //
+    // el codigo se ha llevado al update del render system
+    //
 
     return 0;
 }
@@ -219,8 +212,8 @@ void sGame::shootBall()
         float xPos = 2.0f * (sGlobal::m_fRadio * cos(deg2rad(m_pOrigen->m_fdir)));
         float yPos = 2.0f * (sGlobal::m_fRadio * sin(deg2rad(m_pOrigen->m_fdir)));
 
-        float xVel = sGlobal::m_fVelocidad * cos(deg2rad(m_pOrigen->m_fdir));
-        float yVel = sGlobal::m_fVelocidad * sin(deg2rad(m_pOrigen->m_fdir));
+        float xVel = sGlobal::m_fVelocidadInicial * cos(deg2rad(m_pOrigen->m_fdir));
+        float yVel = sGlobal::m_fVelocidadInicial * sin(deg2rad(m_pOrigen->m_fdir));
 
         pBall->m_posicion = m_pOrigen->m_posicion + glm::vec2(xPos, yPos);
         pBall->m_vecVelocidad = { xVel, yVel };
@@ -278,7 +271,7 @@ void sGame::releaseBalls()
 
 void sGame::setCaption(float fDeltaTime)
 {
-    if (m_pWindow)
+    if (m_pRender->getMainWindow())
     {
         char vcFps[32];
         float fps = 1 / fDeltaTime;
@@ -291,7 +284,7 @@ void sGame::setCaption(float fDeltaTime)
 
         WCHAR wcTitulo[LON_BUFF / 8];
         cTool::copiaMultibyteToUnicode(sTitulo, wcTitulo, sizeof(wcTitulo));
-        SetWindowText(m_pWindow->getWindow(), wcTitulo);
+        SetWindowText(m_pRender->getMainWindow()->getWindow(), wcTitulo);
     }
 }
 

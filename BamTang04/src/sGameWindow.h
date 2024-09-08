@@ -15,7 +15,6 @@
 \*------------------------------------------------------------------------*/
 class cTeclado;
 class cRaton;
-struct sCollisionSystem;
 /*------------------------------------------------------------------------*/
 struct sGameWindow
     : public sWindow
@@ -25,7 +24,6 @@ struct sGameWindow
 
     cTeclado* m_pTeclado{ nullptr };
     cRaton* m_pRaton{ nullptr };
-    sCollisionSystem* m_pCollision{ nullptr };
 
 protected:
 

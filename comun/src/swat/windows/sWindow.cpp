@@ -1074,7 +1074,7 @@ cstatic bool sWindow::GetWindowRect(HWND hWindow, cRect<long>* pRectRes)
 }
 
 
-static bool GetClientRect(HWND hWindow, cRect<long>* pClientRes)
+cstatic bool sWindow::GetClientRect(HWND hWindow, cRect<long>* pClientRes)
 {
     bool valor = true;
     if (hWindow && pClientRes)
@@ -1094,6 +1094,27 @@ static bool GetClientRect(HWND hWindow, cRect<long>* pClientRes)
         }
     }
     return valor;
+}
+
+
+void sWindow::setAnchoOnSize(int iAncho)
+{
+    m_iAnchoOnSize = iAncho;
+}
+
+void sWindow::setAltoOnSize(int iAlto)
+{
+    m_iAltoOnSize = iAlto;
+}
+
+int sWindow::getAnchoOnSize(void)
+{
+    return m_iAnchoOnSize;
+}
+
+int sWindow::getAltoOnSize(void)
+{
+    return m_iAltoOnSize;
 }
 
 

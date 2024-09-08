@@ -190,24 +190,28 @@
   <ItemGroup>
     <ClCompile Include="src\BamTang04.cpp" />
     <ClCompile Include="src\sBall.cpp" />
-    <ClCompile Include="src\sCollisionSystem.cpp" />
+    <ClCompile Include="src\sExplosion.cpp" />
     <ClCompile Include="src\sGame.cpp" />
     <ClCompile Include="src\sGameWindow.cpp" />
     <ClCompile Include="src\sGlobal.cpp" />
-    <ClCompile Include="src\sInputSystem.cpp" />
     <ClCompile Include="src\sOrigen.cpp" />
-    <ClCompile Include="src\sPhysicsSystem.cpp" />
+    <ClCompile Include="src\sys\sCollisionSystem.cpp" />
+    <ClCompile Include="src\sys\sInputSystem.cpp" />
+    <ClCompile Include="src\sys\sPhysicsSystem.cpp" />
+    <ClCompile Include="src\sys\sRenderSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BamTang04.h" />
     <ClInclude Include="src\sBall.h" />
-    <ClInclude Include="src\sCollisionSystem.h" />
+    <ClInclude Include="src\sExplosion.h" />
     <ClInclude Include="src\sGame.h" />
     <ClInclude Include="src\sGameWindow.h" />
     <ClInclude Include="src\sGlobal.h" />
-    <ClInclude Include="src\sInputSystem.h" />
     <ClInclude Include="src\sOrigen.h" />
-    <ClInclude Include="src\sPhysicsSystem.h" />
+    <ClInclude Include="src\sys\sCollisionSystem.h" />
+    <ClInclude Include="src\sys\sInputSystem.h" />
+    <ClInclude Include="src\sys\sPhysicsSystem.h" />
+    <ClInclude Include="src\sys\sRenderSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\suat\suat.vcxproj">

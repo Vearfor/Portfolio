@@ -31,7 +31,7 @@ public:
 	virtual ~cRandom();
 
     void    reset       ( void );
-	void	inicia		( long p_ulSemilla = -1);
+	int	    inicia		( long p_ulSemilla = -1);
     void    copia       ( const cRandom & oRandom );
     void    setSemilla  ( long ulSemilla = -1);
     void    setNum      ( long ulN );

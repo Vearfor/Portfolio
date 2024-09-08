@@ -17,7 +17,7 @@ std::string sGlobal::m_sTexturaOrigen{ "" };
 float sGlobal::m_fRadioOrigen = 15.0f;
 float sGlobal::m_fRadio = 15.0f;
 glm::vec4 sGlobal::m_colorBolas{ 1.0f, 0.0f, 0.0f, 1.0f };
-float sGlobal::m_fVelocidad = 150.0f;
+float sGlobal::m_fVelocidadInicial = 150.0f;
 int sGlobal::m_limBolas = 60;
 /*------------------------------------------------------------------------*/
 float sGlobal::m_fGravedad      = - 9.8f;     // aumenta 9.8 metros por segundo
@@ -35,6 +35,7 @@ int sGlobal::m_windowCaptionSize = 40;
 /*------------------------------------------------------------------------*/
 float sGlobal::m_fVelParada = 25.0f;
 float sGlobal::m_fTiempoDestruccion = 20.0f;
+float sGlobal::m_fTiempoExplosion = 10.0f;
 /*------------------------------------------------------------------------*/
 
 

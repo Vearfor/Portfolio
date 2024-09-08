@@ -3,8 +3,8 @@
 \*------------------------------------------------------------------------*/
 
 #include "sPhysicsSystem.h"
-#include "sGame.h"
-#include "sBall.h"
+#include "../sGame.h"
+#include "../sBall.h"
 #include <vector>
 
 

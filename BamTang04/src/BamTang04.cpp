@@ -33,7 +33,6 @@ int main()
     for (juego.init(); juego.isRunning(); juego.eventos())
     {
         juego.update(time.getDeltaTime());
-        juego.render();
         time.espera(true);
     }
 

@@ -128,6 +128,9 @@
     <ClCompile Include="..\comun\src\swat\sRenderObject.cpp">
       <Filter>source\comun\swat</Filter>
     </ClCompile>
+    <ClCompile Include="..\comun\src\tool\cValor.cpp">
+      <Filter>source\comun\tool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cSuatDll.h">
@@ -228,6 +231,9 @@
     </ClInclude>
     <ClInclude Include="..\comun\src\swat\sRenderObject.h">
       <Filter>source\comun\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\cValor.h">
+      <Filter>source\comun\tool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

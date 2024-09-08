@@ -3,9 +3,10 @@
 \*------------------------------------------------------------------------*/
 
 #include "sCollisionSystem.h"
-#include "sGame.h"
-#include "sBall.h"
-#include "sGlobal.h"
+#include "../sGame.h"
+#include "../sBall.h"
+#include "../sGlobal.h"
+#include "sRenderSystem.h"
 #include <tool/sMath.h>
 #include <vector>
 
@@ -13,16 +14,12 @@
 /*------------------------------------------------------------------------*\
 |* Statics
 \*------------------------------------------------------------------------*/
-int sCollisionSystem::m_iWidth = 0;
-int sCollisionSystem::m_iHeight = 0;
 /*------------------------------------------------------------------------*/
 
 
 /*------------------------------------------------------------------------*/
-sCollisionSystem::sCollisionSystem(int width, int height)
+sCollisionSystem::sCollisionSystem()
 {
-    m_iWidth = width;
-    m_iHeight = height;
 }
 
 sCollisionSystem::~sCollisionSystem()
@@ -32,14 +29,7 @@ sCollisionSystem::~sCollisionSystem()
 /*------------------------------------------------------------------------*/
 
 
-void sCollisionSystem::updateLimits(int width, int height)
-{
-    m_iWidth = width;
-    m_iHeight = height;
-}
-
-
-int sCollisionSystem::update(sGame*pGame, float fDeltaTime)
+int sCollisionSystem::update(sGame* pGame, float fDeltaTime)
 {
     auto& vecBolas = pGame->getVecBolas();
     if (!pGame->hayPausa())
@@ -48,7 +38,8 @@ int sCollisionSystem::update(sGame*pGame, float fDeltaTime)
         {
             for (auto* pBall : vecBolas)
             {
-                pBall->checkLimites(fDeltaTime, m_iWidth, m_iHeight);
+                pBall->checkLimites(fDeltaTime, getWidth(), getHeight());
+                // Los flags los reseteamos para la colision entre Bolas:
                 pBall->m_check = false;
                 pBall->m_estaColisionando = false;
             }
@@ -60,7 +51,7 @@ int sCollisionSystem::update(sGame*pGame, float fDeltaTime)
                 for (int i = 0; i < vecBolas.size(); i++)
                 {
                     sBall* pBall1 = vecBolas[i];
-                    if (!pBall1->m_check)
+                    if (!pBall1->m_check && !sMath::isZero(pBall1->m_vecVelocidad))
                     {
                         //--------------------------------------------------
                         for (int j = 0; j < vecBolas.size(); j++)
@@ -71,10 +62,7 @@ int sCollisionSystem::update(sGame*pGame, float fDeltaTime)
                             sBall* pBall2 = vecBolas[j];
                             if (!pBall2->m_check)
                             {
-                                if (
-                                    checkCollision(fDeltaTime, pBall1, pBall2) ||
-                                    checkCollision(0, pBall1, pBall2)
-                                   )
+                                if (checkCollision(fDeltaTime, pBall1, pBall2))
                                 {
                                     collision(pBall1, pBall2);
                                     float fVel1 = sMath::modulo(pBall1->m_vecVelocidad);
@@ -87,8 +75,8 @@ int sCollisionSystem::update(sGame*pGame, float fDeltaTime)
                             }
                         }
                         //--------------------------------------------------
+                        pBall1->m_check = true;
                     }
-                    pBall1->m_check = true;
                 }
             }
         }
@@ -99,7 +87,7 @@ int sCollisionSystem::update(sGame*pGame, float fDeltaTime)
 
 bool sCollisionSystem::checkCollision(float fDeltaTime, sBall* bola1, sBall* bola2)
 {
-    if (!bola1->m_check && !bola2->m_check)
+    // if (!bola1->m_check && !bola2->m_check)
     {
         // Cuando el tiempo es 0, el inc es 0
         glm::vec2 inc1 = (bola1->m_vecVelocidad * fDeltaTime);
@@ -179,87 +167,20 @@ void sCollisionSystem::collision(sBall* pBola1, sBall* pBola2)
 }
 
 
-void sCollisionSystem::collision_0(sBall* pBola1, sBall* pBola2)
+/*------------------------------------------------------------------------*\
+|* Hacemos el uso de la instancia sGame:
+\*------------------------------------------------------------------------*/
+int sCollisionSystem::getWidth()
 {
-    float oldVel1 = sMath::modulo(pBola1->m_vecVelocidad);
-    float oldVel2 = sMath::modulo(pBola2->m_vecVelocidad);
-    // Para repartir sumo y reparto:
-    float suma = oldVel1 + oldVel2;
-
-    if (suma > 0.0f)
-    {
-        pBola1->m_check = true;
-        pBola2->m_check = true;
-
-        //------------------------------------------------------------------
-        // Primero las velocidades compartidas/repartidas
-        //------------------------------------------------------------------
-        oldVel1 = (oldVel1 + 1) / suma;
-        oldVel2 = (oldVel2 + 1) / suma;
-
-        oldVel1 = oldVel1 * suma;
-        oldVel2 = oldVel2 * suma;
-
-        // La velocidad: la anterior repartida aplicando la reduccion de elasticidad:
-        float fNewVel1 = oldVel1 * sGlobal::m_fElasticidad;
-        float fNewVel2 = oldVel2 * sGlobal::m_fElasticidad;
-        //------------------------------------------------------------------
-
-        //------------------------------------------------------------------
-        // Y las direcciones
-        // La direccion perpendicular al choque:
-        //------------------------------------------------------------------
-        glm::vec2 vdiff = (pBola1->m_posicion) + (pBola2->m_posicion);
-
-        float fdir = rad2deg(atan2f(vdiff.y, vdiff.x));
-
-        float fNewDir1 = fdir;
-        float fNewDir2 = ((fdir + 180.0f) > 360.0f) ? (fdir + 180.0f) - 360.0f : fdir + 180.0f;
-
-        float xVec, yVec;
-
-        // vec direccion 1 nuevo
-        xVec = cos(deg2rad(fNewDir1));
-        yVec = sin(deg2rad(fNewDir1));
-        glm::vec2 vecNewDir1 = { xVec, yVec };
-
-        // vec direccion 2 nuevo
-        xVec = cos(deg2rad(fNewDir2));
-        yVec = sin(deg2rad(fNewDir2));
-        glm::vec2 vecNewDir2 = { xVec, yVec };
-
-        // vec direccion 1 actual
-        xVec = cos(deg2rad(pBola1->m_fdir));
-        yVec = sin(deg2rad(pBola1->m_fdir));
-        glm::vec2 vecDir1 = { xVec, yVec };
-
-        // vec direccion 2 actual
-        xVec = cos(deg2rad(pBola2->m_fdir));
-        yVec = sin(deg2rad(pBola2->m_fdir));
-        glm::vec2 vecDir2 = { xVec, yVec };
-
-        //------------------------------------------------------------------
-        // Combinando las direcciones
-        // Probando la resta:
-        //------------------------------------------------------------------
-        glm::vec2 vecTotDir1 = vecDir1 - vecNewDir1;
-        glm::vec2 vecTotDir2 = vecDir2 - vecNewDir2;
-
-        float fdir1 = sMath::getAngulo(vecTotDir1);
-        float fdir2 = sMath::getAngulo(vecTotDir2);
-
-        pBola1->m_fdir = fdir1;
-        pBola2->m_fdir = fdir2;
-
-        xVec = fNewVel1 * cos(deg2rad(pBola1->m_fdir));
-        yVec = fNewVel1 * sin(deg2rad(pBola1->m_fdir));
-        pBola1->m_vecVelocidad = { xVec, yVec };
-
-        xVec = fNewVel2 * cos(deg2rad(pBola2->m_fdir));
-        yVec = fNewVel2 * sin(deg2rad(pBola2->m_fdir));
-        pBola2->m_vecVelocidad = { xVec, yVec };
-    }
+    return sGame::instancia()->getRender()->getWidth();
 }
+
+
+int sCollisionSystem::getHeight()
+{
+    return sGame::instancia()->getRender()->getHeight();
+}
+/*------------------------------------------------------------------------*/
 
 
 /*------------------------------------------------------------------------*\

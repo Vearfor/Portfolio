@@ -3,7 +3,6 @@
 \*------------------------------------------------------------------------*/
 
 #include "sGameWindow.h"
-#include "sCollisionSystem.h"
 #include <swat/input/cTeclado.h>
 #include <swat/input/cRaton.h>
 #include <tool/cLog.h>
@@ -43,7 +42,6 @@ coverride int sGameWindow::initWindow()
 coverride long sGameWindow::OnSize(int newWidth, int newHeight)
 {
     sWindow::OnSize(newWidth, newHeight);
-    mDo(m_pCollision)->updateLimits(newWidth, newHeight);
     return 0;
 }
 

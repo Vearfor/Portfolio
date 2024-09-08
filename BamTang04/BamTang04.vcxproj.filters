@@ -15,6 +15,9 @@
     <Filter Include="Source\src">
       <UniqueIdentifier>{f791c3e3-1c48-4e6b-b354-cd83d78201ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\src\sys">
+      <UniqueIdentifier>{090ff0fe-89ef-4e3e-971d-ad7a66240a20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\comun\cmd\PostLinkGLEW.bat">
@@ -37,17 +40,23 @@
     <ClCompile Include="src\sBall.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\sCollisionSystem.cpp">
-      <Filter>Source\src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sPhysicsSystem.cpp">
-      <Filter>Source\src</Filter>
-    </ClCompile>
     <ClCompile Include="src\sOrigen.cpp">
       <Filter>Source\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\sInputSystem.cpp">
+    <ClCompile Include="src\sExplosion.cpp">
       <Filter>Source\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sys\sCollisionSystem.cpp">
+      <Filter>Source\src\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sys\sInputSystem.cpp">
+      <Filter>Source\src\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sys\sPhysicsSystem.cpp">
+      <Filter>Source\src\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sys\sRenderSystem.cpp">
+      <Filter>Source\src\sys</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -66,17 +75,23 @@
     <ClInclude Include="src\sBall.h">
       <Filter>Source\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\sCollisionSystem.h">
-      <Filter>Source\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sPhysicsSystem.h">
-      <Filter>Source\src</Filter>
-    </ClInclude>
     <ClInclude Include="src\sOrigen.h">
       <Filter>Source\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\sInputSystem.h">
+    <ClInclude Include="src\sExplosion.h">
       <Filter>Source\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sys\sCollisionSystem.h">
+      <Filter>Source\src\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sys\sInputSystem.h">
+      <Filter>Source\src\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sys\sPhysicsSystem.h">
+      <Filter>Source\src\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sys\sRenderSystem.h">
+      <Filter>Source\src\sys</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
