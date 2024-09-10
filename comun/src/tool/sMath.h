@@ -89,6 +89,8 @@ struct _mExport sMath
     static float modulo(glm::vec4 vec);
 
     static float getAngulo(glm::vec2 vector);
+
+    static float corrigeDir(float dir);
 };
 //--------------------------------------------------------------------------
 

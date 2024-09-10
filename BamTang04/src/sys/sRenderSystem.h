@@ -11,7 +11,6 @@
 
 /*------------------------------------------------------------------------*/
 struct sGame;
-
 class cFuente;
 struct sOrigen;
 /*------------------------------------------------------------------------*/
@@ -52,10 +51,10 @@ private:
     cFuente* m_pFonDef{ nullptr };
     cFuente* m_pFonAgulon{ nullptr };
 
-    void showOrigin(cFuente* poFon);
+    void showOrigin(sGame* pGame, cFuente* poFon);
     void showFps(cFuente* poFon, float fDeltaTime);
     void showTest(sGame *);
-    void showHelp(sGame*, cFuente* poFon);
+    void showHelp(sGame*, cFuente* poFonTitulo, cFuente* poFonResto);
 };
 /*------------------------------------------------------------------------*/
 

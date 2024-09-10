@@ -45,6 +45,11 @@ int sInputSystem::update(sGame* pGame, float fDeltaTime)
             pWindow->destruyeVentana();
         }
 
+        if (pTeclado->isUp('I'))
+        {
+            sGlobal::m_bmostrarInfo = !sGlobal::m_bmostrarInfo;
+        }
+
         if (pTeclado->isUp('P'))
         {
             pGame->togglePausa();
@@ -52,17 +57,18 @@ int sInputSystem::update(sGame* pGame, float fDeltaTime)
 
         if (pTeclado->isUp('G'))
         {
-            sBall::m_hayGravedad = !sBall::m_hayGravedad;
+            sGlobal::m_hayGravedad = !sGlobal::m_hayGravedad;
         }
 
         if (pTeclado->isUp('F'))
         {
-            sBall::m_hayFriccion = !sBall::m_hayFriccion;
+            sGlobal::m_hayFriccion = !sGlobal::m_hayFriccion;
         }
 
         if (pTeclado->isUp('R'))
         {
             pOrigen->m_posicion = sGlobal::m_posOrigen;
+            pOrigen->m_fdir = sGlobal::m_dirOrigen;
         }
 
         if (pTeclado->isUp('S'))
@@ -78,6 +84,11 @@ int sInputSystem::update(sGame* pGame, float fDeltaTime)
         if (pTeclado->isDown('D'))
         {
             pOrigen->cambiaVel(eIncr::eResta, fDeltaTime);
+        }
+
+        if (pTeclado->isUp('O'))
+        {
+            sGlobal::m_hayChoqueOrigen = !sGlobal::m_hayChoqueOrigen;
         }
 
         if (pTeclado->isUp(VK_F1))

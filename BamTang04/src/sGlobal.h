@@ -40,6 +40,8 @@ struct sGlobal
     // Deberiamos ser proporcionales
     // que el radio de las bolas nos parezca igual independientemente
     // de las dimensiones de la ventana
+    static bool m_bmostrarInfo;
+    static float m_dirOrigen;
     static glm::vec2 m_posOrigen;
     static glm::vec4 m_colorOrigen;
     static glm::vec4 m_colorFlecha;
@@ -52,6 +54,9 @@ struct sGlobal
     static float m_fVelocidadInicial;
     static float m_fVelocidadMin;
     static float m_fVelocidadMax;
+    /*--------------------------------------------------------------------*/
+    static bool m_hayGravedad;
+    static bool m_hayFriccion;
     /*--------------------------------------------------------------------*/
     static float m_fGravedad;
     static float m_fFriccionAire;
@@ -69,6 +74,13 @@ struct sGlobal
     static float m_fVelParada;
     static float m_fTiempoDestruccion;
     static float m_fTiempoExplosion;
+    /*--------------------------------------------------------------------*\
+    |* El origen puede chocar con las otras bolas
+    |* pero la colision no afecta a la bola origen.
+    |* Si esta estuviera a true, le afectaria el choque y se moveria
+    |* tambien por gravedad.
+    \*--------------------------------------------------------------------*/
+    static bool m_hayChoqueOrigen;
     /*--------------------------------------------------------------------*/
 };
 /*------------------------------------------------------------------------*/

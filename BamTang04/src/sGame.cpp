@@ -58,11 +58,8 @@ sGame::~sGame()
 
 //
 // Problemas:
-//  - como representamos el cambio de la velocidad inicial
-//  - poner las letras: Aries ?
-//    mostrar numero de bolas actuales
-//    mostrar numero de bolas destruidas
-//  - mostrar ayudas, transparentes.
+//  - hacer el fondo de la ayuda transparente
+//  - ¿ podemos hacer lo mismo con la fuente Agulon ?
 //  - ajustar la parada, si las colisiones hacen que no se mueva
 //    modificar velocidades.
 //    Estan en colision permanente. Se mueven poco a poco, y se ponen
@@ -90,7 +87,7 @@ int sGame::init()
         sOpenGL::initOpenGL()
     );
 
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    glClearColor(0.7f, 0.5f, 0.0f, 1.0f);
 
     cLog::print("\n");
 
@@ -138,7 +135,7 @@ int sGame::createFuentes(sGameWindow* pWindow)
             ANSI_CHARSET,
             false,
             1.0f,
-            14.0f,
+            0.0f,
             1
         ) ||
         pGestorFuentes->cargaFuente(
@@ -226,7 +223,7 @@ int sGame::createOrigin()
         m_pOrigen->m_radio = sGlobal::m_fRadioOrigen;
         m_pOrigen->m_color = sGlobal::m_colorOrigen;
         m_pOrigen->m_vColorFlecha = sGlobal::m_colorFlecha;
-        m_pOrigen->m_fdir = 40.0f;
+        m_pOrigen->m_fdir = sGlobal::m_dirOrigen;
         m_pOrigen->m_vecVelocidad = { 0.0f, 0.0f };
 
         cLog::print(" Origin: %3ld:  FDir: %6.3f:     Vel: [ %6.3f, %6.3f ]\n",

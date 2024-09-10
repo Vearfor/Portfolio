@@ -194,6 +194,7 @@
     <ClCompile Include="..\comun\src\swat\buffers\cMalla.cpp" />
     <ClCompile Include="..\comun\src\swat\cAtributo.cpp" />
     <ClCompile Include="..\comun\src\swat\cCamara.cpp" />
+    <ClCompile Include="..\comun\src\swat\cColor.cpp" />
     <ClCompile Include="..\comun\src\swat\cModel.cpp" />
     <ClCompile Include="..\comun\src\swat\input\cRaton.cpp" />
     <ClCompile Include="..\comun\src\swat\input\cTeclado.cpp" />
@@ -201,6 +202,8 @@
     <ClCompile Include="..\comun\src\swat\shaders\cShader.cpp" />
     <ClCompile Include="..\comun\src\swat\sOpenGL.cpp" />
     <ClCompile Include="..\comun\src\swat\sRenderObject.cpp" />
+    <ClCompile Include="..\comun\src\swat\texturas\cFuente.cpp" />
+    <ClCompile Include="..\comun\src\swat\texturas\cGestorFuentes.cpp" />
     <ClCompile Include="..\comun\src\swat\texturas\cGestorTexturas.cpp" />
     <ClCompile Include="..\comun\src\swat\texturas\cTextura.cpp" />
     <ClCompile Include="..\comun\src\swat\windows\cModoGrafico.cpp" />
@@ -213,12 +216,12 @@
     <ClCompile Include="..\comun\src\tool\consola\cConsola.cpp" />
     <ClCompile Include="..\comun\src\tool\cRandom.cpp" />
     <ClCompile Include="..\comun\src\tool\cTime.cpp" />
-    <ClCompile Include="..\comun\src\tool\cToken.cpp" />
     <ClCompile Include="..\comun\src\tool\cTool.cpp" />
-    <ClCompile Include="..\comun\src\tool\cValor.cpp" />
     <ClCompile Include="..\comun\src\tool\iMensajes.cpp" />
     <ClCompile Include="..\comun\src\tool\sMath.cpp" />
-    <ClCompile Include="..\comun\src\tool\sString.cpp" />
+    <ClCompile Include="..\comun\src\tool\strings\cToken.cpp" />
+    <ClCompile Include="..\comun\src\tool\strings\cValor.cpp" />
+    <ClCompile Include="..\comun\src\tool\strings\sString.cpp" />
     <ClCompile Include="src\ConsoleApplication1.cpp" />
     <ClCompile Include="src\sConsoleWindow.cpp" />
   </ItemGroup>
@@ -227,6 +230,7 @@
     <ClInclude Include="..\comun\src\swat\buffers\cMalla.h" />
     <ClInclude Include="..\comun\src\swat\cAtributo.h" />
     <ClInclude Include="..\comun\src\swat\cCamara.h" />
+    <ClInclude Include="..\comun\src\swat\cColor.h" />
     <ClInclude Include="..\comun\src\swat\cModel.h" />
     <ClInclude Include="..\comun\src\swat\input\cRaton.h" />
     <ClInclude Include="..\comun\src\swat\input\cTeclado.h" />
@@ -235,6 +239,8 @@
     <ClInclude Include="..\comun\src\swat\shaders\cShader.h" />
     <ClInclude Include="..\comun\src\swat\sOpenGL.h" />
     <ClInclude Include="..\comun\src\swat\sRenderObject.h" />
+    <ClInclude Include="..\comun\src\swat\texturas\cFuente.h" />
+    <ClInclude Include="..\comun\src\swat\texturas\cGestorFuentes.h" />
     <ClInclude Include="..\comun\src\swat\texturas\cGestorTexturas.h" />
     <ClInclude Include="..\comun\src\swat\texturas\cTextura.h" />
     <ClInclude Include="..\comun\src\swat\windows\cModoGrafico.h" />
@@ -248,15 +254,14 @@
     <ClInclude Include="..\comun\src\tool\consola\cConsola.h" />
     <ClInclude Include="..\comun\src\tool\cRandom.hpp" />
     <ClInclude Include="..\comun\src\tool\cTime.h" />
-    <ClInclude Include="..\comun\src\tool\cToken.h" />
     <ClInclude Include="..\comun\src\tool\cTool.h" />
-    <ClInclude Include="..\comun\src\tool\cValor.h" />
     <ClInclude Include="..\comun\src\tool\iMensajes.h" />
     <ClInclude Include="..\comun\src\tool\nComun.h" />
-    <ClInclude Include="..\comun\src\tool\nExport.h" />
     <ClInclude Include="..\comun\src\tool\nMensajes.h" />
     <ClInclude Include="..\comun\src\tool\sMath.h" />
-    <ClInclude Include="..\comun\src\tool\sString.h" />
+    <ClInclude Include="..\comun\src\tool\strings\cToken.h" />
+    <ClInclude Include="..\comun\src\tool\strings\cValor.h" />
+    <ClInclude Include="..\comun\src\tool\strings\sString.h" />
     <ClInclude Include="src\sConsoleWindow.h" />
   </ItemGroup>
   <ItemGroup>

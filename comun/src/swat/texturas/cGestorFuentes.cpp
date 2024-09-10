@@ -8,7 +8,7 @@
 #include "../windows/sWindow.h"
 #include <tool/nComun.h>
 #include <tool/cTool.h>
-#include <tool/sString.h>
+#include <tool/strings/sString.h>
 
 
 //--------------------------------------------------------------------------

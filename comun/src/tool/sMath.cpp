@@ -134,6 +134,22 @@ cstatic float sMath::getAngulo(glm::vec2 vector)
 }
 
 
+//--------------------------------------------------------------------------
+// La dir va cambiando de valor.
+// cuando sea negativa la corregimos para que este en el rango de
+// 0.0f a 360.0f
+//--------------------------------------------------------------------------
+cstatic float sMath::corrigeDir(float dir)
+{
+    float fdir = dir;
+    if (fdir < 0.0f)
+    {
+        fdir = 360.0f + fdir;
+    }
+    return fdir;
+}
+
+
 /*========================================================================*\
 |* Fin de sMath.cpp
 \*========================================================================*/

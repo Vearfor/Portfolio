@@ -43,7 +43,6 @@ struct sBall
     void render_explosion(float fDeltaTime);
     void cambiaDir(eIncr incr, float fDeltaTime);
     void cambiaVel(eIncr incr, float fDeltaTime);
-    void corrigeDir();
 
     int m_bolaId{ -1 };
     glm::vec2 m_posicion{ 0.0f, 0.0f };
@@ -61,8 +60,6 @@ struct sBall
 
     static glm::vec2 calcIncremento(float fDeltaTime, glm::vec2 velBola);
 
-    static bool m_hayGravedad;
-    static bool m_hayFriccion;
     static int s_countBolas;
 
 private:

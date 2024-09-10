@@ -10,6 +10,8 @@
 \*------------------------------------------------------------------------*/
 int sGlobal::m_iWidth = 1024;
 int sGlobal::m_iHeight = 768;
+bool sGlobal::m_bmostrarInfo = true;
+float sGlobal::m_dirOrigen = 40.0f;
 glm::vec2 sGlobal::m_posOrigen{ (float)(sGlobal::m_iWidth / 2), (float)(sGlobal::m_iHeight / 4) };
 glm::vec4 sGlobal::m_colorOrigen{ 0.3f, 1.0f, 0.1f, 1.0f };
 glm::vec4 sGlobal::m_colorFlecha{ 1.0f, 0.0f, 0.0f, 1.0f };
@@ -23,6 +25,9 @@ int sGlobal::m_limBolas = 60;
 float sGlobal::m_fVelocidadInicial = 150.0f;
 float sGlobal::m_fVelocidadMin = 30.0f;
 float sGlobal::m_fVelocidadMax = 300.0f;
+/*------------------------------------------------------------------------*/
+bool sGlobal::m_hayGravedad = true;
+bool sGlobal::m_hayFriccion = true;
 /*------------------------------------------------------------------------*/
 float sGlobal::m_fGravedad      = - 9.8f;     // aumenta 9.8 metros por segundo
 float sGlobal::m_fFriccionAire  = - 1.0f;     // quita 1.0 metros por segundo
@@ -40,6 +45,8 @@ int sGlobal::m_windowCaptionSize = 40;
 float sGlobal::m_fVelParada = 25.0f;
 float sGlobal::m_fTiempoDestruccion = 20.0f;
 float sGlobal::m_fTiempoExplosion = 10.0f;
+/*------------------------------------------------------------------------*/
+bool sGlobal::m_hayChoqueOrigen = false;
 /*------------------------------------------------------------------------*/
 
 

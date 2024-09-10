@@ -217,12 +217,12 @@
     <ClCompile Include="..\comun\src\tool\consola\cConsola.cpp" />
     <ClCompile Include="..\comun\src\tool\cRandom.cpp" />
     <ClCompile Include="..\comun\src\tool\cTime.cpp" />
-    <ClCompile Include="..\comun\src\tool\cToken.cpp" />
     <ClCompile Include="..\comun\src\tool\cTool.cpp" />
-    <ClCompile Include="..\comun\src\tool\cValor.cpp" />
     <ClCompile Include="..\comun\src\tool\iMensajes.cpp" />
     <ClCompile Include="..\comun\src\tool\sMath.cpp" />
-    <ClCompile Include="..\comun\src\tool\sString.cpp" />
+    <ClCompile Include="..\comun\src\tool\strings\cToken.cpp" />
+    <ClCompile Include="..\comun\src\tool\strings\cValor.cpp" />
+    <ClCompile Include="..\comun\src\tool\strings\sString.cpp" />
     <ClCompile Include="src\cSuatDll.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -256,14 +256,14 @@
     <ClInclude Include="..\comun\src\tool\consola\cConsola.h" />
     <ClInclude Include="..\comun\src\tool\cRandom.hpp" />
     <ClInclude Include="..\comun\src\tool\cTime.h" />
-    <ClInclude Include="..\comun\src\tool\cToken.h" />
     <ClInclude Include="..\comun\src\tool\cTool.h" />
-    <ClInclude Include="..\comun\src\tool\cValor.h" />
     <ClInclude Include="..\comun\src\tool\iMensajes.h" />
     <ClInclude Include="..\comun\src\tool\nComun.h" />
     <ClInclude Include="..\comun\src\tool\nMensajes.h" />
     <ClInclude Include="..\comun\src\tool\sMath.h" />
-    <ClInclude Include="..\comun\src\tool\sString.h" />
+    <ClInclude Include="..\comun\src\tool\strings\cToken.h" />
+    <ClInclude Include="..\comun\src\tool\strings\cValor.h" />
+    <ClInclude Include="..\comun\src\tool\strings\sString.h" />
     <ClInclude Include="src\cSuatDll.h" />
   </ItemGroup>
   <ItemGroup>

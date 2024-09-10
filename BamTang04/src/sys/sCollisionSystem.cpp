@@ -56,10 +56,12 @@ int sCollisionSystem::update(sGame* pGame, float fDeltaTime)
                         //--------------------------------------------------
                         for (int j = 0; j < vecBolas.size(); j++)
                         {
-                            if (i == j)
+                            sBall* pBall2 = vecBolas[j];
+
+                            // si son la misma, continuamos
+                            if (pBall1->m_bolaId == pBall2->m_bolaId)
                                 continue;
 
-                            sBall* pBall2 = vecBolas[j];
                             if (!pBall2->m_check)
                             {
                                 if (checkCollision(fDeltaTime, pBall1, pBall2))
@@ -75,7 +77,10 @@ int sCollisionSystem::update(sGame* pGame, float fDeltaTime)
                             }
                         }
                         //--------------------------------------------------
+                        // Marcamos las ya comprobadas con todos.
+                        //--------------------------------------------------
                         pBall1->m_check = true;
+                        //--------------------------------------------------
                     }
                 }
             }
@@ -126,18 +131,16 @@ void sCollisionSystem::collision(sBall* pBola1, sBall* pBola2)
 
     if (suma > 0.0f)
     {
-        float fVel, xVel, yVel;
-
         glm::vec2 vdiff = (pBola1->m_posicion) - (pBola2->m_posicion);
 
         float fdir = rad2deg(atan2f(vdiff.y, vdiff.x));
 
-        pBola1->m_fdir = fdir;
-        pBola2->m_fdir = ((fdir + 180.0f) > 360.0f) ? (fdir + 180.0f) - 360.0f : fdir + 180.0f;
+        float fdir1 = fdir;
+        float fdir2 = ((fdir + 180.0f) > 360.0f) ? (fdir + 180.0f) - 360.0f : fdir + 180.0f;
 
         // Si laguna es negativa, la mostramos siempre como positiva:
-        pBola1->corrigeDir();
-        pBola2->corrigeDir();
+        fdir1 = sMath::corrigeDir(fdir1);
+        fdir2 = sMath::corrigeDir(fdir2);
 
         // Estas son las direcciones perpendiculares al choque, ¿no habria que tener en cuenta las direcciones anteriores?
         // Debería ser, y seguro que es mucho mas simple
@@ -154,19 +157,34 @@ void sCollisionSystem::collision(sBall* pBola1, sBall* pBola2)
             oldVel1 = oldVel1 + quito;
         }
 
-        // La velocidad: la anterior repartida aplicando la reduccion de elasticidad:
-        fVel = oldVel1 * sGlobal::m_fElasticidad;
-        xVel = fVel * cos(deg2rad(pBola1->m_fdir));
-        yVel = fVel * sin(deg2rad(pBola1->m_fdir));
+        modificoBola(pBola1, oldVel1, fdir1);
+        modificoBola(pBola2, oldVel2, fdir2);
+    }
+}
 
-        pBola1->m_vecVelocidad = glm::vec2{ xVel, yVel };
 
-        // La velocidad: la anterior repartida aplicando la reduccion de elasticidad:
-        fVel = oldVel2 * sGlobal::m_fElasticidad;
-        xVel = fVel * cos(deg2rad(pBola2->m_fdir));
-        yVel = fVel * sin(deg2rad(pBola2->m_fdir));
+void sCollisionSystem::modificoBola(sBall* pBall, float oldVel, float fdir)
+{
+    float fVel, xVel, yVel;
 
-        pBola2->m_vecVelocidad = glm::vec2{ xVel, yVel };
+    // La velocidad: la anterior repartida aplicando la reduccion de elasticidad:
+    fVel = oldVel * sGlobal::m_fElasticidad;
+    xVel = fVel * cos(deg2rad(fdir));
+    yVel = fVel * sin(deg2rad(fdir));
+
+    if (pBall->m_bolaId == 0)
+    {
+        if (sGlobal::m_hayChoqueOrigen)
+        {
+            pBall->m_fdir = fdir;
+            pBall->m_vecVelocidad = glm::vec2{ xVel, yVel };
+        }
+    }
+    else
+    {
+        // solo si no es el origen:
+        pBall->m_fdir = fdir;
+        pBall->m_vecVelocidad = glm::vec2{ xVel, yVel };
     }
 }
 

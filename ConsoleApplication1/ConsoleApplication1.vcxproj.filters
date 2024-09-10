@@ -45,6 +45,9 @@
     <Filter Include="Source\comun\dll">
       <UniqueIdentifier>{2adf6654-ed20-4eda-adea-2a2e99a0ade8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\comun\tool\strings">
+      <UniqueIdentifier>{f730c5eb-cde1-4fd7-9dd6-24f2071b0afc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\comun\src\tool\consola\cConio.cpp">
@@ -128,14 +131,23 @@
     <ClCompile Include="..\comun\src\swat\buffers\cMalla.cpp">
       <Filter>Source\comun\swat\buffers</Filter>
     </ClCompile>
-    <ClCompile Include="..\comun\src\tool\cToken.cpp">
-      <Filter>Source\comun\tool</Filter>
+    <ClCompile Include="..\comun\src\swat\texturas\cFuente.cpp">
+      <Filter>Source\comun\swat\texturas</Filter>
     </ClCompile>
-    <ClCompile Include="..\comun\src\tool\cValor.cpp">
-      <Filter>Source\comun\tool</Filter>
+    <ClCompile Include="..\comun\src\swat\texturas\cGestorFuentes.cpp">
+      <Filter>Source\comun\swat\texturas</Filter>
     </ClCompile>
-    <ClCompile Include="..\comun\src\tool\sString.cpp">
-      <Filter>Source\comun\tool</Filter>
+    <ClCompile Include="..\comun\src\swat\cColor.cpp">
+      <Filter>Source\comun\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\strings\cToken.cpp">
+      <Filter>Source\comun\tool\strings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\strings\cValor.cpp">
+      <Filter>Source\comun\tool\strings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\strings\sString.cpp">
+      <Filter>Source\comun\tool\strings</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,9 +176,6 @@
       <Filter>Source\comun\tool</Filter>
     </ClInclude>
     <ClInclude Include="..\comun\src\tool\nComun.h">
-      <Filter>Source\comun\tool</Filter>
-    </ClInclude>
-    <ClInclude Include="..\comun\src\tool\nExport.h">
       <Filter>Source\comun\tool</Filter>
     </ClInclude>
     <ClInclude Include="..\comun\src\tool\nMensajes.h">
@@ -235,14 +244,23 @@
     <ClInclude Include="..\comun\src\dll\cDll.h">
       <Filter>Source\comun\dll</Filter>
     </ClInclude>
-    <ClInclude Include="..\comun\src\tool\cToken.h">
-      <Filter>Source\comun\tool</Filter>
+    <ClInclude Include="..\comun\src\swat\texturas\cFuente.h">
+      <Filter>Source\comun\swat\texturas</Filter>
     </ClInclude>
-    <ClInclude Include="..\comun\src\tool\cValor.h">
-      <Filter>Source\comun\tool</Filter>
+    <ClInclude Include="..\comun\src\swat\texturas\cGestorFuentes.h">
+      <Filter>Source\comun\swat\texturas</Filter>
     </ClInclude>
-    <ClInclude Include="..\comun\src\tool\sString.h">
-      <Filter>Source\comun\tool</Filter>
+    <ClInclude Include="..\comun\src\swat\cColor.h">
+      <Filter>Source\comun\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\strings\cToken.h">
+      <Filter>Source\comun\tool\strings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\strings\cValor.h">
+      <Filter>Source\comun\tool\strings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\strings\sString.h">
+      <Filter>Source\comun\tool\strings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -15,8 +15,6 @@
 /*------------------------------------------------------------------------*\
 |* Statics
 \*------------------------------------------------------------------------*/
-bool sBall::m_hayGravedad = true;
-bool sBall::m_hayFriccion = true;
 int sBall::s_countBolas = 0;
 /*------------------------------------------------------------------------*/
 
@@ -93,10 +91,13 @@ int sBall::checkParada(float fDeltaTime)
     //----------------------------------------------------------------------
     float fVel = sMath::modulo(m_vecVelocidad);
     if (
-            (fVel < sGlobal::m_fVelParada) && 
+            (fVel < sGlobal::m_fVelParada && m_bolaId == 0) ||
             (
-                (m_posicion.y < m_radio + 1.0f) ||
-                (m_estaColisionando)
+                fVel < sGlobal::m_fVelParada && m_bolaId !=0 &&
+                (
+                    (m_posicion.y < m_radio + 1.0f) ||
+                    (m_estaColisionando)
+                )
             )
        )
     {
@@ -146,20 +147,25 @@ int sBall::update(float fDeltaTime)
     sMath::setZero(m_vecVelocidad);
     if (!sMath::isZero(m_vecVelocidad))
     {
-        if (sBall::m_hayGravedad)
+        if (m_bolaId != 0 || (sGlobal::m_hayChoqueOrigen && m_bolaId==0))
         {
-            float decGravedad = sGlobal::m_fGravedad * fDeltaTime * sGlobal::m_fFactorMaximizador;
-            glm::vec2 gravedad = glm::vec2(0.0, decGravedad);
-            // Debe venir negativa, porque el valor de la gravedad ya me viene negativa
-            m_vecVelocidad += gravedad;
-        }
+            if (sGlobal::m_hayGravedad)
+            {
+                float decGravedad = sGlobal::m_fGravedad * fDeltaTime * sGlobal::m_fFactorMaximizador;
+                // Solo en el eje Y:
+                glm::vec2 gravedad = glm::vec2(0.0, decGravedad);
+                // Debe venir negativa, porque el valor de la gravedad ya me viene negativa
+                m_vecVelocidad += gravedad;
+            }
 
-        if (sBall::m_hayFriccion)
-        {
-            float decFriccion = sGlobal::m_fFriccionAire * fDeltaTime;
-            glm::vec2 friccion = { decFriccion, decFriccion };
-            // Debe venir negativa, porque el valor de la friccion ya me viene negativa
-            m_vecVelocidad += friccion;
+            if (sGlobal::m_hayFriccion)
+            {
+                float decFriccion = sGlobal::m_fFriccionAire * fDeltaTime;
+                // En el eje X y en el eje Y:
+                glm::vec2 friccion = { decFriccion, decFriccion };
+                // Debe venir negativa, porque el valor de la friccion ya me viene negativa
+                m_vecVelocidad += friccion;
+            }
         }
 
         glm::vec2 inc = sBall::calcIncremento(fDeltaTime, m_vecVelocidad);
@@ -213,8 +219,8 @@ int sBall::render(float fDeltaTime)
 void sBall::render_normal()
 {
     float radioInt =
-        (!sBall::m_hayGravedad) ? m_radio - 0.8f :
-        (!sBall::m_hayFriccion) ? 0.0f :
+        (!sGlobal::m_hayGravedad) ? m_radio - 1.0f :
+        (!sGlobal::m_hayFriccion) ? 0.0f :
         3.0f;
 
     sOpenGL::circulo(glm::vec3(m_posicion.x, m_posicion.y, 0.0f), m_radio, m_color, radioInt);
@@ -245,7 +251,7 @@ void sBall::render_explosion(float fDeltaTime)
 
 void sBall::cambiaDir(eIncr incr, float fDeltaTime)
 {
-    float finc = 3 * fDeltaTime * sGlobal::m_fFactorMaximizador;
+    float finc = 100.0f * fDeltaTime;
     switch (incr)
     {
         case eIncr::eSuma:
@@ -268,7 +274,7 @@ void sBall::cambiaVel(eIncr incr, float fDeltaTime)
 {
     // Creia que tenia que ver con origen,
     // aunque si, se podria haber puesto en cualquier parte
-    float finc = 3 * fDeltaTime * sGlobal::m_fFactorMaximizador;
+    float finc = 100.0f * fDeltaTime;
     switch (incr)
     {
         case eIncr::eSuma:
@@ -282,20 +288,6 @@ void sBall::cambiaVel(eIncr incr, float fDeltaTime)
             if (sGlobal::m_fVelocidadInicial < sGlobal::m_fVelocidadMin)
                 sGlobal::m_fVelocidadInicial = sGlobal::m_fVelocidadMin;
             break;
-    }
-}
-
-
-//--------------------------------------------------------------------------
-// La m_fdir va cambiando de valor.
-// cuando sea negativa la corregimos para que este en el rango de
-// 0.0f a 360.0f
-//--------------------------------------------------------------------------
-void sBall::corrigeDir()
-{
-    if (m_fdir < 0.0f)
-    {
-        m_fdir = 360.0f + m_fdir;
     }
 }
 

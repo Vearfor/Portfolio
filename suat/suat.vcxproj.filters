@@ -45,6 +45,9 @@
     <Filter Include="cmd">
       <UniqueIdentifier>{3d7ee57e-ff0f-4ba2-81d2-692119269e40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\comun\tool\strings">
+      <UniqueIdentifier>{0eb95e48-5b12-440a-88f7-5c4e8e9912b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\cSuatDll.cpp">
@@ -128,15 +131,6 @@
     <ClCompile Include="..\comun\src\swat\sRenderObject.cpp">
       <Filter>source\comun\swat</Filter>
     </ClCompile>
-    <ClCompile Include="..\comun\src\tool\cValor.cpp">
-      <Filter>source\comun\tool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\comun\src\tool\sString.cpp">
-      <Filter>source\comun\tool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\comun\src\tool\cToken.cpp">
-      <Filter>source\comun\tool</Filter>
-    </ClCompile>
     <ClCompile Include="..\comun\src\swat\texturas\cFuente.cpp">
       <Filter>source\comun\swat\texturas</Filter>
     </ClCompile>
@@ -145,6 +139,15 @@
     </ClCompile>
     <ClCompile Include="..\comun\src\swat\cColor.cpp">
       <Filter>source\comun\swat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\strings\cToken.cpp">
+      <Filter>source\comun\tool\strings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\strings\cValor.cpp">
+      <Filter>source\comun\tool\strings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\tool\strings\sString.cpp">
+      <Filter>source\comun\tool\strings</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -247,15 +250,6 @@
     <ClInclude Include="..\comun\src\swat\sRenderObject.h">
       <Filter>source\comun\swat</Filter>
     </ClInclude>
-    <ClInclude Include="..\comun\src\tool\cValor.h">
-      <Filter>source\comun\tool</Filter>
-    </ClInclude>
-    <ClInclude Include="..\comun\src\tool\sString.h">
-      <Filter>source\comun\tool</Filter>
-    </ClInclude>
-    <ClInclude Include="..\comun\src\tool\cToken.h">
-      <Filter>source\comun\tool</Filter>
-    </ClInclude>
     <ClInclude Include="..\comun\src\swat\texturas\cFuente.h">
       <Filter>source\comun\swat\texturas</Filter>
     </ClInclude>
@@ -264,6 +258,15 @@
     </ClInclude>
     <ClInclude Include="..\comun\src\swat\cColor.h">
       <Filter>source\comun\swat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\strings\cToken.h">
+      <Filter>source\comun\tool\strings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\strings\cValor.h">
+      <Filter>source\comun\tool\strings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\tool\strings\sString.h">
+      <Filter>source\comun\tool\strings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
