@@ -22,6 +22,6 @@ TestBamTang
 - BamTang04  Fisicas. Esta casi terminado, pero hay algunos defectos en las colisiones.
 - BamTang05  Laberinto 3D
 - ConsoleApplication1 para certificar pruebas de concepto.
-- suat       Proyecto de la libreria dinamica 'suat.dll'. He agrupado en ella todo el codigo que he ido utilizando en todos los proyectos. Es casi un mini motor de video juegos ya que tiene todo el conocimiento que he ido agrupando a lo largo de los años.
+- suat.      Proyecto de la libreria dinamica 'suat.dll'. He agrupado en ella todo el codigo que he ido utilizando en todos los proyectos. Es casi un mini motor de video juegos ya que tiene todo el conocimiento que he ido agrupando a lo largo de los años.
  
 BamTang05, ConsoleApplication1, matienen en comun, en una carpeta dentro de comun/src, el mismo codigo que ya hemos metido en 'suat.dll'.
