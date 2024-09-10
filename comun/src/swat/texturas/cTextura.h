@@ -2,7 +2,6 @@
 |* cTextura.h
 \*========================================================================*/
 
-
 #pragma once
 //--------------------------------------------------------------------------
 // Includes
@@ -14,6 +13,35 @@
 //--------------------------------------------------------------------------
 
 
+//--------------------------------------------------------------------------
+// Enumerados
+//--------------------------------------------------------------------------
+// El enumerado de eTipoTextura esta funcionando como un identificador
+// de la tabla de tipos de textura que construimos en el cpp:
+//  sTipoTextura cListaTipoTexturas::s_vtTipoTextura[] =
+//  Las posiciones del Array (deberia ser mejor un vector), deben 
+//  coincidir con los valores del enumerado
+//--------------------------------------------------------------------------
+enum class eOldTipoTextura
+{
+    eAT0 = 0,   //  0, AT0 Tex Bmp sin alpha
+    eAT1,       //  1, AT1 Tex Bmp sin alpha
+    eAT2,       //  2, AT2 Tex Bmp sin alpha
+    eAT3,       //  3, AT3 Tex Bmp ?
+    eAT4,       //  4 ,  Cook
+    eFT0,       //  5, FT0 Tex Tga con alpha
+    eFT1,       //  6, FT1 Tex Bmp sin alpha
+    eFT2,       //  7, FT2 Tex Tga con alpha
+    eSH0,       //  8, SH0
+    eSH1,       //  9, SH1
+    eFLR,       // 10, eFLR   Flare
+    eENG,       // 11, eENG:  Particle Engine
+    eLOG,       // 12, eLOG:  Logo de Inmize.
+    eCOL0,      // 13,        Texturas de color.
+    eTNoReg,    // Textura No Registrada: por defecto AT3, lo que se especifique
+    NUM_TIPOS_TEXTURA
+};
+//--------------------------------------------------------------------------
 //--------------------------------------------------------------------------
 // Enumerado
 //--------------------------------------------------------------------------

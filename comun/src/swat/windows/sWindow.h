@@ -127,6 +127,8 @@ struct _mExport sWindow
     int	setRenderContext(bool bSinContexto = false);
     int setViewPort();
     int setViewPort(int x, int y, int width, int height);
+    float getAspectX(void);
+    float getAspectY(void);
 
     glm::mat4 getPerspProjection();
     glm::mat4 getOrthoProjection();
@@ -167,9 +169,10 @@ protected:
     bool m_bActiva{ false };
 
     // Del OnSize
-    // No tiene mucho sentido, pero poco a poco ..
     int m_iScreenX{ 0 };                // Ancho absoluto, con el que se pensaron las posiciones de los controles
     int m_iScreenY{ 0 };                // Alto absoluto, con el que se pensaron las posiciones de los controles.
+    float m_fAspectX{ 1.0f };
+    float m_fAspectY{ 1.0f };
     //----------------------------------------------------------------------
     // Deben de informarse en el OnSize
     // double  m_dAspectX{ 1.0 };          // Relacion resolucion absoluta X / resolucion relativa X

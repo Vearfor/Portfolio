@@ -42,6 +42,8 @@
 #define mpError(punt)       { if (punt!=0) { return nullptr; } }
 #define mpNulo(punt)        { if (!punt) { return nullptr; } }
 //--------------------------------------------------------------------------
+// #define mInicio(s)          std::memset(static_cast<void*>(&s), 0, sizeof(s))
+//--------------------------------------------------------------------------
 #define mInicio(s)          std::memset(s, 0, sizeof(s))
 //--------------------------------------------------------------------------
 #define mCopia(dest,src)	\
@@ -56,6 +58,9 @@
 //--------------------------------------------------------------------------
 #define mbTrue(v)           ((!strcmp(v,"true"))? true: false)
 #define msTrue(s)           ((s)? "true": "false")
+#define mBTrue(v)           ((v)? TRUE: FALSE)
+#define mbCond(v)           ((v)? true: false)
+#define msNulo(s)		    ((mNoVacia(s))? (s):"")
 //==========================================================================
 
 /*------------------------------------------------------------------------*\

@@ -11,6 +11,9 @@
 
 /*------------------------------------------------------------------------*/
 struct sGame;
+
+class cFuente;
+struct sOrigen;
 /*------------------------------------------------------------------------*/
 struct sRenderSystem
 {
@@ -18,6 +21,7 @@ struct sRenderSystem
     ~sRenderSystem();
 
     int init();
+    int finishInit(sGame* pGame);
     int update(sGame*, float fDeltaTime);
 
     sGameWindow* getMainWindow() { return m_pWindow; }
@@ -40,6 +44,18 @@ private:
     // Los valores que luego hay que coger son estos, que variaran con el
     // OnSize de la ventana.
     sGameWindow* m_pWindow{ nullptr };
+
+    sOrigen* m_pOrigen{ nullptr };
+    cTextura* m_pTexturaTest{ nullptr };
+    cFuente* m_pFonArialMin{ nullptr };
+    cFuente* m_pFonArialMax{ nullptr };
+    cFuente* m_pFonDef{ nullptr };
+    cFuente* m_pFonAgulon{ nullptr };
+
+    void showOrigin(cFuente* poFon);
+    void showFps(cFuente* poFon, float fDeltaTime);
+    void showTest(sGame *);
+    void showHelp(sGame*, cFuente* poFon);
 };
 /*------------------------------------------------------------------------*/
 

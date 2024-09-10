@@ -137,6 +137,15 @@
     <ClCompile Include="..\comun\src\tool\cToken.cpp">
       <Filter>source\comun\tool</Filter>
     </ClCompile>
+    <ClCompile Include="..\comun\src\swat\texturas\cFuente.cpp">
+      <Filter>source\comun\swat\texturas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\texturas\cGestorFuentes.cpp">
+      <Filter>source\comun\swat\texturas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\comun\src\swat\cColor.cpp">
+      <Filter>source\comun\swat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cSuatDll.h">
@@ -246,6 +255,15 @@
     </ClInclude>
     <ClInclude Include="..\comun\src\tool\cToken.h">
       <Filter>source\comun\tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\texturas\cFuente.h">
+      <Filter>source\comun\swat\texturas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\texturas\cGestorFuentes.h">
+      <Filter>source\comun\swat\texturas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\comun\src\swat\cColor.h">
+      <Filter>source\comun\swat</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

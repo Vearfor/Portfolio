@@ -243,22 +243,59 @@ void sBall::render_explosion(float fDeltaTime)
 }
 
 
-void sBall::cambiaDir(eIncrGrados incr)
+void sBall::cambiaDir(eIncr incr, float fDeltaTime)
 {
-    float finc = 3;
+    float finc = 3 * fDeltaTime * sGlobal::m_fFactorMaximizador;
     switch (incr)
     {
-        case eIncrGrados::eSuma:
+        case eIncr::eSuma:
             m_fdir += finc;
             if (m_fdir > 360.0f-finc)
                 m_fdir = 0.0f;
             break;
 
-        case eIncrGrados::eResta:
+        case eIncr::eResta:
             m_fdir -= finc;
             if (m_fdir < 0.0f)
                 m_fdir = 360.0f - finc;
             break;
+    }
+}
+
+
+// Cambia la velocidad de inicio de las bolas
+void sBall::cambiaVel(eIncr incr, float fDeltaTime)
+{
+    // Creia que tenia que ver con origen,
+    // aunque si, se podria haber puesto en cualquier parte
+    float finc = 3 * fDeltaTime * sGlobal::m_fFactorMaximizador;
+    switch (incr)
+    {
+        case eIncr::eSuma:
+            sGlobal::m_fVelocidadInicial += finc;
+            if (sGlobal::m_fVelocidadInicial > sGlobal::m_fVelocidadMax)
+                sGlobal::m_fVelocidadInicial = sGlobal::m_fVelocidadMax;
+            break;
+
+        case eIncr::eResta:
+            sGlobal::m_fVelocidadInicial -= finc;
+            if (sGlobal::m_fVelocidadInicial < sGlobal::m_fVelocidadMin)
+                sGlobal::m_fVelocidadInicial = sGlobal::m_fVelocidadMin;
+            break;
+    }
+}
+
+
+//--------------------------------------------------------------------------
+// La m_fdir va cambiando de valor.
+// cuando sea negativa la corregimos para que este en el rango de
+// 0.0f a 360.0f
+//--------------------------------------------------------------------------
+void sBall::corrigeDir()
+{
+    if (m_fdir < 0.0f)
+    {
+        m_fdir = 360.0f + m_fdir;
     }
 }
 

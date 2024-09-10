@@ -1,5 +1,6 @@
-//==========================================================================
-//  cFuente.cpp
+/*========================================================================*\
+|* cFuente.cpp
+\*========================================================================*/
 //==========================================================================
 // 16/08/2003 : Enrique Rocafull Ortiz
 //==========================================================================
@@ -8,21 +9,25 @@
 
 
 #include "cFuente.h"
-#include "cGestorColores.h"
+#include "cGestorTexturas.h"
 #include "cGestorFuentes.h"
-#include "Texturas/cTextura.h"
-#include "../Windows/cGLWindow.h"
-#include "../Files/cLog.h"
-#include "../Memoria/fMemoria.h"
-#include "../Util/cError.h"
-#include "cOpengl.h"
+#include "../windows/sWindow.h"
+#include "../cColor.h"
+#include <tool/cTool.h>
+#include <tool/sMath.h>
+
+
+//--------------------------------------------------------------------------
+// Statics
+//--------------------------------------------------------------------------
+//--------------------------------------------------------------------------
 
 
 //--------------------------------------------------------------------------
 // Constructor/Destructor
 //--------------------------------------------------------------------------
 cFuente::cFuente ( void )
-	: m_ptFuente(NULL)
+	: m_tFuente()
 	, m_poTextura(NULL)
     , m_iSiguienteX(0)
     , m_iSiguienteTitulo(0)
@@ -31,18 +36,17 @@ cFuente::cFuente ( void )
     , m_fAnchoXCaracter(0)
 	, m_fCharMaxHeight(0.0f)
     , m_bFull(false)
-    , m_iTraza(eTMIN)
-    , m_iX(-1)
-    , m_iY(-1)
+    , m_iTraza(cLog::eTraza::min)
+    , m_fX(-1.0f)
+    , m_fY(-1.0f)
 {
-	setNew(this,"cFuente");
-    memset((void *)m_vfAncho, 0, sizeof(m_vfAncho));
+	mInicio(m_vfAncho);
 }
 
 
 cFuente::~cFuente ( void )
 {
-	Destruye();
+	destruye();
 }
 
 
@@ -53,18 +57,12 @@ cFuente::~cFuente ( void )
 //--------------------------------------------------------------------------
 // Iniciamos los parametros de la textura
 //--------------------------------------------------------------------------
-int cFuente::Inicia ( sFuente * p_ptFuente )
+int cFuente::inicia ( const sFuente & tFuente )
 {
-	mDelete(m_ptFuente);
-	// m_ptFuente = (sFuente*)cMemoria::malloc(sizeof(miFuente), "miFuente");
-	m_ptFuente = new sFuente();
-	miNulo(m_ptFuente);
-
-    // Esta asignacion es muy pobre y peligrosa !!
-	*m_ptFuente = *p_ptFuente;
-
-	setNombre(m_ptFuente->vcNombre);
-
+	m_tFuente = tFuente;
+	mCopia(m_tFuente.vcNombre, tFuente.vcNombre);
+	mCopia(m_tFuente.vcFichero, tFuente.vcFichero);
+	setNombre(m_tFuente.vcNombre);
 	return 0;
 }
 
@@ -72,24 +70,36 @@ int cFuente::Inicia ( sFuente * p_ptFuente )
 //--------------------------------------------------------------------------
 // Cargamos los valores y generamos la fuente.
 //--------------------------------------------------------------------------
-int cFuente::Carga ( cGLWindow * poWindow, int iCharSet )
+int cFuente::Carga ( sWindow * poWindow, int iCharSet )
 {
 	int	iRes = 0;
 
-	if	(!m_bActivada)
+	if (!m_bActivada)
 	{
-		mDelete(m_poTextura);
-		if (m_ptFuente->eTipoFon!= eTipoFuentes::eFN01)
+		// Si la fuente necesita textura debemos cargarla
+		if (m_tFuente.eTipoFon != eTipoFuentes::eFN01)
 		{
-			m_poTextura = new cTextura;
-			miNulo(m_poTextura);
+			// El nombre de la textura en el gestor es el nombre de la fuente
+			// No es el nombre con el directorio:
+			m_poTextura = cGestorTexturas::Instancia()->GetTextura(m_tFuente.vcNombre);
+			// Si lo tenemos, bien, sino habra que cargarla:
+			if (!m_poTextura)
+			{
+				if (
+						cGestorTexturas::Instancia()->CargaTextura(m_tFuente.vcFichero) ||
+						(m_poTextura = cGestorTexturas::Instancia()->GetTextura(m_tFuente.vcNombre)) == nullptr
+				   )
+				{
+					cLog::error(" Error: cFuente::Carga: no tenemos textura para la fuente\n");
+					return -1;
+				}
+			}
 		}
 
-        iRes = Construye(poWindow, iCharSet);
+		iRes = Construye(poWindow, iCharSet);
 
 		m_bActivada = !iRes;
 	}
-
 	return iRes;
 }
 
@@ -97,252 +107,243 @@ int cFuente::Carga ( cGLWindow * poWindow, int iCharSet )
 //--------------------------------------------------------------------------
 // Construye la fuente
 //--------------------------------------------------------------------------
-int cFuente::Construye (cGLWindow * poWindow, int iCharSet)
+int cFuente::Construye (sWindow * poWindow, int iCharSet)
 {
     const char * _metodo = __FUNCTION__;
 
     //----------------------------------------------------------------------
 	// Generación de la fuente.
 	//----------------------------------------------------------------------
-	// Nuevo: modo de Orionis_p, ¿ modo suave ? : Listas
+	int	iRes = 0;
 	//----------------------------------------------------------------------
-	int		iRes = 0;
-	//----------------------------------------------------------------------
-	if	(m_ptFuente)
+	//------------------------------------------------------------------
+    HDC hDc = poWindow->getDeviceContext();
+	//------------------------------------------------------------------
+	if	(m_tFuente.eTipoFon!= eTipoFuentes::eFN01)
 	{
-		//------------------------------------------------------------------
-		cError	oError;
-        HDC hDc = poWindow->getDeviceContext();
-		//------------------------------------------------------------------
-		if	(m_ptFuente->eTipoFon!= eTipoFuentes::eFN01)
+		if	(m_poTextura)
 		{
-			if	(m_poTextura)
+			//iRes =
+			//	(
+			//			m_poTextura->inicia(m_tFuente.idTextura, m_tFuente.vcNombre, m_tFuente.vcFichero, m_tFuente.eTipoTex,NULL) != 0
+			//		||	m_poTextura->carga() != 0
+			//	);
+			//miError(iRes);
+
+			m_tFuente.iTextura = m_poTextura->getIdTex();   // Las fuentes con texturas dependen su ancho y su alto de las dimensiones
+            m_tFuente.iAnchoTex = m_poTextura->getWidth();    // del fichero de textura.
+			m_tFuente.iAltoTex = m_poTextura->getHeight();      // 256 x 256 (Generalmente)
+		}
+	}
+	else
+	{
+		m_tFuente.iNItems = 256 - 32;	// 96;
+	}
+    //------------------------------------------------------------------
+    GLint   iLado;       // Distinto según la textura
+	memset( (void *) m_vfAncho, 0, sizeof(m_vfAncho) );
+	m_fCharMaxHeight = 0;
+    m_fAnchoXCaracter = 1;
+
+	//------------------------------------------------------------------
+	switch(m_tFuente.eTipoFon)
+	{
+		case eTipoFuentes::eFT01:
+			//----------------------------------------------------------
 			{
-				iRes =
-					(
-							m_poTextura->inicia(m_ptFuente->idTextura, m_ptFuente->vcNombre, m_ptFuente->vcFichero, m_ptFuente->eTipoTex,NULL) != 0
-						||	m_poTextura->carga() != 0
-					);
-				miError(iRes);
+                GLfloat	    cx;		     // Coordenada X
+				GLfloat	    cy;		     // Coordenada Y
+				GLint       il;          // Indice del bucle.
+				GLfloat     fILado;      // 1/iLado
+				int			iAncho;
 
-				m_ptFuente->iTextura = m_poTextura->getGLTextura();   // Las fuentes con texturas dependen su ancho y su alto de las dimensiones
-                m_ptFuente->iAnchoTex = m_poTextura->getAncho();    // del fichero de textura.
-				m_ptFuente->iAltoTex = m_poTextura->getAlto();      // 256 x 256 (Generalmente)
-			}
-		}
-		else
-		{
-			m_ptFuente->iNItems = 256 - 32;	// 96;
-		}
-        //------------------------------------------------------------------
-        GLint   iLado;       // Distinto según la textura
-		memset( (void *) m_vfAncho, 0, sizeof(m_vfAncho) );
-		m_fCharMaxHeight = 0;
-        m_fAnchoXCaracter = 1;
+                iLado	= (int) sqrt((double) m_tFuente.iAnchoTex);	    // Texturas de 256 x 256, y de 256 elementos (=16x16).
+				fILado	= (float) 1/iLado;								    // 1/16 = 0.0625
+				iAncho	= m_tFuente.iAncho;							    // m_ptFuente.iTam;
 
-		//------------------------------------------------------------------
-		switch(m_ptFuente->eTipoFon)
-		{
-			case eTipoFuentes::eFT01:
-				//----------------------------------------------------------
-				{
-                    GLfloat	    cx;		     // Coordenada X
-					GLfloat	    cy;		     // Coordenada Y
-					GLint       il;          // Indice del bucle.
-					GLfloat     fILado;      // 1/iLado
-					int			iAncho;
-
-                    iLado	= (int) sqrt((double) m_ptFuente->iAnchoTex);	    // Texturas de 256 x 256, y de 256 elementos (=16x16).
-					fILado	= (float) 1/iLado;								    // 1/16 = 0.0625
-					iAncho	= m_ptFuente->iAncho;							    // m_ptFuente.iTam;
-
-                    m_ptFuente->iNItems = 256;                                  // 256 elementos.
+                m_tFuente.iNItems = 256;                                  // 256 elementos.
                     
-					m_ptFuente->iBase = glGenLists(m_ptFuente->iNItems);	    // Crea 256 listas vacías
-                    miError(cOpenGL::Error(0, "glGenLists:eFT01"));
+				m_tFuente.iBase = glGenLists(m_tFuente.iNItems);	    // Crea 256 listas vacías
+				glBindTexture(GL_TEXTURE_2D, m_tFuente.iTextura);		    // Selecciona la textura con las fuentes
 
-					glBindTexture(GL_TEXTURE_2D, m_ptFuente->iTextura);		    // Selecciona la textura con las fuentes
-					miError(cOpenGL::Error(0, "glBindTexture"));
-
-					for ( il=0; il<m_ptFuente->iNItems; il++ )				    // Bucle para los 256 elementos/listas
-					{
-						cx=(float)(il%iLado)/iLado;								// Posición X para el caracter en curso.
-						cy=(float)(il/iLado)/iLado;								// Posición Y para el caracter en curso.
-
-						glNewList(m_ptFuente->iBase+il, GL_COMPILE);			// Comienza una lista de visualización.
-							glBegin(GL_QUADS);									// Usamos rectágulos/quads para cada caracter.
-								//------------------------------------------------------
-								glTexCoord2f(cx			,1-cy-fILado);			// Coord Textura (Abajo izquierda).
-								glVertex2i	(0			,0			);			// Coord Vértice (Abajo izquierda).
-								//------------------------------------------------------
-								glTexCoord2f(cx+fILado	,1-cy-fILado);			// Coord Textura (Abajo derecha).
-								glVertex2i	(iLado		,0			);			// Coord Vértice (Abajo derecha).
-								//------------------------------------------------------
-								glTexCoord2f(cx+fILado	,1-cy		);			// Coord Textura (Arriba derecha).
-								glVertex2i	(iLado		,iLado		);			// Coord Vértice (Arriba derecha).
-								//------------------------------------------------------
-								glTexCoord2f(cx			,1-cy		);			// Coord Textura (Arriba izquierda).
-								glVertex2i	(0			,iLado		);			// Coord Vértice (Arriba izquierda).
-								//------------------------------------------------------
-							glEnd();											// Nuestro rectangulo/quad construido (Caracter).
-							glTranslated(iAncho,0,0);							// Mueve a la derecha del Caracter.
-						glEndList();											// Lista de visualización del caracter construida.
-
-                        m_vfAncho[il] = (float) iLado;
-					}															// Para los 256 elementos de la textura.
-					miError(cOpenGL::Error(0, "cFuente:Construye:[tipo eFT01]"));
-					//------------------------------------------------------
-					for (int i=0;  i<m_ptFuente->iNItems;  i++)
-					{
-						m_vfAncho[i] = (float) m_ptFuente->iAncho;
-					}
-					m_fAnchoXCaracter = (float) m_ptFuente->iAncho;
-					m_fCharMaxHeight = (float) m_ptFuente->iAlto;
-					//------------------------------------------------------
-				}
-                //----------------------------------------------------------
-				break;
-
-			case eTipoFuentes::eFT02:
-			case eTipoFuentes::eAT01:
-				//----------------------------------------------------------
+				for ( il=0; il<m_tFuente.iNItems; il++ )				    // Bucle para los 256 elementos/listas
 				{
-					int i, j, k;
+					cx=(float)(il%iLado)/iLado;								// Posición X para el caracter en curso.
+					cy=(float)(il/iLado)/iLado;								// Posición Y para el caracter en curso.
 
-					// Ahora establecemos las coordenadas.
-					for ( k=0, j=1; j<(m_ptFuente->iAltoTex/2); j+=16 )
+					glNewList(m_tFuente.iBase+il, GL_COMPILE);			// Comienza una lista de visualización.
+						glBegin(GL_QUADS);									// Usamos rectágulos/quads para cada caracter.
+							//------------------------------------------------------
+							glTexCoord2f(cx			,1-cy-fILado);			// Coord Textura (Abajo izquierda).
+							glVertex2i	(0			,0			);			// Coord Vértice (Abajo izquierda).
+							//------------------------------------------------------
+							glTexCoord2f(cx+fILado	,1-cy-fILado);			// Coord Textura (Abajo derecha).
+							glVertex2i	(iLado		,0			);			// Coord Vértice (Abajo derecha).
+							//------------------------------------------------------
+							glTexCoord2f(cx+fILado	,1-cy		);			// Coord Textura (Arriba derecha).
+							glVertex2i	(iLado		,iLado		);			// Coord Vértice (Arriba derecha).
+							//------------------------------------------------------
+							glTexCoord2f(cx			,1-cy		);			// Coord Textura (Arriba izquierda).
+							glVertex2i	(0			,iLado		);			// Coord Vértice (Arriba izquierda).
+							//------------------------------------------------------
+						glEnd();											// Nuestro rectangulo/quad construido (Caracter).
+						glTranslated(iAncho,0,0);							// Mueve a la derecha del Caracter.
+					glEndList();											// Lista de visualización del caracter construida.
+
+                    m_vfAncho[il] = (float) iLado;
+				}															// Para los 256 elementos de la textura.
+				//------------------------------------------------------
+				for (int i=0;  i<m_tFuente.iNItems;  i++)
+				{
+					m_vfAncho[i] = (float) m_tFuente.iAncho;
+				}
+				m_fAnchoXCaracter = (float) m_tFuente.iAncho;
+				m_fCharMaxHeight = (float) m_tFuente.iAlto;
+				//------------------------------------------------------
+			}
+            //----------------------------------------------------------
+			break;
+
+		case eTipoFuentes::eFT02:
+		case eTipoFuentes::eAT01:
+			//----------------------------------------------------------
+			{
+				int i, j, k;
+
+				// Ahora establecemos las coordenadas.
+				for ( k=0, j=1; j<(m_tFuente.iAltoTex/2); j+=16 )
+				{
+					for ( i=0; i<m_tFuente.iAnchoTex; i+=16 )
 					{
-						for ( i=0; i<m_ptFuente->iAnchoTex; i+=16 )
+						switch (m_tFuente.eTipoFon)
 						{
-							switch (m_ptFuente->eTipoFon)
-							{
-								case eTipoFuentes::eFT02:   // Fuente TGA
-									m_ptFuente->fCoord[k][0] = (float) i / (float) m_ptFuente->iAnchoTex;
-									m_ptFuente->fCoord[k][1] = (float) j / (float) m_ptFuente->iAltoTex;
-									m_ptFuente->fCoord[k][2] = (float) i / (float) m_ptFuente->iAnchoTex + (float) 15/(float)m_ptFuente->iAnchoTex;
-									m_ptFuente->fCoord[k][3] = (float) j / (float) m_ptFuente->iAltoTex  + (float) 15/(float)m_ptFuente->iAltoTex;
-									break;
+							case eTipoFuentes::eFT02:   // Fuente TGA
+								m_tFuente.fCoord[k][0] = (float) i / (float) m_tFuente.iAnchoTex;
+								m_tFuente.fCoord[k][1] = (float) j / (float) m_tFuente.iAltoTex;
+								m_tFuente.fCoord[k][2] = (float) i / (float) m_tFuente.iAnchoTex + (float) 15/(float)m_tFuente.iAnchoTex;
+								m_tFuente.fCoord[k][3] = (float) j / (float) m_tFuente.iAltoTex  + (float) 15/(float)m_tFuente.iAltoTex;
+								break;
 
-                                case eTipoFuentes::eAT01:   // Fuente BMP
-									m_ptFuente->fCoord[k][0] = (float) i / (float) m_ptFuente->iAnchoTex;
-									m_ptFuente->fCoord[k][1] = 0.5f - ((float) j / (float) m_ptFuente->iAltoTex);
-									m_ptFuente->fCoord[k][2] = (float) i / (float) m_ptFuente->iAnchoTex + (float) 15/(float)m_ptFuente->iAnchoTex;
-									m_ptFuente->fCoord[k][3] = 0.5f - ((float) j / (float) m_ptFuente->iAltoTex  + (float) 15/(float)m_ptFuente->iAltoTex);
-									break;
-							}
-							k++;
+                            case eTipoFuentes::eAT01:   // Fuente BMP
+								m_tFuente.fCoord[k][0] = (float) i / (float) m_tFuente.iAnchoTex;
+								m_tFuente.fCoord[k][1] = 0.5f - ((float) j / (float) m_tFuente.iAltoTex);
+								m_tFuente.fCoord[k][2] = (float) i / (float) m_tFuente.iAnchoTex + (float) 15/(float)m_tFuente.iAnchoTex;
+								m_tFuente.fCoord[k][3] = 0.5f - ((float) j / (float) m_tFuente.iAltoTex  + (float) 15/(float)m_tFuente.iAltoTex);
+								break;
 						}
+						k++;
 					}
-					//------------------------------------------------------
-					for ( i=0;  i<256;  i++)
-					{
-						m_vfAncho[i] = (float) m_ptFuente->iAncho;
-					}
-					m_fAnchoXCaracter = (float) m_ptFuente->iAncho;
-					m_fCharMaxHeight = (float) m_ptFuente->iAlto;
-					//------------------------------------------------------
 				}
-                //----------------------------------------------------------
-				break;
-
-			case eTipoFuentes::eFN01:
-				//----------------------------------------------------------
-				// Fuentes Windows
-				//----------------------------------------------------------
+				//------------------------------------------------------
+				for ( i=0;  i<256;  i++)
 				{
-					HFONT	hFont, hOldFont;
-					int		iCSet;
-
-                    m_ptFuente->bOutLine = false;
-					m_ptFuente->iBase = glGenLists(m_ptFuente->iNItems);
-                    miError(cOpenGL::Error(0, "%s: glGenLists", _metodo));
-
-					iCSet = (iCharSet == -1) ? ANSI_CHARSET : m_ptFuente->iCharSet;
-					iCSet = (iCSet == -1) ? ANSI_CHARSET : iCSet;
-
-					// Parece ser que el Ancho no nos sirve de mucho, siempre hay que recalcularlo.
-					// Y la altura se pasa como negativa.
-                    SetLastError(0);
-					hFont = CreateFont
-						(
-							m_ptFuente->iAlto,			    // Altura de la fuente
-							m_ptFuente->iAncho,				// Ancho medio de los caracteres
-							0,								// Angulo de escape (?)
-							0,								// Angulo de orientacion de la linea base ( y el eje X)
-							m_ptFuente->iPeso,				// Peso de la fuente
-							mBTrue(m_ptFuente->bItalic),	// italic atribute option
-							mBTrue(m_ptFuente->bUnderLine),	// underline attribute option
-							mBTrue(m_ptFuente->bStrikeOut),	// strikeout attribute option
-							iCSet,							// conjunto de caracteres
-							OUT_TT_PRECIS,					// output precision
-							CLIP_DEFAULT_PRECIS,			// clipping precision
-							ANTIALIASED_QUALITY,			// output quality
-							FF_DONTCARE|DEFAULT_PITCH,		// pitch and family
-							m_ptFuente->vcNombre			// typeface name
-						);
-					miNulo(hFont);
-					oError.mensaje(0,"cFuente:Construye:[tipo eFN01] CreateFont [%s]", m_ptFuente->vcNombre);
-
-					hOldFont = (HFONT) SelectObject(hDc, hFont);
-
-					char* pcCharSet = cGestorFuentes::BuscaCharSet(iCSet);
-					cLog::traza(m_iTraza, "   Genero fuente %s %d\n", m_ptFuente->vcNombre, m_ptFuente->idTextura);
-					cLog::traza(m_iTraza, "   CharSet  %d  [%s]\n", iCSet, msNulo(pcCharSet));
-					cLog::traza(m_iTraza, "   + Peso %d\n", m_ptFuente->iPeso );
-                    cLog::traza(m_iTraza, "   + Alto %d\n", m_ptFuente->iAlto );
-                    cLog::traza(m_iTraza, "   + Ancho %d\n", m_ptFuente->iAncho );
-                    cLog::traza(m_iTraza, "     Outline a %s\n", msTrue(m_ptFuente->bOutLine));
-					if	(m_ptFuente->bOutLine)
-					{
-						GLYPHMETRICSFLOAT agmf[256];
-						// create display lists for glyphs 0 through 255 with 0.1 extrusion 
-						// and default deviation. The display list numbering starts at 1000 
-						// (it could be any number) 
-						//wglUseFontOutlines(hdc, 0, 255, 1000, 0.0f, 0.1f, WGL_FONT_POLYGONS, &agmf);
-						wglUseFontOutlines(hDc, 32, m_ptFuente->iNItems, m_ptFuente->iBase, 0.0f, 0.1f, WGL_FONT_POLYGONS, &agmf[0]);
-					}
-					else
-					{
-						wglUseFontBitmaps(hDc, 32, m_ptFuente->iNItems, m_ptFuente->iBase);
-					}
-					oError.mensaje(0,"cFuente:Construye:[tipo eFN01] [%s]", m_ptFuente->vcNombre);
-					SelectObject(hDc,hOldFont);
-					DeleteObject(hFont);
-                    //------------------------------------------------------
-                    for (unsigned int i=0;  i<256;  i++)
-                    {
-                        SIZE size;
-                        char character = char(i);
-
-                        if (GetTextExtentPoint32(hDc, &character,1, &size) == FALSE)
-                        {
-                            m_vfAncho[i] = 0.0f;
-                        }
-                        else
-                        {
-                            m_vfAncho[i] = float(size.cx);
-                            m_fCharMaxHeight = Max(m_fCharMaxHeight, float(size.cy));
-                        }
-                        m_fAnchoXCaracter = Max(m_fAnchoXCaracter, m_vfAncho[i]);
-                    }
-                    //------------------------------------------------------
+					m_vfAncho[i] = (float) m_tFuente.iAncho;
 				}
-				//----------------------------------------------------------
-				/*
-					int		iIndex		;
-					int		iAltura		;				// Altura de la letra
-					int		iAncho		;				// Ancho ocupado por cada letra
-					int		iPeso		;
-					bool	bOutline	;
-					char	vcNombreTipo[LON_STRING];	// Nombre del tipo de letra
-					HFONT	hFont		;				// Handle devuelto por CreateFont
+				m_fAnchoXCaracter = (float) m_tFuente.iAncho;
+				m_fCharMaxHeight = (float) m_tFuente.iAlto;
+				//------------------------------------------------------
+			}
+            //----------------------------------------------------------
+			break;
 
-					{ -1, -12, 0, FW_BOLD	, false	, "Arial"		, NULL	},		// FON_BASE1
-				*/
-				//----------------------------------------------------------
-				break;
-		}
-		//------------------------------------------------------------------
+		case eTipoFuentes::eFN01:
+			//----------------------------------------------------------
+			// Fuentes Windows
+			//----------------------------------------------------------
+			{
+				HFONT	hFont, hOldFont;
+				int		iCSet;
+
+                m_tFuente.bOutLine = false;
+				m_tFuente.iBase = glGenLists(m_tFuente.iNItems);
+
+				iCSet = (iCharSet == -1) ? ANSI_CHARSET : m_tFuente.iCharSet;
+				iCSet = (iCSet == -1) ? ANSI_CHARSET : iCSet;
+
+				WCHAR wcNombre[256];
+				cTool::copiaMultibyteToUnicode(m_tFuente.vcNombre, wcNombre, sizeof(wcNombre));
+				// Parece ser que el Ancho no nos sirve de mucho, siempre hay que recalcularlo.
+				// Y la altura se pasa como negativa.
+                SetLastError(0);
+				hFont = CreateFont
+					(
+						m_tFuente.iAlto,			    // Altura de la fuente
+						m_tFuente.iAncho,				// Ancho medio de los caracteres
+						0,								// Angulo de escape (?)
+						0,								// Angulo de orientacion de la linea base ( y el eje X)
+						m_tFuente.iPeso,				// Peso de la fuente
+						mBTrue(m_tFuente.bItalic),		// italic atribute option
+						mBTrue(m_tFuente.bUnderLine),	// underline attribute option
+						mBTrue(m_tFuente.bStrikeOut),	// strikeout attribute option
+						iCSet,							// conjunto de caracteres
+						OUT_TT_PRECIS,					// output precision
+						CLIP_DEFAULT_PRECIS,			// clipping precision
+						ANTIALIASED_QUALITY,			// output quality
+						FF_DONTCARE|DEFAULT_PITCH,		// pitch and family
+						wcNombre						// typeface name
+					);
+				miNulo(hFont);
+
+				// Valores eArial1 en Orion:
+				// iAlto = 0
+				// iAncho = 0
+				// angulo escape 0
+				// angulo orientacion 0
+				// peso = 600
+				// italic false
+				// under line false
+				// Strike out false
+				// iCSet 0
+				// iOffset 12
+				// sombra true
+				// incSombra 1
+				// Nombre "Arial"
+
+				hOldFont = (HFONT) SelectObject(hDc, hFont);
+
+				char* pcCharSet = cGestorFuentes::BuscaCharSet(iCSet);
+				cLog::print("   Genero fuente %s %d\n", m_tFuente.vcNombre, m_tFuente.idFuente);
+				cLog::print("   CharSet  %d  [%s]\n", iCSet, msNulo(pcCharSet));
+				cLog::print("   + Peso %d\n", m_tFuente.iPeso );
+                cLog::print("   + Alto %d\n", m_tFuente.iAlto );
+                cLog::print("   + Ancho %d\n", m_tFuente.iAncho );
+                cLog::print("     Outline a %s\n", msTrue(m_tFuente.bOutLine));
+				if	(m_tFuente.bOutLine)
+				{
+					GLYPHMETRICSFLOAT agmf[256];
+					// create display lists for glyphs 0 through 255 with 0.1 extrusion 
+					// and default deviation. The display list numbering starts at 1000 
+					// (it could be any number) 
+					//wglUseFontOutlines(hdc, 0, 255, 1000, 0.0f, 0.1f, WGL_FONT_POLYGONS, &agmf);
+					wglUseFontOutlines(hDc, 32, m_tFuente.iNItems, m_tFuente.iBase, 0.0f, 0.1f, WGL_FONT_POLYGONS, &agmf[0]);
+				}
+				else
+				{
+					wglUseFontBitmaps(hDc, 32, m_tFuente.iNItems, m_tFuente.iBase);
+				}
+				SelectObject(hDc,hOldFont);
+				DeleteObject(hFont);
+                //------------------------------------------------------
+                for (unsigned int i=0;  i<256;  i++)
+                {
+                    SIZE size;
+					WCHAR character = WCHAR(i);
+
+                    if (GetTextExtentPoint32(hDc, &character,1, &size) == FALSE)
+                    {
+                        m_vfAncho[i] = 0.0f;
+                    }
+                    else
+                    {
+                        m_vfAncho[i] = float(size.cx);
+                        m_fCharMaxHeight = max(m_fCharMaxHeight, float(size.cy));
+                    }
+                    m_fAnchoXCaracter = max(m_fAnchoXCaracter, m_vfAncho[i]);
+                }
+                //------------------------------------------------------
+			}
+			//----------------------------------------------------------
+			break;
 	}
 	//----------------------------------------------------------------------
 
@@ -356,7 +357,7 @@ int cFuente::Construye (cGLWindow * poWindow, int iCharSet)
 //--------------------------------------------------------------------------
 // Devuelve la longitud en pixels de un texto dado.
 //--------------------------------------------------------------------------
-uint cFuente::getAnchoTexto ( const char * pcText, cGLWindow * poWindow )
+uint cFuente::getAnchoTexto ( const char * pcText, sWindow * poWindow )
 {
 	if (pcText == NULL)
 		return 0;
@@ -365,7 +366,7 @@ uint cFuente::getAnchoTexto ( const char * pcText, cGLWindow * poWindow )
     uint uI, uiCont = (uint) strlen(pcText);
     float fValor, fAspectX;
 
-    fAspectX = (!poWindow)? 1.0f: (float) poWindow->getAspectX();
+    fAspectX = (!poWindow)? 1.0f: poWindow->getAspectX();
 	for ( uI=0; uI<uiCont; uI++ )
 	{
         unsigned int iC = (unsigned int) pcText[uI];
@@ -376,26 +377,23 @@ uint cFuente::getAnchoTexto ( const char * pcText, cGLWindow * poWindow )
         }
 	}
 
-    res = (uint) (res * (m_ptFuente->fEsc));
-
-	// Cuidado, puede modificar comportamientos de otras aplicaciones
-	// res = (uint)(res * 1.3);
+    res = (uint) (res * (m_tFuente.fEsc));
 
 	return res;
 }
 
 
-uint cFuente::getLongitud ( cString * posCadP, cGLWindow * poWindow )
+uint cFuente::getLongitud ( std::string * posCadP, sWindow * poWindow )
 {
     if (posCadP)
     {
-        return getAnchoTexto(posCadP->Cad(), poWindow);
+        return getAnchoTexto(posCadP->c_str(), poWindow);
     }
     return 0;
 }
 
 
-uint cFuente::getLongitud ( const char * pcCad, cGLWindow * poWindow )
+uint cFuente::getLongitud ( const char * pcCad, sWindow * poWindow )
 {
     if (pcCad)
     {
@@ -408,7 +406,7 @@ uint cFuente::getLongitud ( const char * pcCad, cGLWindow * poWindow )
 //--------------------------------------------------------------------------
 // Solo me falta algo que me de la Altura en Pixeles de una fuente
 //--------------------------------------------------------------------------
-uint cFuente::getAltoTexto ( cGLWindow * poWindow )
+uint cFuente::getAltoTexto ( sWindow * poWindow )
 {
     float fAlto = (float) m_fCharMaxHeight;
     if (poWindow)
@@ -419,7 +417,7 @@ uint cFuente::getAltoTexto ( cGLWindow * poWindow )
 }
 
 
-uint cFuente::getAltura ( cGLWindow * poWindow )
+uint cFuente::getAltura ( sWindow * poWindow )
 {
     return getAltoTexto(poWindow);
 }
@@ -427,25 +425,23 @@ uint cFuente::getAltura ( cGLWindow * poWindow )
 
 int cFuente::getPeso ( void )
 {
-    return m_ptFuente->iPeso;
+    return m_tFuente.iPeso;
 }
 
 
 //==========================================================================
-int cFuente::Destruye ( void )
+int cFuente::destruye ( void )
 {
-	mDelete(m_poTextura);
-	glDeleteLists(m_ptFuente->iBase,m_ptFuente->iNItems);	// Borra las 256 listas de la fuente.
-	mDelete(m_ptFuente);
-
+	// Si hay textura se destruye en el gestor de texturas
+	glDeleteLists(m_tFuente.iBase,m_tFuente.iNItems);	// Borra las 256 listas de la fuente.
 	return 0;
 }
 
 
 int cFuente::CambiaFuente ( int iSet, float fEsc )
 {
-	m_ptFuente->iGrupo  = iSet;
-	m_ptFuente->fEsc    = fEsc;
+	m_tFuente.iGrupo  = iSet;
+	m_tFuente.fEsc    = fEsc;
 	return 0;
 }
 
@@ -453,10 +449,9 @@ int cFuente::CambiaFuente ( int iSet, float fEsc )
 //--------------------------------------------------------------------------
 // Pasa a la siguiente linea
 //--------------------------------------------------------------------------
-int cFuente::saltaLinea (cGLWindow * poWindow)
+int cFuente::saltaLinea (sWindow * poWindow)
 {
-    m_iY = m_iY - (getAltura(poWindow) + 1);
-
+    m_fY = m_fY - (getAltura(poWindow) + 1);
     return 0;
 }
 
@@ -465,12 +460,25 @@ int cFuente::saltaLinea (cGLWindow * poWindow)
 // Admite un formato variable de mensaje
 //--------------------------------------------------------------------------
 // #define _RISK_
+//--------------------------------------------------------------------------
 #ifdef _RISK_
-int cFuente::escribe(cGLWindow* poWindow, int iXp, int iYp, int iZp, float escala, int p_iCol, const char* p_pcFormato, ...)
+//--------------------------------------------------------------------------
+// int cFuente::escribe(sWindow* poWindow, 
+//						int iXp, int iYp, int iZp, 
+//						float escala, 
+//						int p_iCol, 
+//						const char* p_pcFormato, ...)
+//--------------------------------------------------------------------------
+int cFuente::escribe(
+	sWindow* poWindow, 
+	glm::ivec3 pos, 
+	float escala, 
+	glm::vec4 vCol,
+	const char* p_pcFormato, ...)
 {
 	if (!m_bActivada)
 	{
-		Carga(poWindow, m_ptFuente->iCharSet);
+		Carga(poWindow, m_tFuente.iCharSet);
 	}
 
 	if (m_bActivada && poWindow)
@@ -483,55 +491,65 @@ int cFuente::escribe(cGLWindow* poWindow, int iXp, int iYp, int iZp, float escal
 		vsprintf_s(vcMensaje, sizeof(vcMensaje), p_pcFormato, tAp);
 		va_end(tAp);
 
-		int iX = iXp;
-		int iY = iYp;
+		int iX = pos.x;
+		int iY = pos.y;
 
-		double	dX, dY, dYConOffset;
+		float fX, fY, fYConOffset;
 
-		if (iX == -1) { iX = m_iX; }
-		if (iY == -1) { iY = m_iY; }
+		if (iX == -1) { iX = static_cast<int>(m_fX); }
+		if (iY == -1) { iY = static_cast<int>(m_fY); }
 
-		m_iX = iX;
-		m_iY = (int)cOpenGL::SetSentidoCoordY(iY, (getAltura(poWindow) + 1));	// iYp - (getAltura(poWindow) + 1);
+		m_fX = static_cast<float>(iX);
+		m_fY = sOpenGL::SetSentidoCoordY(iY, (getAltura(poWindow) + 1));	// iYp - (getAltura(poWindow) + 1);
 
-		dYConOffset = iY - m_ptFuente->fOffset;
+		fYConOffset = iY - m_tFuente.fOffset;
 
-		dX = cOpenGL::DarX(iX);
-		dY = cOpenGL::DarY(dYConOffset);
-		//dX = iX;
-		//dY = dYConOffset;
+		fX = sOpenGL::DarX(iX);				// fX = iX;
+		fY = sOpenGL::DarY(fYConOffset);	// fY = fYConOffset;
 
 		//----------------------------------
-		if (m_ptFuente->bSombra)
+		if (m_tFuente.bSombra)
 		{
 			int iIncSombra;
-			const TvColor* ptColor;
-			TvColor tColor;
+			glm::vec4 vColor;
 
-			iIncSombra = m_ptFuente->iIncSombra;
-			ptColor = cColor::getColor(p_iCol);
+			iIncSombra = m_tFuente.iIncSombra;
 
-			tColor.vCol[0] = ptColor->vCol[0] * 0.5f;
-			tColor.vCol[1] = ptColor->vCol[1] * 0.5f;
-			tColor.vCol[2] = ptColor->vCol[2] * 0.5f;
-			tColor.vCol[3] = ptColor->vCol[3];
+			vColor.r = vCol.r * 0.5f;
+			vColor.g = vCol.g * 0.5f;
+			vColor.b = vCol.b * 0.5f;
+			vColor.a = vCol.a;
 
-			cColor::color(&tColor);
-			escribeFuente(poWindow, (int)dX + iIncSombra, (int)dY - iIncSombra, iZp, escala, -1, vcMensaje);     // Escribimos el mensaje.
+			sOpenGL::color(vColor);
+			escribeFuente(poWindow,
+				glm::ivec3((int)fX + iIncSombra, (int)fY - iIncSombra, pos.z),
+				escala,
+				cColor::vNoColor,
+				vcMensaje);     // Escribimos el mensaje.
 		}
 
-		escribeFuente(poWindow, (int)dX, (int)dY, iZp, escala, p_iCol, vcMensaje);     // Escribimos el mensaje.
+		escribeFuente(
+			poWindow, 
+			glm::ivec3((int)fX, (int)fY, pos.z), 
+			escala, 
+			cColor::vNoColor,
+			vcMensaje);     // Escribimos el mensaje.
 		//----------------------------------
 	}
 
 	return 0;
 }
 #else
-int cFuente::escribe(cGLWindow* poWindow, int iXp, int iYp, int iZp, float escala, int p_iCol, const char* p_pcFormato, ...)
+int cFuente::escribe(
+	sWindow* poWindow,
+	const glm::ivec3 & pos, 
+	float escala,
+	const glm::vec4 & vCol,
+	const char* p_pcFormato, ...)
 {
 	if (!m_bActivada)
 	{
-		Carga(poWindow, m_ptFuente->iCharSet);
+		Carga(poWindow, m_tFuente.iCharSet);
 	}
 
 	if (m_bActivada && poWindow)
@@ -544,42 +562,50 @@ int cFuente::escribe(cGLWindow* poWindow, int iXp, int iYp, int iZp, float escal
 		vsprintf_s(vcMensaje, sizeof(vcMensaje), p_pcFormato, tAp);
 		va_end(tAp);
 
-		int iX = iXp;
-		int iY = iYp;
+		int iX = (int) pos.x;
+		int iY = (int) pos.y;
 
-		double	dX, dY, dYConOffset;
+		float	fX, fY, fYConOffset;
 
-		if (iX == -1) { iX = m_iX; }
-		if (iY == -1) { iY = m_iY; }
+		if (iX == -1) { iX = (int) m_fX; }
+		if (iY == -1) { iY = (int) m_fY; }
 
-		m_iX = iX;
-		m_iY = (int)cOpenGL::SetSentidoCoordY(iY, (getAltura(poWindow) + 1));	// iYp - (getAltura(poWindow) + 1);
+		m_fX = (float) iX;
+		m_fY = sOpenGL::SetSentidoCoordY( (float)(iY), (float)(getAltura(poWindow) + 1));
 
-		dYConOffset = iY - m_ptFuente->fOffset;
+		fYConOffset = (float)iY - m_tFuente.fOffset;
 
-		dX = cOpenGL::DarX(iX);
-		dY = cOpenGL::DarY(dYConOffset);
+		fX = sOpenGL::DarX((float)iX);
+		fY = sOpenGL::DarY(fYConOffset);
 
 		//----------------------------------
-		if (m_ptFuente->bSombra)
+		if (m_tFuente.bSombra)
 		{
 			int iIncSombra;
-			const TvColor* ptColor;
-			TvColor tColor;
+			glm::vec4 vColor;
 
-			iIncSombra = m_ptFuente->iIncSombra;
-			ptColor = cColor::getColor(p_iCol);
+			iIncSombra = m_tFuente.iIncSombra;
 
-			tColor.vCol[0] = ptColor->vCol[0] * 0.5f;
-			tColor.vCol[1] = ptColor->vCol[1] * 0.5f;
-			tColor.vCol[2] = ptColor->vCol[2] * 0.5f;
-			tColor.vCol[3] = ptColor->vCol[3];
+			vColor.r = vCol.r * 0.5f;
+			vColor.g = vCol.g * 0.5f;
+			vColor.b = vCol.b * 0.5f;
+			vColor.a = vCol.a;
 
-			cColor::color(&tColor);
-			escribeFuente(poWindow, (int)dX + iIncSombra, (int)dY - iIncSombra, iZp, escala, -1, vcMensaje);     // Escribimos el mensaje.
+			sOpenGL::color(vColor);
+			escribeFuente(
+				poWindow,
+				glm::ivec3((int)fX + iIncSombra, (int)fY - iIncSombra, pos.z), 
+				escala, 
+				cColor::vNoColor,
+				vcMensaje);     // Escribimos el mensaje.
 		}
 
-		escribeFuente(poWindow, (int)dX, (int)dY, iZp, escala, p_iCol, vcMensaje);     // Escribimos el mensaje.
+		escribeFuente(
+			poWindow,
+			glm::ivec3((int)fX, (int)fY, pos.z), 
+			escala,
+			vCol, 
+			vcMensaje);     // Escribimos el mensaje.
 		//----------------------------------
 	}
 
@@ -592,43 +618,40 @@ int cFuente::escribe(cGLWindow* poWindow, int iXp, int iYp, int iZp, float escal
 // No se preocupa de tener un formato libre, este ya se ha convertido
 // por la función 'escribe'.
 //--------------------------------------------------------------------------
-int cFuente::escribeFuente ( cGLWindow * poWindow, int iX, int iY, int iZ, float escala, int iCol, char * pcMsg )
+int cFuente::escribeFuente ( sWindow * poWindow, glm::ivec3 pos, float escala, glm::vec4 color, char * pcMsg )
 {
-    double      dAspectX;
-    double      dAspectY;
-	float		fX, fY, fZ;
-	int			iCont;
+	float fAspectX;
+	float fAspectY;
+	float fX, fY, fZ;
+	size_t iCont;
 
-	iCont = (int) strlen(pcMsg);
-	fX = (float) iX;
-	fY = (float) iY;
-	fZ = (float) iZ;
+	iCont = strlen(pcMsg);
+	fX = (float) pos.x;
+	fY = (float) pos.y;
+	fZ = (float) pos.z;
 
-    dAspectX = poWindow->getAspectX();
-    dAspectY = poWindow->getAspectY();
-    cColor::color(iCol);
-	switch(m_ptFuente->eTipoFon)
+	fAspectX = poWindow->getAspectX();
+	fAspectY = poWindow->getAspectY();
+	sOpenGL::color(color);
+	switch(m_tFuente.eTipoFon)
 	{
-			case eTipoFuentes::eFT01:
+		case eTipoFuentes::eFT01:
 			{
 				int iList;
-
-                cOpenGL::pushMatrix();
-                {
-					iList = m_ptFuente->iBase - 32 + (128 * m_ptFuente->iGrupo);	// Set: elige el conjunto de la fuente
-
-					glTranslatef(fX,fY,fZ);						// Posición 0,0 (Abajo,Izquierda)
-                    if	(dAspectX != 1.0 || dAspectY!=1.0)
-                    {
-                        glScaled(dAspectX, dAspectY, 1.0);
-                    }
+				sOpenGL::pushMatrix();
+				{
+					iList = m_tFuente.iBase - 32 + (128 * m_tFuente.iGrupo);	// Set: elige el conjunto de la fuente
+					glTranslatef(fX,fY,fZ);										// Posición 0,0 (Abajo,Izquierda)
+					if	(fAspectX != 1.0f || fAspectY!=1.0f)
+					{
+						glScaled(fAspectX, fAspectY, 1.0f);
+					}
 					m_poTextura->activa();
 					glListBase(iList);
-					glCallLists(iCont,GL_BYTE,pcMsg);			// escribe el texto en la pantalla
+					glCallLists((GLsizei) iCont,GL_BYTE,pcMsg);			// escribe el texto en la pantalla
 					m_poTextura->desActiva();
-                }
-                cOpenGL::popMatrix();
-
+				}
+				sOpenGL::popMatrix();
                 fX += getAnchoTexto(pcMsg, poWindow);
                 m_iSiguienteX = (int)fX;
                 m_iUltimoY = (int)fY;
@@ -641,7 +664,7 @@ int cFuente::escribeFuente ( cGLWindow * poWindow, int iX, int iY, int iZ, float
 				if	(m_poTextura)
 				{
 					m_poTextura->activa();
-					escribeTrozo(poWindow, iX, iY, iZ, escala, pcMsg );
+					escribeTrozo(poWindow, pos, escala, pcMsg );
 					m_poTextura->desActiva();
 				}
 			}
@@ -649,25 +672,24 @@ int cFuente::escribeFuente ( cGLWindow * poWindow, int iX, int iY, int iZ, float
 
 		case eTipoFuentes::eFN01:
 			{
-                int iList = m_ptFuente->iBase - 32;
-                bool bTextura2D = cOpenGL::disable(GL_TEXTURE_2D);
-                cOpenGL::pushMatrix();
+                int iList = m_tFuente.iBase - 32;
+                bool bTextura2D = sOpenGL::disable(GL_TEXTURE_2D);
+                sOpenGL::pushMatrix();
                 {
 				    glListBase(iList);
                     
                     glRasterPos3d(fX, fY, fZ);
-                    //glRasterPos2d(fX, fY);
 
                     // La escala no le afecta en absoluto ...
-                    if	(dAspectX != 1.0 || dAspectY!=1.0)
+                    if	(fAspectX != 1.0 || fAspectY!=1.0)
                     {
-                        glScaled(dAspectX, dAspectY, 1.0);
+                        glScaled(fAspectX, fAspectY, 1.0);
                     }
 
 				    glCallLists( (GLint) iCont,GL_UNSIGNED_BYTE, pcMsg);
                 }
-                cOpenGL::popMatrix();
-                cOpenGL::restore(bTextura2D, GL_TEXTURE_2D);
+                sOpenGL::popMatrix();
+                sOpenGL::restore(bTextura2D, GL_TEXTURE_2D);
 
                 fX += getAnchoTexto(pcMsg, poWindow);
                 m_iSiguienteX = (int)fX;
@@ -682,12 +704,12 @@ int cFuente::escribeFuente ( cGLWindow * poWindow, int iX, int iY, int iZ, float
 //--------------------------------------------------------------------------
 // escribe trozos de la textura en la que se ha convertido la fuente
 //--------------------------------------------------------------------------
-int cFuente::escribeTrozo( cGLWindow  * poWindow, int iX, int iY, int iZ, float escala, char * pcMsg )
+int cFuente::escribeTrozo( sWindow  * poWindow, glm::ivec3 pos, float escala, char * pcMsg )
 {
 	float	fX, fY, fZ, fEsc, fIncAncho, fIncAlto;
 	float	fX1, fY1;
-    double  dAspectX;
-    double  dAspectY;
+    float fAspectX;
+    float fAspectY;
 	float	fGrupo;
 	int		i, iLon;
 	bool	bBlend;
@@ -695,19 +717,19 @@ int cFuente::escribeTrozo( cGLWindow  * poWindow, int iX, int iY, int iZ, float 
 	byte	ucCar;
     byte    ucInt;
 
-    dAspectX = poWindow->getAspectX();      // Escala actual por resolucion de la X de la Ventana
-    dAspectY = poWindow->getAspectY();      // Escala actual por resolucion de la Y de la Ventana
+    fAspectX = poWindow->getAspectX();      // Escala actual por resolucion de la X de la Ventana
+    fAspectY = poWindow->getAspectY();      // Escala actual por resolucion de la Y de la Ventana
 
-	fX = (float) iX;
-    fY = (float) iY;
-    fZ = (float) iZ;
-    fEsc = m_ptFuente->fEsc;                // Escala que le asociamos a la fuente
+	fX = (float) pos.x;
+    fY = (float) pos.y;
+    fZ = (float) pos.z;
+    fEsc = m_tFuente.fEsc;                // Escala que le asociamos a la fuente
 
     // Estos pueden ser propios de cada caracter, aun asi, en fuentes basadas en texturas
     // estos pueden ser los mismos
-    fIncAncho = m_ptFuente->iAncho*fEsc;    // * (float) dAspectX;
-    fIncAlto = m_ptFuente->iAlto*fEsc;      // * (float) dAspectY;
-	fGrupo = (m_ptFuente->iGrupo)? 0.5f: 0.0f;
+    fIncAncho = m_tFuente.iAncho*fEsc;    // * (float) dAspectX;
+    fIncAlto = m_tFuente.iAlto*fEsc;      // * (float) dAspectY;
+	fGrupo = (m_tFuente.iGrupo)? 0.5f: 0.0f;
 	iLon= (int) strlen(pcMsg);
     ucInt = '¿';
 
@@ -725,7 +747,7 @@ int cFuente::escribeTrozo( cGLWindow  * poWindow, int iX, int iY, int iZ, float 
 			ucCar = '?';
 		}
 
-        cOpenGL::pushMatrix();
+        sOpenGL::pushMatrix();
         {
 		    if	(bEspecial)
 		    {
@@ -735,36 +757,36 @@ int cFuente::escribeTrozo( cGLWindow  * poWindow, int iX, int iY, int iZ, float 
                     // Vamos a rotar la '?', para que sea una '¿'.
                     glTranslatef(fX + (fIncAncho/2), fY - (fIncAlto/2), 0);
 				    glRotatef(180,0,0,1);
-                    if	(dAspectX != 1.0 || dAspectY!=1.0)
+                    if	(fAspectX != 1.0 || fAspectY!=1.0)
                     {
-                        glScaled(dAspectX, dAspectY, 1.0);
+                        glScaled(fAspectX, fAspectY, 1.0);
                     }
 				    glBegin(GL_QUADS);
-                        glTexCoord2f( m_ptFuente->fCoord[(ucCar-32)][0], m_ptFuente->fCoord[(ucCar-32)][3] + fGrupo);   glVertex3f( fX1             , (fY1-fIncAlto), fZ);
-                        glTexCoord2f( m_ptFuente->fCoord[(ucCar-32)][2], m_ptFuente->fCoord[(ucCar-32)][3] + fGrupo);   glVertex3f( (fX1+fIncAncho) , (fY1-fIncAlto), fZ);
-                        glTexCoord2f( m_ptFuente->fCoord[(ucCar-32)][2], m_ptFuente->fCoord[(ucCar-32)][1] + fGrupo);   glVertex3f( (fX1+fIncAncho) , fY1           , fZ);
-                        glTexCoord2f( m_ptFuente->fCoord[(ucCar-32)][0], m_ptFuente->fCoord[(ucCar-32)][1] + fGrupo);   glVertex3f( fX1		        , fY1           , fZ);
+                        glTexCoord2f( m_tFuente.fCoord[(ucCar-32)][0], m_tFuente.fCoord[(ucCar-32)][3] + fGrupo);   glVertex3f( fX1             , (fY1-fIncAlto), fZ);
+                        glTexCoord2f( m_tFuente.fCoord[(ucCar-32)][2], m_tFuente.fCoord[(ucCar-32)][3] + fGrupo);   glVertex3f( (fX1+fIncAncho) , (fY1-fIncAlto), fZ);
+                        glTexCoord2f( m_tFuente.fCoord[(ucCar-32)][2], m_tFuente.fCoord[(ucCar-32)][1] + fGrupo);   glVertex3f( (fX1+fIncAncho) , fY1           , fZ);
+                        glTexCoord2f( m_tFuente.fCoord[(ucCar-32)][0], m_tFuente.fCoord[(ucCar-32)][1] + fGrupo);   glVertex3f( fX1		        , fY1           , fZ);
 				    glEnd();
 			    bEspecial = false;
 		    }
 		    else
 		    {
                 glTranslatef(fX, fY, 0);
-                if	(dAspectX != 1.0 || dAspectY!=1.0)
+                if	(fAspectX != 1.0 || fAspectY!=1.0f)
                 {
-                    glScaled(dAspectX, dAspectY, 1.0);
+                    glScalef(fAspectX, fAspectY, 1.01f);
                 }
 			    glBegin(GL_QUADS);
-                    glTexCoord2f( m_ptFuente->fCoord[(ucCar-32)][0], m_ptFuente->fCoord[(ucCar-32)][3] + fGrupo);	glVertex3f(0.0          , -fIncAlto , fZ);
-                    glTexCoord2f( m_ptFuente->fCoord[(ucCar-32)][2], m_ptFuente->fCoord[(ucCar-32)][3] + fGrupo);	glVertex3f(fIncAncho    , -fIncAlto , fZ);
-                    glTexCoord2f( m_ptFuente->fCoord[(ucCar-32)][2], m_ptFuente->fCoord[(ucCar-32)][1] + fGrupo);	glVertex3f(fIncAncho    , 0.0       , fZ);
-                    glTexCoord2f( m_ptFuente->fCoord[(ucCar-32)][0], m_ptFuente->fCoord[(ucCar-32)][1] + fGrupo);	glVertex3f(0.0          , 0.0       , fZ);
+                    glTexCoord2f( m_tFuente.fCoord[(ucCar-32)][0], m_tFuente.fCoord[(ucCar-32)][3] + fGrupo);	glVertex3f(0.0          , -fIncAlto , fZ);
+                    glTexCoord2f( m_tFuente.fCoord[(ucCar-32)][2], m_tFuente.fCoord[(ucCar-32)][3] + fGrupo);	glVertex3f(fIncAncho    , -fIncAlto , fZ);
+                    glTexCoord2f( m_tFuente.fCoord[(ucCar-32)][2], m_tFuente.fCoord[(ucCar-32)][1] + fGrupo);	glVertex3f(fIncAncho    , 0.0       , fZ);
+                    glTexCoord2f( m_tFuente.fCoord[(ucCar-32)][0], m_tFuente.fCoord[(ucCar-32)][1] + fGrupo);	glVertex3f(0.0          , 0.0       , fZ);
 			    glEnd();
 		    }
         }
-        cOpenGL::popMatrix();
+        sOpenGL::popMatrix();
 
-        fX += m_vfAncho[ucCar - 32] * fEsc * (float)dAspectX;
+        fX += m_vfAncho[ucCar - 32] * fEsc * (float)fAspectX;
         m_iSiguienteX = (int)fX;
         m_iUltimoY = (int)fY;
     }
@@ -778,16 +800,23 @@ int cFuente::escribeTrozo( cGLWindow  * poWindow, int iX, int iY, int iZ, float 
 
 //--------------------------------------------------------------------------
 // Divide el mensaje a escribir en titulo y detalle.
-// Pensado para poner diferentes colores en la misma linea
+// Pensado para poner DIFERENTES COLORES en la MISMA LINEA
 //--------------------------------------------------------------------------
-int cFuente::detalleTitulo (cGLWindow * poWindow, int iX, int iY, int iZ, float escala, int iColTitulo, int iColDetalle, const char * pcTitulo, const char * pcFormatDetalle, ...)
+int cFuente::detalleTitulo (
+	sWindow * poWindow,
+	glm::ivec3 pos,
+	float escala, 
+	glm::vec4 vColTitulo, 
+	glm::vec4 vColDetalle, 
+	const char * pcTitulo,
+	const char * pcFormatDetalle, ...)
 {
     // Diferentes Colores en la misma linea, como lo hacemos:
 
     //----------------------------------------------------------------------
     // Escribimos el Titulo
     //----------------------------------------------------------------------
-    escribe(poWindow, iX, iY, iZ, escala, iColTitulo, pcTitulo);
+    escribe(poWindow, pos, escala, vColTitulo, pcTitulo);
     //----------------------------------------------------------------------
 
     //----------------------------------------------------------------------
@@ -808,17 +837,16 @@ int cFuente::detalleTitulo (cGLWindow * poWindow, int iX, int iY, int iZ, float 
     va_end(tAp);
 
     // Guardo donde empieza en X, el salto de linea.
-    iX = getX();
+	// pero en float para no hacer un doble casting;
+    float fXaux = getX();
     escribe(
         poWindow,
-        DarSiguienteX(),
-        DarUltimoY(),
-        iZ,
+		glm::ivec3(DarSiguienteX(),DarUltimoY(),pos.z),
 		escala,
-        iColDetalle,
+        vColDetalle,
         vcMensaje);
     // Recupero donde empieza en X, el salto de linea.
-    setX(iX);
+    setX(fXaux);
     //----------------------------------------------------------------------
     return 0;
 }
@@ -833,12 +861,18 @@ int cFuente::detalleTitulo (cGLWindow * poWindow, int iX, int iY, int iZ, float 
 //  - otro detalleTituloSiguiente
 //
 //--------------------------------------------------------------------------
-int cFuente::detalleTituloSiguiente  (cGLWindow * poWindow, int iDespX, int iZ, float escala, int iColTitulo, int iColDetalle, const char * pcTitulo, const char * pcFormatDetalle, ...)
+int cFuente::detalleTituloSiguiente  (
+	sWindow * poWindow, 
+	int iDespX, int iZ, 
+	float escala, 
+	glm::vec4 vColTitulo,
+	glm::vec4 vColDetalle, 
+	const char * pcTitulo, const char * pcFormatDetalle, ...)
 {
     //----------------------------------------------------------------------
     // Guardo donde empieza en X, el salto de linea.
     //----------------------------------------------------------------------
-    int iX = getX();
+    float fXaux = getX();
     //----------------------------------------------------------------------
     // En todos se realiza el setX(iX) que restablece la X anterior.
     // Nosotros nos quedaremos con la que termino el ultimo detalle , a la
@@ -851,13 +885,12 @@ int cFuente::detalleTituloSiguiente  (cGLWindow * poWindow, int iDespX, int iZ, 
     //----------------------------------------------------------------------
     // Escribimos el Titulo
     //----------------------------------------------------------------------
-    escribe(poWindow, iXFinal, iYFinal, iZ, escala, iColTitulo, pcTitulo);
-    //----------------------------------------------------------------------
-
-    //----------------------------------------------------------------------
-    // NO Guardamos posicion titulo, aqui no hace falta
-    //----------------------------------------------------------------------
-    // m_iSiguienteTitulo = DarSiguienteX();
+    escribe(
+		poWindow,
+		glm::ivec3(iXFinal, iYFinal, iZ),
+		escala,
+		vColTitulo,
+		pcTitulo);
     //----------------------------------------------------------------------
 
     //----------------------------------------------------------------------
@@ -873,23 +906,26 @@ int cFuente::detalleTituloSiguiente  (cGLWindow * poWindow, int iDespX, int iZ, 
 
     escribe(
         poWindow,
-        DarSiguienteX(),
-        DarUltimoY(),
-        iZ,
+		glm::ivec3(DarSiguienteX(), DarUltimoY(), iZ),
 		escala,
-        iColDetalle,
+        vColDetalle,
         vcMensaje);
     //----------------------------------------------------------------------
     // Recupero donde empieza en X, el salto de linea.
     //----------------------------------------------------------------------
-    setX(iX);
+    setX(fXaux);
     //----------------------------------------------------------------------
 
     return 0;
 }
 
 
-int cFuente::detalleSiguienteLinea (cGLWindow * poWindow, int iX, int iY, int iZ, float escala, int iColDetalle, const char * pcFormatDetalle, ...)
+int cFuente::detalleSiguienteLinea (
+	sWindow * poWindow,
+	glm::ivec3 pos,			// int iX, int iY, int iZ
+	float escala,
+	glm::vec4 vColDetalle,
+	const char * pcFormatDetalle, ...)
 {
     //----------------------------------------------------------------------
     // Escribimos el Detalle
@@ -901,62 +937,29 @@ int cFuente::detalleSiguienteLinea (cGLWindow * poWindow, int iX, int iY, int iZ
     va_start(tAp, pcFormatDetalle);
     vsprintf_s(vcMensaje, sizeof(vcMensaje), pcFormatDetalle, tAp);
     va_end(tAp);
-
 
     // Guardo donde empieza en X, el salto de linea.
-    int iXaux = getX();
+    float fXaux = getX();
 
     escribe(
         poWindow,
-        (iX==-1)? DarSiguienteTit(): iX,
-        iY,
-        iZ,
+		glm::ivec3(
+			(pos.x==-1)? DarSiguienteTit(): pos.x,
+			pos.y,
+			pos.z
+		),
 		escala,
-        iColDetalle,
+        vColDetalle,
         vcMensaje);
 
     // Recupero donde empieza en X, el salto de linea.
-    setX(iXaux);
+    setX(fXaux);
     //----------------------------------------------------------------------
     return 0;
 }
 
 
-//==========================================================================
-// 'escribeW()' - Vamos a mantener una funcion que escriba segun el modo
-// de Windows.
-//==========================================================================
-void escribeW (HWND hWnd, int x, int y,
-    GLubyte  cFondo, GLubyte cTexto,
-    char * format, ...)
-{
-    cColor	  *	poColor = cColor::Instancia();
-    HDC			hdc;
-    va_list		ap;			// Argument pointer
-    char		vcMensaje[1024];
-    const TvColor * ptColor;
-
-    if (format == NULL)
-        return;
-
-    va_start(ap, format);
-    vsprintf_s(vcMensaje, sizeof(vcMensaje), format, ap);
-    va_end(ap);
-
-    hdc = GetDC (hWnd);           // Contexto de dispositivo
-
-    ptColor = poColor->getColor(cFondo);
-    SetBkColor(hdc, RGB(ptColor->vCol[0], ptColor->vCol[1], ptColor->vCol[2]));
-
-    ptColor = poColor->getColor(cTexto);
-    SetTextColor(hdc, RGB(ptColor->vCol[0], ptColor->vCol[1], ptColor->vCol[2]));
-
-    TextOut(hdc, x, y, vcMensaje, (int)strlen(vcMensaje));
-}
-
-
-
-//==========================================================================
-//  Fin de cFuente.cpp
-//==========================================================================
+/*========================================================================*\
+|* Fin de cFuente.cpp
+\*========================================================================*/
 

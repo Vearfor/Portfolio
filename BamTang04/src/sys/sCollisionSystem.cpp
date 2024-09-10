@@ -135,6 +135,10 @@ void sCollisionSystem::collision(sBall* pBola1, sBall* pBola2)
         pBola1->m_fdir = fdir;
         pBola2->m_fdir = ((fdir + 180.0f) > 360.0f) ? (fdir + 180.0f) - 360.0f : fdir + 180.0f;
 
+        // Si laguna es negativa, la mostramos siempre como positiva:
+        pBola1->corrigeDir();
+        pBola2->corrigeDir();
+
         // Estas son las direcciones perpendiculares al choque, ¿no habria que tener en cuenta las direcciones anteriores?
         // Debería ser, y seguro que es mucho mas simple
         if (oldVel1 > oldVel2)

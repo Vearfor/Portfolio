@@ -869,6 +869,32 @@ int sWindow::setViewPort(int x, int y, int width, int height)
 
 
 //--------------------------------------------------------------------------
+// Aspect: los OnSize provocaran los cambios en estos valores:
+// - Se estan calculando en los Viewport de las escenas
+// - Quizas debieramos traernos algo de eso a la ventana ya que
+//   los Aspect a que nos referimos no son los de la relacion entre
+//   Ancho/Alto sino
+//   Resolucion Absoluta y Resolucion Relativa.
+//
+//--------------------------------------------------------------------------
+// La de la X
+//--------------------------------------------------------------------------
+float  sWindow::getAspectX(void)
+{
+    return m_fAspectX;
+}
+
+
+//--------------------------------------------------------------------------
+// La de la Y
+//--------------------------------------------------------------------------
+float  sWindow::getAspectY(void)
+{
+    return m_fAspectY;
+}
+
+
+//--------------------------------------------------------------------------
 // Clean de los buffers inicio de escena
 //--------------------------------------------------------------------------
 void sWindow::clean(void)
@@ -962,6 +988,9 @@ long sWindow::OnSize(int newWidth, int newHeight)
 
     setAnchoOnSize(newWidth);
     setAltoOnSize(newHeight);
+
+    m_fAspectX = (getScreenX() > 0) ? (float)getAnchoOnSize() / (float)getScreenX() : 1.0f;
+    m_fAspectY = (getScreenY() > 0) ? (float)getAltoOnSize() / (float)getScreenY() : 1.0f;
 
     //----------------------------------------------------------------------
     // Jugamos con que no ponemos Viewport por defecto ?

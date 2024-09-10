@@ -195,6 +195,7 @@
     <ClCompile Include="..\comun\src\swat\buffers\cMalla.cpp" />
     <ClCompile Include="..\comun\src\swat\cAtributo.cpp" />
     <ClCompile Include="..\comun\src\swat\cCamara.cpp" />
+    <ClCompile Include="..\comun\src\swat\cColor.cpp" />
     <ClCompile Include="..\comun\src\swat\cModel.cpp" />
     <ClCompile Include="..\comun\src\swat\input\cRaton.cpp" />
     <ClCompile Include="..\comun\src\swat\input\cTeclado.cpp" />
@@ -202,6 +203,8 @@
     <ClCompile Include="..\comun\src\swat\shaders\cShader.cpp" />
     <ClCompile Include="..\comun\src\swat\sOpenGL.cpp" />
     <ClCompile Include="..\comun\src\swat\sRenderObject.cpp" />
+    <ClCompile Include="..\comun\src\swat\texturas\cFuente.cpp" />
+    <ClCompile Include="..\comun\src\swat\texturas\cGestorFuentes.cpp" />
     <ClCompile Include="..\comun\src\swat\texturas\cGestorTexturas.cpp" />
     <ClCompile Include="..\comun\src\swat\texturas\cTextura.cpp" />
     <ClCompile Include="..\comun\src\swat\windows\cModoGrafico.cpp" />
@@ -229,6 +232,7 @@
     <ClInclude Include="..\comun\src\swat\buffers\cMalla.h" />
     <ClInclude Include="..\comun\src\swat\cAtributo.h" />
     <ClInclude Include="..\comun\src\swat\cCamara.h" />
+    <ClInclude Include="..\comun\src\swat\cColor.h" />
     <ClInclude Include="..\comun\src\swat\cModel.h" />
     <ClInclude Include="..\comun\src\swat\input\cRaton.h" />
     <ClInclude Include="..\comun\src\swat\input\cTeclado.h" />
@@ -237,6 +241,8 @@
     <ClInclude Include="..\comun\src\swat\shaders\cShader.h" />
     <ClInclude Include="..\comun\src\swat\sOpenGL.h" />
     <ClInclude Include="..\comun\src\swat\sRenderObject.h" />
+    <ClInclude Include="..\comun\src\swat\texturas\cFuente.h" />
+    <ClInclude Include="..\comun\src\swat\texturas\cGestorFuentes.h" />
     <ClInclude Include="..\comun\src\swat\texturas\cGestorTexturas.h" />
     <ClInclude Include="..\comun\src\swat\texturas\cTextura.h" />
     <ClInclude Include="..\comun\src\swat\windows\cModoGrafico.h" />

@@ -11,9 +11,14 @@
 #include <GLM/glm.hpp>
 /*------------------------------------------------------------------------*/
 
+
 //--------------------------------------------------------------------------
-// Defines
+// Defines / Const
 //--------------------------------------------------------------------------
+#ifndef RISK_HEIGHT
+#define RISK_WIDTH      640
+#define RISK_HEIGHT     480
+#endif // !RISK_HEIGHT
 //--------------------------------------------------------------------------
 
 
@@ -68,6 +73,14 @@ enum class eCoordRectangulo
     eCenter,    // Las corrdenadas son las del centro del rectangulo
 };
 //--------------------------------------------------------------------------
+// Estilos de coordenadas
+//--------------------------------------------------------------------------
+enum class eTipoCoord
+{
+    eDNormal = 0,
+    eDRisk,       // Para compatibilizar las coordenadas del Antiguo Risk
+};
+//--------------------------------------------------------------------------
 
 
 //--------------------------------------------------------------------------
@@ -77,6 +90,9 @@ class cAtributo;
 class cTextura;
 struct _mExport sOpenGL
 {
+    //----------------------------------------------------------------------
+    // Variables
+    //----------------------------------------------------------------------
     static bool m_bIniciado;
     static int m_iLevelMatrixVista;
     static int m_iLevelMatrixProyeccion;
@@ -99,6 +115,14 @@ struct _mExport sOpenGL
 
     static glm::vec4 m_vCurrentColor;
 
+    static eTipoCoord m_eTipoCoord;
+
+    static int m_xScreen;
+    static int m_yScreen;
+
+
+    //----------------------------------------------------------------------
+    // Metodos
     //----------------------------------------------------------------------
     static int initOpenGL();
     static int inicioLuces(glm::vec4 vAmbientColor);
@@ -144,6 +168,15 @@ struct _mExport sOpenGL
     //----------------------------------------------------------------------
     static int color(glm::vec4 vColor);
     static glm::vec4 getColor();
+    //----------------------------------------------------------------------
+
+    //----------------------------------------------------------------------
+    static void SetCoordType(eTipoCoord eTipo);
+    static float SetSentidoCoordY(float y, float despY);
+    static float DarX(float fX, int dimWidthRisk = RISK_WIDTH);
+    static float DarY(float fY, int dimHeightRisk = RISK_HEIGHT);
+    static float CalcDimFinalX(float pX, int dimWidthRisk);
+    static float CalcDimFinalY(float pY, int dimHeightRisk);
     //----------------------------------------------------------------------
 
     //----------------------------------------------------------------------

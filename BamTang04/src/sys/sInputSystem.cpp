@@ -70,6 +70,21 @@ int sInputSystem::update(sGame* pGame, float fDeltaTime)
             pOrigen->m_vecVelocidad = { 0.0f, 0.0f };
         }
 
+        if (pTeclado->isDown('A'))
+        {
+            pOrigen->cambiaVel(eIncr::eSuma, fDeltaTime);
+        }
+
+        if (pTeclado->isDown('D'))
+        {
+            pOrigen->cambiaVel(eIncr::eResta, fDeltaTime);
+        }
+
+        if (pTeclado->isUp(VK_F1))
+        {
+            pGame->toggleHelp();
+        }
+
         if (pTeclado->isUp('T'))
         {
             pGame->toggleTest();
@@ -97,11 +112,11 @@ int sInputSystem::update(sGame* pGame, float fDeltaTime)
         /*----------------------------------------------------------------*/
         if (pTeclado->isDown(VK_ADD))
         {
-            pOrigen->cambiaDir(eIncrGrados::eSuma);
+            pOrigen->cambiaDir(eIncr::eSuma, fDeltaTime);
         }
         if (pTeclado->isDown(VK_SUBTRACT))
         {
-            pOrigen->cambiaDir(eIncrGrados::eResta);
+            pOrigen->cambiaDir(eIncr::eResta, fDeltaTime);
         }
         /*----------------------------------------------------------------*/
 

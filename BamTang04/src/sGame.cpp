@@ -13,6 +13,7 @@
 #include <swat/input/cTeclado.h>
 #include <swat/sOpenGL.h>
 #include <swat/texturas/cGestorTexturas.h>
+#include <swat/texturas/cGestorFuentes.h>
 #include <tool/consola/cConsola.h>
 #include <tool/sMath.h>
 #include <tool/cTool.h>
@@ -64,11 +65,11 @@ sGame::~sGame()
 //  - mostrar ayudas, transparentes.
 //  - ajustar la parada, si las colisiones hacen que no se mueva
 //    modificar velocidades.
-//    Actualmente se quedan quietos pero no mueren. Estan en colision
-//    permanente.
-//  - la parada solo se esta permitiendo en suelo: pos.y < radio + 1.0
-//    quitarlo ?
-//  - usar raton para arrastrar el origen de disparos.
+//    Estan en colision permanente. Se mueven poco a poco, y se ponen
+//    detras(o delante) sin marcar la collision.
+//
+//  - la parada se esta permitiendo en suelo: pos.y < radio + 1.0
+//    y tambien si esta el flag de m_estaColisionando
 //
 
 #pragma region Init
@@ -89,21 +90,156 @@ int sGame::init()
         sOpenGL::initOpenGL()
     );
 
-    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
     cLog::print("\n");
 
-    createOrigin();
-
-    const std::string kDirTexturas = "../comun/textures";
-    const std::string kTextura = "aries01.jpg";
-    miError(cGestorTexturas::Instancia()->CargaTextura(kTextura.c_str(), kDirTexturas.c_str()));
-
-    m_pTextura = cGestorTexturas::Instancia()->GetTextura(kTextura.c_str());
+    miError(
+        cGestorTexturas::Instancia()->CargaTextura(kTextura.c_str(), kDirTexturas.c_str()) ||
+        (m_pTextura = cGestorTexturas::Instancia()->GetTextura(kTextura.c_str())) == nullptr ||
+        createFuentes(m_pRender->getMainWindow()) ||
+        (m_pFonArialMin = cGestorFuentes::Instancia()->getFuente(static_cast<int>(eFuentes::ArialMin))) == nullptr ||
+        (m_pFonArialMax = cGestorFuentes::Instancia()->getFuente(static_cast<int>(eFuentes::ArialMax))) == nullptr ||
+        (m_pFonDef = cGestorFuentes::Instancia()->getFuente(static_cast<int>(eFuentes::Def))) == nullptr ||
+        (m_pFonAgulon = cGestorFuentes::Instancia()->getFuente(static_cast<int>(eFuentes::Agulon))) == nullptr ||
+        createOrigin() ||
+        m_pRender->finishInit(this)
+    );
 
     m_bIsRunning = true;
     return 0;
 }
+
+
+//--------------------------------------------------------------------------
+// Creacion de las fuentes para escribir
+//--------------------------------------------------------------------------
+int sGame::createFuentes(sGameWindow* pWindow)
+{
+    cGestorFuentes* pGestorFuentes = cGestorFuentes::Instancia();
+
+    // He especificado todos los parametros:
+    miError(
+        pGestorFuentes->cargaFuente(
+            static_cast<int>(eFuentes::ArialMin),
+            kFuenteArial.c_str(),
+            6,
+            20,
+            0,
+            eTipoFuentes::eFN01,
+            eOldTipoTextura::eTNoReg,
+            static_cast<int>(ePesoFuentes::ePEXTRA_LIGERO),
+            false,
+            false,
+            false,
+            false,
+            false,
+            kDirTexturas.c_str(),
+            ANSI_CHARSET,
+            false,
+            1.0f,
+            14.0f,
+            1
+        ) ||
+        pGestorFuentes->cargaFuente(
+            static_cast<int>(eFuentes::ArialMax),
+            kFuenteArial.c_str(),
+            0,
+            0,
+            0,
+            eTipoFuentes::eFN01,
+            eOldTipoTextura::eTNoReg,
+            static_cast<int>(ePesoFuentes::ePEXTRA_LIGERO),
+            false,
+            false,
+            false,
+            false,
+            false,
+            kDirTexturas.c_str(),
+            ANSI_CHARSET,
+            false,
+            1.0f,
+            12.0f,
+            1
+        ) ||
+        pGestorFuentes->cargaFuente(
+            static_cast<int>(eFuentes::Def),
+            kFuenteDef.c_str(),
+            16,
+            16,
+            0,
+            eTipoFuentes::eFT02,
+            eOldTipoTextura::eFT2,
+            static_cast<int>(ePesoFuentes::ePBOLD),
+            false,
+            false,
+            false,
+            false,
+            false,
+            kDirTexturas.c_str(),
+            ANSI_CHARSET,
+            false,
+            1.0f,
+            0.0f,
+            1
+        ) ||
+        pGestorFuentes->cargaFuente(
+            static_cast<int>(eFuentes::Agulon),             // identificador fuente (no es el de cItem)
+            kFuenteAgulon.c_str(),                          // pcNombre
+            16,                                             // ancho
+            16,                                             // alto
+            0,                                              // grupo
+            eTipoFuentes::eFT02,                            // tipo fuentes
+            eOldTipoTextura::eFT2,                          // old tipo textura
+            static_cast<int>(ePesoFuentes::ePBOLD),         // peso
+            false,                                          // italic
+            false,                                          // underline
+            false,                                          // strike out
+            false,                                          // outline
+            false,                                          // sombra
+            kDirTexturas.c_str(),                           // dir texturas
+            ANSI_CHARSET,                                   // charset
+            false,                                          // full
+            1.0f,                                           // fEsc
+            0.0f,                                           // fOffset
+            1                                               // inc sombra
+        )
+    );
+
+    miError(pGestorFuentes->genera(pWindow));
+
+    return 0;
+}
+
+
+//--------------------------------------------------------------------------
+// Creacion del circulo origen de los disparos
+// - hacemos tambien que el circulo origen tambien colisione con el resto
+//   de criculos.
+//--------------------------------------------------------------------------
+int sGame::createOrigin()
+{
+    if (m_vecBolas.size() < sGlobal::m_limBolas)
+    {
+        m_pOrigen = new sOrigen();
+        m_pOrigen->m_posicion = sGlobal::m_posOrigen;
+        m_pOrigen->m_radio = sGlobal::m_fRadioOrigen;
+        m_pOrigen->m_color = sGlobal::m_colorOrigen;
+        m_pOrigen->m_vColorFlecha = sGlobal::m_colorFlecha;
+        m_pOrigen->m_fdir = 40.0f;
+        m_pOrigen->m_vecVelocidad = { 0.0f, 0.0f };
+
+        cLog::print(" Origin: %3ld:  FDir: %6.3f:     Vel: [ %6.3f, %6.3f ]\n",
+            m_pOrigen->m_bolaId,
+            m_pOrigen->m_fdir,
+            m_pOrigen->m_vecVelocidad.x, m_pOrigen->m_vecVelocidad.y);
+
+        m_vecBolas.push_back(m_pOrigen);
+    }
+    return 0;
+}
+
+
 //--------------------------------------------------------------------------
 #pragma endregion
 
@@ -129,7 +265,7 @@ int sGame::eventos()
 int sGame::update(float fDeltaTime)
 {
     /*--------------------------------------------------------------------*/
-    setCaption(fDeltaTime);
+    // setCaption(fDeltaTime);
     /*--------------------------------------------------------------------*/
     m_pInput->update(this, fDeltaTime);
     m_pCollision->update(this, fDeltaTime);
@@ -177,28 +313,6 @@ bool sGame::isRunning()
 cstatic sGame* sGame::instancia()
 {
     return m_instancia;
-}
-
-
-void sGame::createOrigin()
-{
-    if (m_vecBolas.size() < sGlobal::m_limBolas)
-    {
-        m_pOrigen = new sOrigen();
-        m_pOrigen->m_posicion = sGlobal::m_posOrigen;
-        m_pOrigen->m_radio = sGlobal::m_fRadioOrigen;
-        m_pOrigen->m_color = sGlobal::m_colorOrigen;
-        m_pOrigen->m_vColorFlecha = sGlobal::m_colorFlecha;
-        m_pOrigen->m_fdir = 40.0f;
-        m_pOrigen->m_vecVelocidad = { 0.0f, 0.0f };
-
-        cLog::print(" Origin: %3ld:  FDir: %6.3f:     Vel: [ %6.3f, %6.3f ]\n",
-            m_pOrigen->m_bolaId, 
-            m_pOrigen->m_fdir, 
-            m_pOrigen->m_vecVelocidad.x, m_pOrigen->m_vecVelocidad.y);
-
-        m_vecBolas.push_back(m_pOrigen);
-    }
 }
 
 

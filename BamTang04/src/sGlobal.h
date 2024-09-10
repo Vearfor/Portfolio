@@ -47,8 +47,11 @@ struct sGlobal
     static float m_fRadioOrigen;
     static float m_fRadio;
     static glm::vec4 m_colorBolas;
-    static float m_fVelocidadInicial;
     static int m_limBolas;
+    /*--------------------------------------------------------------------*/
+    static float m_fVelocidadInicial;
+    static float m_fVelocidadMin;
+    static float m_fVelocidadMax;
     /*--------------------------------------------------------------------*/
     static float m_fGravedad;
     static float m_fFriccionAire;
@@ -62,6 +65,7 @@ struct sGlobal
     static float m_fFactorReductor;         // reducir o aumentar
     /*--------------------------------------------------------------------*/
     static int m_windowCaptionSize;
+    /*--------------------------------------------------------------------*/
     static float m_fVelParada;
     static float m_fTiempoDestruccion;
     static float m_fTiempoExplosion;

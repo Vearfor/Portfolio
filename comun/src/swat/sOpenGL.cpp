@@ -3,6 +3,7 @@
 \*------------------------------------------------------------------------*/
 
 #include "sOpenGL.h"
+#include "cAtributo.h"
 #include "../tool/cLog.h"
 #include "../tool/nComun.h"
 #include "../tool/cItem.h"
@@ -36,6 +37,11 @@ float sOpenGL::m_vfWidth_lineas[] = { 0.1f, 1.0f };
 float sOpenGL::m_fInc_lineas = 0.1f;
 //--------------------------------------------------------------------------
 glm::vec4 sOpenGL::m_vCurrentColor{ 1.0f, 1.0f, 1.0f, 1.0f };
+//--------------------------------------------------------------------------
+eTipoCoord sOpenGL::m_eTipoCoord = eTipoCoord::eDNormal;
+//--------------------------------------------------------------------------
+int sOpenGL::m_xScreen = RISK_WIDTH;
+int sOpenGL::m_yScreen = RISK_HEIGHT;
 //--------------------------------------------------------------------------
 
 
@@ -550,20 +556,20 @@ cstatic int	sOpenGL::rectangulo(
 
 
 //--------------------------------------------------------------------------
-//int	cOpenGL::Circulo(
+//int	sOpenGL::Circulo(
 //    const v3d& posCentro,
-//    double p_dRadio, double p_dInterno,
+//    float p_dRadio, float p_dInterno,
 //    int iSegmentos,
 //    int iColor,
-//    double dInicio, double dAngle,
+//    float dInicio, float dAngle,
 //    bool bDiscontinuo)
 //{
 //    miTrue(iColor == cNO_COLOR);
 //
 //    int			i;
-//    double		dRadioExt, dRadioInt;
-//    double		dStep, dAngulo, fX, fY, fZ;
-//    double      dMeridiano;
+//    float		dRadioExt, dRadioInt;
+//    float		dStep, dAngulo, fX, fY, fZ;
+//    float      dMeridiano;
 //    GLenum		glMode;
 //
 //    dRadioExt = (p_dRadio < p_dInterno) ? p_dInterno : p_dRadio;
@@ -580,25 +586,25 @@ cstatic int	sOpenGL::rectangulo(
 //
 //    if (dRadioExt > 0)
 //    {
-//        cOpenGL::pushMatrix();
+//        sOpenGL::pushMatrix();
 //        {
-//            double x = posCentro.x;
-//            double y = posCentro.y;
-//            double z = posCentro.z;
+//            float x = posCentro.x;
+//            float y = posCentro.y;
+//            float z = posCentro.z;
 //
 //            glTranslated(x, y, z);
 //
 //            glRotated(dInicio, 0.0f, 0.0f, 1.0f);   // Eje Z.
 //            glRotated(dAngle, 1.0f, 0.0f, 0.0f);    // Eje X.
 //
-//            bool bLighting = cOpenGL::disable(GL_LIGHTING);
-//            bool bTextura2D = cOpenGL::disable(GL_TEXTURE_2D);
-//            bool bCullFace = cOpenGL::disable(GL_CULL_FACE);
+//            bool bLighting = sOpenGL::disable(GL_LIGHTING);
+//            bool bTextura2D = sOpenGL::disable(GL_TEXTURE_2D);
+//            bool bCullFace = sOpenGL::disable(GL_CULL_FACE);
 //            bool bLineStipple = (bDiscontinuo) ?
-//                cOpenGL::enable(GL_LINE_STIPPLE) :
+//                sOpenGL::enable(GL_LINE_STIPPLE) :
 //                false;
 //            int iCurColor = cColor::getCurrentColor();
-//            float fWidthLines = cOpenGL::getFloat(GL_LINE_WIDTH);
+//            float fWidthLines = sOpenGL::getFloat(GL_LINE_WIDTH);
 //
 //            if (bDiscontinuo)
 //                //glLineStipple(1, 0x8888);
@@ -606,7 +612,7 @@ cstatic int	sOpenGL::rectangulo(
 //                //glLineStipple(1, 0x8000);
 //                glLineStipple(1, 0xC000);
 //
-//            glLineWidth(cOpenGL::getMinWidthLineas());
+//            glLineWidth(sOpenGL::getMinWidthLineas());
 //
 //            Act_blend(iColor, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 //            cColor::color(iColor);
@@ -643,13 +649,13 @@ cstatic int	sOpenGL::rectangulo(
 //            glEnd();
 //            Des_blend();
 //            cColor::restore(iCurColor);
-//            cOpenGL::restore(bCullFace, GL_CULL_FACE);
-//            cOpenGL::restore(bLighting, GL_LIGHTING);
-//            cOpenGL::restore(bTextura2D, GL_TEXTURE_2D);
-//            cOpenGL::restore(bLineStipple, GL_LINE_STIPPLE);
+//            sOpenGL::restore(bCullFace, GL_CULL_FACE);
+//            sOpenGL::restore(bLighting, GL_LIGHTING);
+//            sOpenGL::restore(bTextura2D, GL_TEXTURE_2D);
+//            sOpenGL::restore(bLineStipple, GL_LINE_STIPPLE);
 //            glLineWidth(fWidthLines);
 //        }
-//        cOpenGL::popMatrix();
+//        sOpenGL::popMatrix();
 //    }
 //    return 0;
 //}
@@ -907,11 +913,15 @@ cstatic int sOpenGL::Des_colorMaterial(void)
 // Funciones de Color:
 // - ...
 // - quizas pendiente de hacer un gestor de colores.
+// - ¿ dependen del color material ?
 //--------------------------------------------------------------------------
 cstatic int sOpenGL::color(glm::vec4 vColor)
 {
-    glColor4f(vColor.r, vColor.g, vColor.b, vColor.a);
-    m_vCurrentColor = vColor;
+    if (vColor.r != -1.0f && vColor.g != -1.0f && vColor.b != -1.0f && vColor.a != -1.0f)
+    {
+        glColor4f(vColor.r, vColor.g, vColor.b, vColor.a);
+        m_vCurrentColor = vColor;
+    }
     return 0;
 }
 
@@ -926,6 +936,96 @@ cstatic glm::vec4 sOpenGL::getColor()
     return m_vCurrentColor;
 }
 //--------------------------------------------------------------------------
+
+
+//----------------------------------------------------------------------
+// Control final de resolucion
+// Centralizamos los valores finales segun las configuraciones de las
+// ventanas y sus resolcuiones.
+//----------------------------------------------------------------------
+void sOpenGL::SetCoordType(eTipoCoord eTipo)
+{
+    m_eTipoCoord = eTipo;
+}
+
+
+float sOpenGL::SetSentidoCoordY(float y, float despY)
+{
+    float fY;
+    if (m_eTipoCoord == eTipoCoord::eDRisk)
+    {
+        fY = y + despY;
+    }
+    else
+    {
+        // Lo que estaba en cFuente
+        // m_iY = iYp - (getAltura(poWindow) + 1);
+        fY = y - despY;
+    }
+    return fY;
+}
+
+//
+// static float DarY(float dY, int dimHeightRisk = RISK_HEIGHT, int dimFinalHeight = -1);
+//
+float sOpenGL::DarY(float pY, int dimHeightRisk)
+{
+    // Por ahora esta pensado para el risk. 640x480, y la Y en sentido
+    // contrario a OpenGL
+    float dY;
+
+    if (m_eTipoCoord == eTipoCoord::eDRisk)
+    {
+        dY = dimHeightRisk - pY;
+    }
+    else
+    {
+        dY = pY;
+    }
+
+    dY = CalcDimFinalY(dY, dimHeightRisk);
+
+    return dY;
+}
+
+
+//
+// static float DarX(float dX, int dimWidthRisk = RISK_WIDTH, int dimFinalWidth = -1);
+//
+float sOpenGL::DarX(float pX, int dimWidthRisk)
+{
+    // Por ahora esta pensado para el risk. 640x480, y la Y en sentido
+    // contrario a OpenGL
+    float dX;
+
+    dX = pX;
+    dX = CalcDimFinalX(dX, dimWidthRisk);
+
+    return dX;
+}
+
+
+float sOpenGL::CalcDimFinalX(float pX, int dimWidthRisk)
+{
+    float dX = pX;
+    // si con dimWidthRisk, tengo x, con dimFinalWidth, tendre y
+    if (dimWidthRisk != sOpenGL::m_xScreen)
+    {
+        dX = (dX * sOpenGL::m_xScreen) / dimWidthRisk;
+    }
+    return dX;
+}
+
+
+float sOpenGL::CalcDimFinalY(float pY, int dimHeightRisk)
+{
+    float dY = pY;
+    if (dimHeightRisk != sOpenGL::m_yScreen)
+    {
+        dY = (dY * sOpenGL::m_yScreen) / dimHeightRisk;
+    }
+    return dY;
+}
 
 
 //--------------------------------------------------------------------------
@@ -1100,13 +1200,12 @@ cstatic int sOpenGL::getValorAtributo(cAtributo* poAtributo, int valorPorDefecto
     int iValor = valorPorDefecto;
 
     // Si no hay atributo, se queda con el valor por defecto.
-    //if (poAtributo)
-    //{
-    //    iValor = sOpenGL::getCodigoOpenGL(poAtributo->getValor().getString());
-
-    //    // Sino se encuentra se queda el valor por defecto:
-    //    iValor = (iValor != -1) ? iValor : valorPorDefecto;
-    //}
+    if (poAtributo)
+    {
+        iValor = sOpenGL::getCodigoOpenGL(poAtributo->getValor().getString());
+        // Sino se encuentra se queda el valor por defecto:
+        iValor = (iValor != -1) ? iValor : valorPorDefecto;
+    }
 
     return iValor;
 }

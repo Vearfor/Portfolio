@@ -13,7 +13,7 @@
 /*------------------------------------------------------------------------*\
 |* Enumerados
 \*------------------------------------------------------------------------*/
-enum class eIncrGrados
+enum class eIncr
 {
     eSuma,
     eResta
@@ -41,7 +41,9 @@ struct sBall
 
     void render_normal();
     void render_explosion(float fDeltaTime);
-    void cambiaDir(eIncrGrados incr);
+    void cambiaDir(eIncr incr, float fDeltaTime);
+    void cambiaVel(eIncr incr, float fDeltaTime);
+    void corrigeDir();
 
     int m_bolaId{ -1 };
     glm::vec2 m_posicion{ 0.0f, 0.0f };

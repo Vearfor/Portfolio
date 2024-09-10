@@ -9,6 +9,61 @@
 
 
 //--------------------------------------------------------------------------
+// Variables internas propias de este modulo
+//--------------------------------------------------------------------------
+//--------------------------------------------------------------------------
+// Tabla de Tipos de Textura por defecto que metemos en el Xml
+// - los metemos en la lista todos:
+//      + tanto los por defecto
+//      + como los nuevos que declararemos en el Xml.
+//--------------------------------------------------------------------------
+//  eOldTipoTextura eTipo      ;	// El tipo enumerado es el indice de la tabla
+//  int		iEntorno		;	// GL_MODULATE, GL_DECAL, GL_BLEND
+//  GLfloat fColor[4]       ;   // Color de fundido
+//  int     iStore          ;   // No lo tengo claro: 1 o 4
+//  int		iMinFilter		;	// GL_LINEAR, GL_REPEAT, para Mipmap	GL_NEAREST_MIPMAP_LINEAR, etc ..
+//  int		iMaxFilter		;	// igual que el anterior
+//  int     iAjuste         ;   // Ajuste de textura: 
+//  int		iComponentes	;   // 1, 2, 3, 4, según Formato Pixels.
+//  int		iPixels			;	// 1:GL_LUMINANCE, 2:GL_LUMINANCE_ALPHA, 3:GL_RGB, 4:GL_RGBA
+//  int		iValores		;	// GL_BYTE, GL_UNSIGNED_BYTE, GL_BITMAP, GL_SHORT, GL_INT, GL_FLOAT y los unsigned.
+//  bool	bMipmap			;	// Si false 'glTexImage2D', si true 'gluBuild2DMipmaps'.
+//--------------------------------------------------------------------------
+//  char    vcNombre[64]    ;   // Sumamos el nombre, por facilitar las cosas
+//--------------------------------------------------------------------------
+// sTipoTextura cListaTipoTexturas::s_vtTipoTextura[] =
+//--------------------------------------------------------------------------
+sTipoTextura cGestorTexturas::s_vtTipoTextura[] =
+{
+    // Tipo     Entorno    f.Color                      St  MinFilter					MaxFilter				    Ajuste  Comp Pixels				Valores			Mipmap. Nombre.
+    { eOldTipoTextura::eAT0	, GL_MODULATE, { 1.0f, 1.0f, 1.0f, 0.0f },  1, GL_NEAREST               , GL_NEAREST				, GL_REPEAT, 3, GL_RGB			, GL_UNSIGNED_BYTE, 0 , "eAT0"       },  //  0, AT0 Tex Bmp sin alpha
+    { eOldTipoTextura::eAT1	, GL_MODULATE, { 1.0f, 1.0f, 1.0f, 0.0f },  1, GL_LINEAR				, GL_LINEAR					, GL_REPEAT, 3, GL_RGB			, GL_UNSIGNED_BYTE, 0 , "eAT1"       },  //  1, AT1 Tex Bmp sin alpha
+    { eOldTipoTextura::eAT2	, GL_MODULATE, { 1.0f, 1.0f, 1.0f, 0.0f },  1, GL_LINEAR_MIPMAP_NEAREST	, GL_LINEAR					, GL_REPEAT, 3, GL_RGB			, GL_UNSIGNED_BYTE, 1 , "eAT2"       },	 //  2, AT2 Tex Bmp sin alpha
+    { eOldTipoTextura::eAT3 , GL_MODULATE, { 1.0f, 1.0f, 1.0f, 0.0f },  4, GL_LINEAR                , GL_LINEAR                 , GL_REPEAT, 3, GL_BGR_EXT      , GL_UNSIGNED_BYTE, 0 , "eAT3"       },  //  3, AT3 Tex Bmp ?
+
+    { eOldTipoTextura::eAT4 , GL_MODULATE, { 1.0f, 1.0f, 1.0f, 0.0f },  1, GL_LINEAR                , GL_LINEAR                 , GL_REPEAT, 4, GL_RGBA         , GL_UNSIGNED_BYTE, 0 , "eAT4"       },  //  4, AT4 Cook ?
+
+    { eOldTipoTextura::eFT0	, GL_MODULATE, { 1.0f, 1.0f, 1.0f, 0.0f },  1, GL_NEAREST_MIPMAP_NEAREST, GL_NEAREST_MIPMAP_NEAREST	, GL_REPEAT, 4, GL_RGBA		    , GL_UNSIGNED_BYTE, 1 , "eFT0"       },	//  3, FT0 Tex Tga con alpha
+    { eOldTipoTextura::eFT1	, GL_MODULATE, { 1.0f, 1.0f, 1.0f, 0.0f },  1, GL_NEAREST				, GL_LINEAR					, GL_REPEAT, 3, GL_RGB			, GL_UNSIGNED_BYTE, 0 , "eFT1"       },	//  4, FT1 Tex Bmp sin alpha
+    { eOldTipoTextura::eFT2	, GL_MODULATE, { 1.0f, 1.0f, 1.0f, 0.0f },  1, GL_NEAREST				, GL_LINEAR					, GL_REPEAT, 4, GL_RGBA		    , GL_UNSIGNED_BYTE, 0 , "eFT2"       },	//  5, FT2 Tex Tga con alpha
+                                                                                                                                                        //  SH0 : Brillos y flares, MinFilter GL_LINEAR_MIPMAP_LINEAR si mipmap
+    { eOldTipoTextura::eSH0	, GL_MODULATE, { 1.0f, 1.0f, 1.0f, 0.0f },  1, GL_LINEAR				, GL_LINEAR					, GL_REPEAT, 1, GL_LUMINANCE    , GL_UNSIGNED_BYTE, 0 , "eSH0"       },	//  6, SH0
+    { eOldTipoTextura::eSH1	, GL_MODULATE, { 1.0f, 1.0f, 1.0f, 0.0f },  1, GL_LINEAR_MIPMAP_LINEAR  , GL_LINEAR					, GL_REPEAT, 1, GL_LUMINANCE    , GL_UNSIGNED_BYTE, 1 , "eSH1"       },	//  7, SH1
+                                                                                                                                                        //
+    { eOldTipoTextura::eFLR	, GL_MODULATE, { 1.0f, 1.0f, 1.0f, 0.0f },  1, GL_LINEAR_MIPMAP_LINEAR	, GL_LINEAR					, GL_REPEAT, 3, GL_RGB			, GL_UNSIGNED_BYTE, 1 , "eFLR"       },	// 10, eFLR
+    { eOldTipoTextura::eENG	, GL_MODULATE, { 1.0f, 1.0f, 1.0f, 0.0f },  1, GL_LINEAR_MIPMAP_NEAREST	, GL_LINEAR					, GL_REPEAT, 3, GL_BGR_EXT		, GL_UNSIGNED_BYTE, 1 , "eENG"       },	//  7, ENG
+    { eOldTipoTextura::eLOG	, GL_MODULATE, { 1.0f, 1.0f, 1.0f, 0.0f },  1, GL_NEAREST				, GL_NEAREST				, GL_REPEAT, 3, GL_RGB			, GL_UNSIGNED_BYTE, 0 , "eLOG"       },	//  8, eLOG
+    { eOldTipoTextura::eCOL0, GL_MODULATE, { 1.0f, 1.0f, 1.0f, 0.0f },  1, GL_LINEAR_MIPMAP_NEAREST	, GL_LINEAR					, GL_REPEAT, 4, GL_RGBA		    , GL_UNSIGNED_BYTE, 1 , "eCOL0"      },	//  9, eLOG
+                                                                                                                                                        //----------------------------------------------------------------------
+    { eOldTipoTextura::eTNoReg, GL_MODULATE,{ 1.0f, 1.0f, 1.0f, 0.0f }, 4, GL_LINEAR                 , GL_LINEAR                 , GL_REPEAT, 3, GL_BGR_EXT     , GL_UNSIGNED_BYTE, 0 , "eTNoReg"    },  // No registrada, por defecto AT3.
+                                                                                                                                                        //----------------------------------------------------------------------
+};
+//--------------------------------------------------------------------------
+// int cListaTipoTexturas::s_iNumTiposTextura = sizeof(cListaTipoTexturas::s_vtTipoTextura) / sizeof(sTipoTextura);
+//--------------------------------------------------------------------------
+
+
+//--------------------------------------------------------------------------
 // Constructor & Destructor
 //--------------------------------------------------------------------------
 cGestorTexturas* cGestorTexturas::m_instancia = nullptr;
