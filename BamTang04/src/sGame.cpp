@@ -58,7 +58,7 @@ sGame::~sGame()
 
 //
 // Problemas:
-//  - ¿ podemos hacer lo mismo con la fuente Agulon ? pregunta que va a
+//  - Â¿ podemos hacer lo mismo con la fuente Agulon ? pregunta que va a
 //    quedar pendiente.
 //
 //  - la parada se esta permitiendo en suelo: pos.y < radio + 1.0
@@ -68,11 +68,8 @@ sGame::~sGame()
 //    modificar velocidades.
 //    Estan en colision permanente. Se mueven poco a poco, y se ponen
 //    detras(o delante) sin marcar la collision.
-// 
-//  - Centramos ayuda, y arreglamos contenido.
-//    posicionamos contenidos segun profundidad.
 //
-// Y despues de esto, creo que lo voy a dejar
+// Y despues de esto, creo que lo voy a dejar, y dar por terminado.
 //
 
 
