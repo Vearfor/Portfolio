@@ -58,16 +58,23 @@ sGame::~sGame()
 
 //
 // Problemas:
-//  - hacer el fondo de la ayuda transparente
-//  - ¿ podemos hacer lo mismo con la fuente Agulon ?
+//  - ¿ podemos hacer lo mismo con la fuente Agulon ? pregunta que va a
+//    quedar pendiente.
+//
+//  - la parada se esta permitiendo en suelo: pos.y < radio + 1.0
+//    y tambien si esta el flag de m_estaColisionando
+// 
 //  - ajustar la parada, si las colisiones hacen que no se mueva
 //    modificar velocidades.
 //    Estan en colision permanente. Se mueven poco a poco, y se ponen
 //    detras(o delante) sin marcar la collision.
+// 
+//  - Centramos ayuda, y arreglamos contenido.
+//    posicionamos contenidos segun profundidad.
 //
-//  - la parada se esta permitiendo en suelo: pos.y < radio + 1.0
-//    y tambien si esta el flag de m_estaColisionando
+// Y despues de esto, creo que lo voy a dejar
 //
+
 
 #pragma region Init
 //--------------------------------------------------------------------------
@@ -400,19 +407,64 @@ void sGame::setCaption(float fDeltaTime)
 }
 
 
-bool sGame::selectedOrigin(glm::vec2 posRaton)
+bool sGame::select(glm::vec2 posRaton)
 {
     bool selected = false;
-    if (m_pOrigen)
+
+    m_pSelected = selectBall(posRaton);
+    if (m_pSelected)
     {
-        glm::vec2 myRaton = { posRaton.x, m_height - posRaton.y };
-        glm::vec2 vdiff = m_pOrigen->m_posicion - myRaton;
-        float dist = sMath::modulo(vdiff) - sGlobal::m_windowCaptionSize;
-        selected = (dist < m_pOrigen->m_radio);
+        if (m_pSelected->m_bolaId == 0)
+        {
+            m_pOrigen->m_posicion =
+            {
+                posRaton.x,
+                m_pRender->getHeight() - posRaton.y
+            };
+        }
+        selected = true;
     }
     return selected;
 }
 
+
+sBall* sGame::selectBall(glm::vec2 posRaton)
+{
+    sBall* selBall = nullptr;
+    if (m_vecBolas.size() > 0)
+    {
+        glm::vec2 myRaton = { posRaton.x, m_height - posRaton.y };
+        for (auto* pBall : m_vecBolas)
+        {
+            if (pBall)
+            {
+                glm::vec2 vdiff = pBall->m_posicion - myRaton;
+                float dist = sMath::modulo(vdiff) - sGlobal::m_windowCaptionSize;
+                if (dist < pBall->m_radio)
+                {
+                    selBall = pBall;
+                    break;
+                }
+            }
+        }
+    }
+    return selBall;
+}
+
+
+void sGame::destruirSeleccionado(sBall* pBall)
+{
+    if (m_pSelected)
+    {
+        // Venimos de que va a ser destruido
+        // Si son el mismo
+        if (pBall->m_bolaId == m_pSelected->m_bolaId)
+        {
+            // no puede estar seleccionado:
+            m_pSelected = nullptr;
+        }
+    }
+}
 //--------------------------------------------------------------------------
 #pragma endregion
 

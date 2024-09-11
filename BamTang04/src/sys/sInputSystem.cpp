@@ -91,6 +91,11 @@ int sInputSystem::update(sGame* pGame, float fDeltaTime)
             sGlobal::m_hayChoqueOrigen = !sGlobal::m_hayChoqueOrigen;
         }
 
+        if (pTeclado->isUp(VK_F2))
+        {
+            sGlobal::m_bmostrarFps = !sGlobal::m_bmostrarFps;
+        }
+
         if (pTeclado->isUp(VK_F1))
         {
             pGame->toggleHelp();
@@ -139,14 +144,7 @@ int sInputSystem::update(sGame* pGame, float fDeltaTime)
     {
         if (pMouse->LeftButtonPressed())
         {
-            if (pGame->selectedOrigin(pMouse->getLastPos()))
-            {
-                pOrigen->m_posicion =
-                {
-                    pMouse->getLastPos().x,
-                    getHeight() - pMouse->getLastPos().y
-                };
-            }
+            pGame->select(pMouse->getLastPos());
         }
     }
 

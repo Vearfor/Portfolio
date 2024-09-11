@@ -8,6 +8,7 @@
 #include "sys/sRenderSystem.h"
 #include "sExplosion.h"
 #include <swat/sOpenGL.h>
+#include <swat/cColor.h>
 #include <tool/sMath.h>
 #include <tool/cLog.h>
 
@@ -91,15 +92,20 @@ int sBall::checkParada(float fDeltaTime)
     //----------------------------------------------------------------------
     float fVel = sMath::modulo(m_vecVelocidad);
     if (
-            (fVel < sGlobal::m_fVelParada && m_bolaId == 0) ||
+            //(fVel < sGlobal::m_fVelParada && m_bolaId == 0) ||
+            //(
+            //    fVel < sGlobal::m_fVelParada && m_bolaId !=0 &&
+            //    (
+            //        (m_posicion.y < m_radio + 1.0f) ||
+            //        (m_estaColisionando)
+            //    )
+            //)
+            fVel < sGlobal::m_fVelParada &&
             (
-                fVel < sGlobal::m_fVelParada && m_bolaId !=0 &&
-                (
-                    (m_posicion.y < m_radio + 1.0f) ||
-                    (m_estaColisionando)
-                )
+                (m_posicion.y < m_radio + 1.0f) ||
+                (m_estaColisionando)
             )
-       )
+        )
     {
         float fFactor = sMath::getFactorReduccion(3.0f, fDeltaTime);
         m_vecVelocidad *= fFactor;
@@ -224,6 +230,17 @@ void sBall::render_normal()
         3.0f;
 
     sOpenGL::circulo(glm::vec3(m_posicion.x, m_posicion.y, 0.0f), m_radio, m_color, radioInt);
+
+    sBall* pSelected = sGame::instancia()->getSelected();
+    if (pSelected)
+    {
+        // Somos el seleccionado
+        if (pSelected->m_bolaId == m_bolaId)
+        {
+            float radio = m_radio * 1.5f;
+            sOpenGL::circulo(glm::vec3(m_posicion.x, m_posicion.y, 0.0f), radio, cColor::vAmarillo, radio - 1.0f);
+        }
+    }
 }
 
 

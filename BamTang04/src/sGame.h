@@ -69,7 +69,9 @@ struct sGame
     void shootBall();
     void releaseBalls();
     void setCaption(float fDeltaTime);
-    bool selectedOrigin(glm::vec2 posRaton);
+    bool select(glm::vec2 posRaton);
+    sBall* selectBall(glm::vec2 posRaton);
+    void destruirSeleccionado(sBall* pBall);
 
     std::vector<sBall*>& getVecBolas() { return m_vecBolas; }
 
@@ -93,6 +95,7 @@ struct sGame
     cFuente* getFonArialMax() { return m_pFonArialMax; }
     cFuente* getFonDef() { return m_pFonDef; }
     cFuente* getFonAgulon() { return m_pFonAgulon; }
+    sBall* getSelected() { return m_pSelected; }
 
 private:
 
@@ -111,6 +114,7 @@ private:
 
     // Origen de los disparos
     sOrigen* m_pOrigen{ nullptr };
+    sBall* m_pSelected{ nullptr };
     std::vector<sBall*> m_vecBolas{};
     cTextura* m_pTextura{ nullptr };
     cFuente* m_pFonArialMax{ nullptr };

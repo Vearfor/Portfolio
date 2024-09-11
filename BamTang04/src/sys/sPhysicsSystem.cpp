@@ -43,6 +43,8 @@ int sPhysicsSystem::update(sGame* pGame, float fDeltaTime)
                     auto* pBall = vecBolas[i];
                     if (pBall->m_destruir)
                     {
+                        // Si es el seleccionado de Game, debemos borrarlo en Game
+                        pGame->destruirSeleccionado(pBall);
                         pGame->setDestruccion(true);
                         // Borramos este:
                         vecBolas.erase(vecBolas.begin() + i);

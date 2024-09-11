@@ -20,26 +20,6 @@ sOrigen::~sOrigen()
 }
 
 
-//coverride int sOrigen::checkLimites(float fDeltaTime, int width, int height)
-//{
-//    glm::vec2 inc = sBall::calcIncremento(fDeltaTime, m_vecVelocidad);
-//
-//    if (m_posicion.x + inc.x > width - (2.0f * m_radio))
-//        m_vecVelocidad.x = -m_vecVelocidad.x * sGlobal::m_fElasticidad;
-//
-//    if (m_posicion.x + inc.x < m_radio)
-//        m_vecVelocidad.x = -m_vecVelocidad.x * sGlobal::m_fElasticidad;
-//
-//    if (m_posicion.y + inc.y > height - (sGlobal::m_windowCaptionSize + m_radio))
-//        m_vecVelocidad.y = -m_vecVelocidad.y * sGlobal::m_fElasticidad;
-//
-//    if (m_posicion.y + inc.y < m_radio)
-//        m_vecVelocidad.y = -m_vecVelocidad.y * sGlobal::m_fElasticidad;
-//
-//    return 0;
-//}
-
-
 coverride int sOrigen::render(float fDeltaTime)
 {
     sOpenGL::flecha(glm::vec3(m_posicion.x, m_posicion.y, 0.0f), m_radio, m_fdir, m_vColorFlecha);

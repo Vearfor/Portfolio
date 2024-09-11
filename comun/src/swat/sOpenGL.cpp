@@ -481,7 +481,10 @@ cstatic int	sOpenGL::rectangulo(
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_LIGHTING);
     //------------------------------------------------------------------
-    glColor4f(vColor.r, vColor.g, vColor.b, vColor.a);
+    // glColor4f(vColor.r, vColor.g, vColor.b, vColor.a);
+    //------------------------------------------------------------------
+    sOpenGL::Act_blend(vColor);
+    sOpenGL::color(vColor);
     //------------------------------------------------------------------
     float fz = posOrigin.z;
     glm::vec3 pTopLeft;
@@ -499,7 +502,7 @@ cstatic int	sOpenGL::rectangulo(
                 pTopLeft.y = 0;
 
                 pBotRight.x = fAncho;
-                pBotRight.y = fAlto;
+                pBotRight.y = - fAlto;
                 break;
 
             case eCoordRectangulo::eCenter:
@@ -521,10 +524,10 @@ cstatic int	sOpenGL::rectangulo(
                     {
                         glNormal3f(0.0f, 0.0f, 1.0f);
 
-                        glVertex3f(pTopLeft.x, pTopLeft.y, fz);
+                        glVertex3f(pTopLeft.x , pTopLeft.y, fz);
                         glVertex3f(pBotRight.x, pTopLeft.y, fz);
                         glVertex3f(pBotRight.x, pBotRight.y, fz);
-                        glVertex3f(pTopLeft.x, pBotRight.y, fz);
+                        glVertex3f(pTopLeft.x , pBotRight.y, fz);
                     }
                     glEnd();
                 }
@@ -548,6 +551,7 @@ cstatic int	sOpenGL::rectangulo(
     }
     sOpenGL::popMatrix();
     //------------------------------------------------------------------
+    sOpenGL::Des_blend();
     mGlRecEstado(bLighting, GL_LIGHTING);
     mGlRecEstado(bTextura2D, GL_TEXTURE_2D);
 

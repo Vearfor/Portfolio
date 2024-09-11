@@ -8,6 +8,7 @@
 #include "../sBall.h"
 #include "../sGlobal.h"
 #include "../sOrigen.h"
+#include "../sExplosion.h"
 #include <tool/consola/cConsola.h>
 #include <tool/sMath.h>
 #include <swat/cColor.h>
@@ -94,6 +95,9 @@ int sRenderSystem::update(sGame* pGame, float fDeltaTime)
 void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFon)
 {
     if (!sGlobal::m_bmostrarInfo)
+        return;
+
+    if (pGame->hayHelp())
         return;
 
     int x = 20;
@@ -195,6 +199,13 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFon)
         "Debajo de %4.2f de velocidad, se aplica un factor de frenado", sGlobal::m_fVelParada
     );
 
+    mDo(pFon)->escribe(m_pWindow,
+        mNextLine(0),
+        1.0f,
+        cColor::vBlanco,
+        "si estamos colisionando o estamos en el suelo.", sGlobal::m_fVelParada
+    );
+
     size_t numBolas = pGame->getVecBolas().size();
 
     mDo(pFon)->detalleTitulo(
@@ -232,12 +243,57 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFon)
         cColor::vRojo,
         "Y cuando explotan, desaparecen en:",
         "%4.2f segundos", sGlobal::m_fTiempoExplosion);
+
+    sBall* pSelected = pGame->getSelected();
+    if (pSelected)
+    {
+        if (pSelected->m_bolaId != 0)
+        {
+            // Velocidad del Seleccionado:
+            float vel = sMath::modulo(pSelected->m_vecVelocidad);
+            mDo(pFon)->detalleTitulo(
+                m_pWindow,
+                mNextLine(0),
+                1.0f,
+                cColor::vCyan,
+                cColor::vBlanco,
+                "Seleccionado:",
+                "%ld   %6.3f", pSelected->m_bolaId, vel);
+
+            if (pSelected->m_tiempo > 0.0f)
+            {
+                mDo(pFon)->detalleTitulo(
+                    m_pWindow,
+                    mNextLine(0),
+                    1.0f,
+                    cColor::vVerde,
+                    cColor::vAmarillo,
+                    "Tiempo:", "%6.3f", pSelected->m_tiempo);
+
+                if (pSelected->m_pExplosion && pSelected->m_pExplosion->m_tiempo)
+                {
+                    mDo(pFon)->detalleTitulo(
+                        m_pWindow,
+                        mNextLine(0),
+                        1.0f,
+                        cColor::vAzul,
+                        cColor::vRojo,
+                        "Tiempo Explosion:", "%6.3f", pSelected->m_pExplosion->m_tiempo);
+                }
+            }
+        }
+    }
 }
 
 
 /*------------------------------------------------------------------------*/
 void sRenderSystem::showFps(cFuente* poFon, float fDeltaTime)
 {
+    if (!sGlobal::m_bmostrarFps)
+        return;
+
+    sOpenGL::Act_blend();
+
     char vcFps[32];
     float fps = 1 / fDeltaTime;
     sprintf_s(vcFps, sizeof(vcFps) - 1, "%6.3f", fps);
@@ -247,15 +303,17 @@ void sRenderSystem::showFps(cFuente* poFon, float fDeltaTime)
         m_pWindow,
         glm::ivec3(getWidth() - 220, Y, 0),
         1.0f,
-        cColor::vBlanco,
+        cColor::vRojo,
         "Fps:");
 
     poFon->escribe(
         m_pWindow,
         glm::ivec3(getWidth() - 135, Y, 0),
         1.0f,
-        cColor::vBlanco,
+        cColor::vAmarillo,
         vcFps);
+
+    sOpenGL::Des_blend();
 }
 
 
@@ -283,44 +341,97 @@ void sRenderSystem::showTest(sGame * pGame)
 #define mEscribe \
     poFonResto->escribe(m_pWindow, mNextLine(0), 1.0f,
 /*------------------------------------------------------------------------*/
+//#define mSiguiente \
+//    poFonResto->detalleTituloSiguiente(m_pWindow, 30, 0, 1.0f,
+/*------------------------------------------------------------------------*/
 void sRenderSystem::showHelp(sGame* pGame, cFuente* poFonTitulo, cFuente* poFonResto)
 {
     if (pGame->hayHelp())
     {
-        float x = (getWidth() / 8.0f) * 4.0f;
-        float y = (getHeight() / 8.0f) * 7.0f;
-        float fancho = getWidth() / 2.0f;
-        float falto = getHeight() / 2.0f;
+        float fx = (getWidth() / 8.0f) * 2.0f;
+        float fy = (getHeight() / 8.0f) * 6.0f;
 
-        // Textura blanca transparente
+        float fMargen = 20.0f;
+        float xrect = fx - fMargen;
+        float yrect = fy + fMargen;
+        float fancho = (getWidth() / 2.0f) + (fMargen * 2.0f);
+        float falto = (getHeight() / 2.0f) + (fMargen * 2.0f);
+        // Profundidad del rectangulo transparente:
+        float fDepth = -0.1f;
+
+        // Textura blanca transparente: o imagen blanca transparente:
+        sOpenGL::rectangulo(eCoordRectangulo::eTopLeft, GL_FILL, glm::vec3(xrect, yrect, fDepth), fancho, falto, cColor::vAzul_T);
+
+        int x = static_cast<int>(fx);
+        int y = static_cast<int>(fy);
+
         poFonTitulo->escribe(
             m_pWindow,
-            glm::ivec3(static_cast<int>(x), static_cast<int>(y), 0),
+            glm::ivec3(x, y, 0),
             1.0f,
             cColor::vAmarillo, "- Ayuda -");
 
-        poFonResto->escribe(m_pWindow,
-            glm::ivec3(static_cast<int>(x), static_cast<int>(y - 35), 0),
+        /*----------------------------------------------------------------*/
+        poFonResto->detalleTitulo(m_pWindow,
+            glm::ivec3(x, y - 35, 0),
             1.0f,
-            cColor::vBlanco, "F1: Salir de la ayuda");
+            cColor::vAmarillo,
+            cColor::vBlanco,
+            "F1:", "");
 
-        mEscribe cColor::vBlanco, "Esc.    .Salir del programa.");
-        mEscribe cColor::vBlanco, "I    .Mostrar/Ocultar Info.");
-        mEscribe cColor::vBlanco    , "Espace  .Dispara una bola.");
-        mEscribe cColor::vBlanco    , "P       .Activa/Desactiva pausa.");
-        mEscribe cColor::vRojo      , "G       .Activa/Desactiva GRAVEDAD.");
-        mEscribe cColor::vVerde     , "F       .Activa/Desactiva Friccion.");
-        mEscribe cColor::vCyan      , "O       .Activa/Desactiva Colisiones Origen de Disparos.");
-        mEscribe cColor::vCyan      , "          Colisiona con las Bolas, le afecta la Gravedad, le afecta la Friccion.");
-        mEscribe cColor::vBlanco, "R       .Reset del Origen de Disparos: posicion y direccion.");
-        mEscribe cColor::vBlanco, "S       .Stop Velocidad del Origen de Disparos.");
-        mEscribe cColor::vVerde, "A       .Aumenta la velocidad inicial del 'shotBall'");
-        mEscribe cColor::vVerde, "D       .Decrementa la velocidad inicial del 'shotBall'");
-        mEscribe cColor::vVerde, "+ (Add)       .Sube la direccion del 'shotBall'");
-        mEscribe cColor::vVerde, "- (Subtract)  .Baja la direccion del 'shotBall'");
-        mEscribe cColor::vBlanco, "Flechas Direccion: Left-Right: Izquierda-Derecha: mueve el Origen de los Disparos.");
-        mEscribe cColor::vBlanco, "Flechas Direccion: Up-Down: Arriba-Abajo: mueve el Origen de los Disparos.");
-        mEscribe cColor::vBlanco, "Si mantenemos 'pinchado' el Origen de Disparos con el raton, se puede mover");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 30, 0, 1.0f,
+            cColor::vBlanco,
+            cColor::vAmarillo,
+            "Salir de la ayuda", ""
+        );
+        /*----------------------------------------------------------------*/
+        mEscribe cColor::vAmarillo, "F2");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 30, 0, 1.0f, cColor::vBlanco, cColor::vAmarillo, ".quita/muestra FPS.", "");
+        /*----------------------------------------------------------------*/
+        mEscribe cColor::vAmarillo, "Esc");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 30, 0, 1.0f, cColor::vBlanco, cColor::vAmarillo, "Salir del programa.", "");
+        /*----------------------------------------------------------------*/
+        mEscribe cColor::vAmarillo, "I");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 50, 0, 1.0f, cColor::vBlanco, cColor::vAmarillo, "Mostrar/Ocultar Info.", "");
+        /*----------------------------------------------------------------*/
+        mEscribe cColor::vAmarillo, "Space");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 10, 0, 1.0f, cColor::vBlanco, cColor::vAmarillo, "Dispara una bola..", "");
+        /*----------------------------------------------------------------*/
+        mEscribe cColor::vAmarillo, "P");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 40, 0, 1.0f, cColor::vBlanco, cColor::vAmarillo, ".Activa/Desactiva pausa.", "");
+        /*----------------------------------------------------------------*/
+        mEscribe cColor::vRojo, "G");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 40, 0, 1.0f, cColor::vCyan, cColor::vAmarillo, ".Activa/Desactiva GRAVEDAD.", "");
+        /*----------------------------------------------------------------*/
+        mEscribe cColor::vVerde, "F");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 40, 0, 1.0f, cColor::vCyan, cColor::vAmarillo, ".Activa/Desactiva Friccion.", "");
+        /*----------------------------------------------------------------*/
+        mEscribe cColor::vCyan      , "O          .Activa/Desactiva Colisiones Origen de Disparos.");
+        mEscribe cColor::vCyan      , "             Colisiona con las Bolas, le afecta la Gravedad, le afecta la Friccion.");
+        /*----------------------------------------------------------------*/
+        mEscribe cColor::vAmarillo, "R");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 40, 0, 1.0f, cColor::vBlanco, cColor::vAmarillo, ".Reset del Origen de Disparos: posicion y direccion.", "");
+        /*----------------------------------------------------------------*/
+        mEscribe cColor::vAmarillo, "S");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 40, 0, 1.0f, cColor::vBlanco, cColor::vAmarillo, ".Stop Velocidad del Origen de Disparos.", "");
+        /*----------------------------------------------------------------*/
+        mEscribe cColor::vVerde, "A");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 40, 0, 1.0f, cColor::vCyan, cColor::vAmarillo, ".Aumenta la velocidad inicial del 'shotBall'.", "");
+        /*----------------------------------------------------------------*/
+        mEscribe cColor::vVerde, "D");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 40, 0, 1.0f, cColor::vCyan, cColor::vAmarillo, ".Decrementa la velocidad inicial del 'shotBall'.", "");
+        /*----------------------------------------------------------------*/
+        mEscribe cColor::vVerde, "+ (Add)");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 40, 0, 1.0f, cColor::vAmarillo, cColor::vAmarillo, ".Sube la direccion del 'shotBall'.", "");
+        /*----------------------------------------------------------------*/
+        mEscribe cColor::vVerde, "- (Subtract)");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 15, 0, 1.0f, cColor::vAmarillo, cColor::vAmarillo, ".Baja la direccion del 'shotBall'.", "");
+        /*----------------------------------------------------------------*/
+        mEscribe cColor::vBlanco, "Flechas Direccion:");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 10, 0, 1.0f, cColor::vAmarillo, cColor::vAmarillo, ".Left-Right -- Up-Down.", "");
+        mEscribe cColor::vAmarillo, "                                 Mueve el Origen de Disparos");
+        /*----------------------------------------------------------------*/
+        mEscribe cColor::vVerde, "Si mantenemos 'pinchado' el Origen de Disparos con el raton, se puede mover");
         mEscribe cColor::vBlanco, "T       .Tecla de Test.");
     }
     else

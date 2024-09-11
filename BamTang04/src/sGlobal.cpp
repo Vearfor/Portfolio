@@ -11,6 +11,7 @@
 int sGlobal::m_iWidth = 1024;
 int sGlobal::m_iHeight = 768;
 bool sGlobal::m_bmostrarInfo = true;
+bool sGlobal::m_bmostrarFps = true;
 float sGlobal::m_dirOrigen = 40.0f;
 glm::vec2 sGlobal::m_posOrigen{ (float)(sGlobal::m_iWidth / 2), (float)(sGlobal::m_iHeight / 4) };
 glm::vec4 sGlobal::m_colorOrigen{ 0.3f, 1.0f, 0.1f, 1.0f };
