@@ -1,16 +1,34 @@
 /*------------------------------------------------------------------------*\
 |* sGlobal.cpp
 \*------------------------------------------------------------------------*/
-
 #include "sGlobal.h"
 
 
-/*------------------------------------------------------------------------*\
+/*========================================================================*\
 |* Statics
+\*========================================================================*/
+/*------------------------------------------------------------------------*\
+|* m_iWidth y m_iHeight: son el ancho y el alto iniciales de la ventana
+|* principal.
+|* Estos permanecen fijos. Luego el evento OnSize de la ventana podria
+|* tomar nuevos valores.
+|* Por ello se toman los valores directamente de la ventana.
 \*------------------------------------------------------------------------*/
 int sGlobal::m_iWidth = 1024;
 int sGlobal::m_iHeight = 768;
-bool sGlobal::m_bmostrarInfo = true;
+
+/*------------------------------------------------------------------------*\
+|* Nivel de informacion que se muestra en la esquina superior izquierda.
+|* Con 0: evidentemente no se muestra nada
+|*     1: Velocidad Incial de las bolas al ejecutar con Space 'shootBall'
+|*        Dir: o direccion del Origen de Disparos. Direccion con la cual
+|*        se lanzaran las bolas.
+|*     2:
+|* Estos permanecen fijos. Luego el evento OnSize de la ventana podria
+|* tomar nuevos valores.
+|* Por ello se toman los valores directamente de la ventana.
+\*------------------------------------------------------------------------*/
+int sGlobal::m_imostrarInfo = 3;
 bool sGlobal::m_bmostrarFps = true;
 float sGlobal::m_dirOrigen = 40.0f;
 glm::vec2 sGlobal::m_posOrigen{ (float)(sGlobal::m_iWidth / 2), (float)(sGlobal::m_iHeight / 4) };
@@ -25,7 +43,7 @@ int sGlobal::m_limBolas = 60;
 /*------------------------------------------------------------------------*/
 float sGlobal::m_fVelocidadInicial = 150.0f;
 float sGlobal::m_fVelocidadMin = 30.0f;
-float sGlobal::m_fVelocidadMax = 300.0f;
+float sGlobal::m_fVelocidadMax = 500.0f;
 /*------------------------------------------------------------------------*/
 bool sGlobal::m_hayGravedad = true;
 bool sGlobal::m_hayFriccion = true;
@@ -43,7 +61,7 @@ float sGlobal::m_fFactorReductor = 0.1f;             // reducir o aumentar
 /*------------------------------------------------------------------------*/
 int sGlobal::m_windowCaptionSize = 40;
 /*------------------------------------------------------------------------*/
-float sGlobal::m_fVelParada = 25.0f;
+float sGlobal::m_fVelParada = 1.0f;
 float sGlobal::m_fTiempoDestruccion = 20.0f;
 float sGlobal::m_fTiempoExplosion = 10.0f;
 /*------------------------------------------------------------------------*/

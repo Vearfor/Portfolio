@@ -44,7 +44,7 @@ struct sExplosion
     virtual ~sExplosion();
 
     int update(float fDeltaTime);
-    int render(float fDeltaTime);
+    int render();
 
     int m_explId{ -1 };
     glm::vec2 m_posicion{ 0.0f, 0.0f };

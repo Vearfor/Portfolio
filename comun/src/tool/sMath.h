@@ -91,6 +91,7 @@ struct _mExport sMath
     static float getAngulo(glm::vec2 vector);
 
     static float corrigeDir(float dir);
+    static float aplicaFactor(float todo, float aConservar);
 };
 //--------------------------------------------------------------------------
 

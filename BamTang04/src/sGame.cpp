@@ -58,18 +58,15 @@ sGame::~sGame()
 
 //
 // Problemas:
-//  - ¿ podemos hacer lo mismo con la fuente Agulon ? pregunta que va a
+//  - ¿ podemos hacer transparente la fuente Agulon ? pregunta que va a
 //    quedar pendiente.
 //
-//  - la parada se esta permitiendo en suelo: pos.y < radio + 1.0
-//    y tambien si esta el flag de m_estaColisionando
-// 
-//  - ajustar la parada, si las colisiones hacen que no se mueva
-//    modificar velocidades.
-//    Estan en colision permanente. Se mueven poco a poco, y se ponen
+//  - si las colisiones hacen que no se mueva, Estan en colision permanente.
+//    Se mueven poco a poco, y se ponen
 //    detras(o delante) sin marcar la collision.
-//
-// Y despues de esto, creo que lo voy a dejar, y dar por terminado.
+//    Pero en realidad estan PARADOS
+// 
+//    (quizas la solucion sea: estan con un modulo inferiora 1, y estan colisionado --> los paramos: velocidades a cero)
 //
 
 
@@ -319,7 +316,7 @@ cstatic sGame* sGame::instancia()
 
 void sGame::shootBall()
 {
-    if (m_vecBolas.size() < sGlobal::m_limBolas)
+    if (m_vecBolas.size() < sGlobal::m_limBolas && !hayPausa())
     {
         sBall* pBall = new sBall();
         pBall->m_radio = sGlobal::m_fRadio;

@@ -157,34 +157,8 @@ void sCollisionSystem::collision(sBall* pBola1, sBall* pBola2)
             oldVel1 = oldVel1 + quito;
         }
 
-        modificoBola(pBola1, oldVel1, fdir1);
-        modificoBola(pBola2, oldVel2, fdir2);
-    }
-}
-
-
-void sCollisionSystem::modificoBola(sBall* pBall, float oldVel, float fdir)
-{
-    float fVel, xVel, yVel;
-
-    // La velocidad: la anterior repartida aplicando la reduccion de elasticidad:
-    fVel = oldVel * sGlobal::m_fElasticidad;
-    xVel = fVel * cos(deg2rad(fdir));
-    yVel = fVel * sin(deg2rad(fdir));
-
-    if (pBall->m_bolaId == 0)
-    {
-        if (sGlobal::m_hayChoqueOrigen)
-        {
-            pBall->m_fdir = fdir;
-            pBall->m_vecVelocidad = glm::vec2{ xVel, yVel };
-        }
-    }
-    else
-    {
-        // solo si no es el origen:
-        pBall->m_fdir = fdir;
-        pBall->m_vecVelocidad = glm::vec2{ xVel, yVel };
+        pBola1->modifyByCollision(oldVel1, fdir1);
+        pBola2->modifyByCollision(oldVel2, fdir2);
     }
 }
 

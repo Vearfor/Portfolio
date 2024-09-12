@@ -32,6 +32,26 @@ sBall::~sBall()
 }
 
 
+/*------------------------------------------------------------------------*\
+|* Modificamos por colision la direccion y velocidad de una bola 
+|*
+|* void sCollisionSystem::modificoBola(sBall* pBall, float oldVel, float fdir)
+|*
+\*------------------------------------------------------------------------*/
+void sBall::modifyByCollision(float oldVel, float fdir)
+{
+    float fVel, xVel, yVel;
+
+    fVel = sMath::aplicaFactor(oldVel, sGlobal::m_fElasticidad);
+
+    xVel = fVel * cos(deg2rad(fdir));
+    yVel = fVel * sin(deg2rad(fdir));
+
+    m_fdir = fdir;
+    m_vecVelocidad = glm::vec2{ xVel, yVel };
+}
+
+
 //--------------------------------------------------------------------------
 // Chequea los limites
 // - pero solo cambia velocidades
@@ -40,18 +60,17 @@ int sBall::checkLimites(float fDeltaTime, int width, int height)
 {
     glm::vec2 inc = sBall::calcIncremento(fDeltaTime, m_vecVelocidad);
 
-    if (m_posicion.x + inc.x > width - m_radio)
-        m_vecVelocidad.x = -m_vecVelocidad.x * sGlobal::m_fElasticidad;
+    if ((m_posicion.x + inc.x > width - m_radio) || (m_posicion.x + inc.x < m_radio))
+    {
+        float velx = sMath::aplicaFactor(m_vecVelocidad.x, sGlobal::m_fElasticidad);
+        m_vecVelocidad.x = -velx;
+    }
 
-    if (m_posicion.x + inc.x < m_radio)
-        m_vecVelocidad.x = -m_vecVelocidad.x * sGlobal::m_fElasticidad;
-
-    // if (m_posicion.y + inc.y > height + m_radio - sGlobal::m_windowCaptionSize)
-    if (m_posicion.y + inc.y > height - m_radio)
-        m_vecVelocidad.y = -m_vecVelocidad.y * sGlobal::m_fElasticidad;
-
-    if (m_posicion.y + inc.y < m_radio)
-        m_vecVelocidad.y = -m_vecVelocidad.y * sGlobal::m_fElasticidad;
+    if ((m_posicion.y + inc.y > height - m_radio) || (m_posicion.y + inc.y < m_radio))
+    {
+        float vely = sMath::aplicaFactor(m_vecVelocidad.y, sGlobal::m_fElasticidad);
+        m_vecVelocidad.y = -vely;
+    }
 
     return 0;
 }
@@ -61,11 +80,13 @@ int sBall::checkLimites(float fDeltaTime, int width, int height)
 // Chequea los limites
 // - pero no deja que la posicion cambie fuera de los limites
 // + Si no lo impedimos terminan por salirse fuera.
+// + no se como estaba funcionando con los que he visto que se quedaban
+//   fuera ??
 //--------------------------------------------------------------------------
 int sBall::checkPosicion(int width, int height)
 {
     if (m_posicion.x > width - m_radio)
-        m_posicion.x = width - m_radio;
+        m_posicion.x = (float)(width - m_radio);
 
     if (m_posicion.x < m_radio)
         m_posicion.x = m_radio;
@@ -80,63 +101,9 @@ int sBall::checkPosicion(int width, int height)
 }
 
 
-//--------------------------------------------------------------------------
-// Forzamos la parada
-// A partir del valor dado por sGlobal::m_fVelParada;
-//--------------------------------------------------------------------------
-int sBall::checkParada(float fDeltaTime)
-{
-    //----------------------------------------------------------------------
-    // Solo lo estamos haciendo en la parte del 'Suelo'
-    // Y ahora lo haremos tambien si estamos colisionando
-    //----------------------------------------------------------------------
-    float fVel = sMath::modulo(m_vecVelocidad);
-    if (
-            //(fVel < sGlobal::m_fVelParada && m_bolaId == 0) ||
-            //(
-            //    fVel < sGlobal::m_fVelParada && m_bolaId !=0 &&
-            //    (
-            //        (m_posicion.y < m_radio + 1.0f) ||
-            //        (m_estaColisionando)
-            //    )
-            //)
-            fVel < sGlobal::m_fVelParada &&
-            (
-                (m_posicion.y < m_radio + 1.0f) ||
-                (m_estaColisionando)
-            )
-        )
-    {
-        float fFactor = sMath::getFactorReduccion(3.0f, fDeltaTime);
-        m_vecVelocidad *= fFactor;
-        if (!m_parando)
-        {
-            m_parando = true;
-        }
-        //------------------------------------------------------------------
-        // A la mierda: si estamos por debajo de 1.0f, velocidad a cero:
-        //------------------------------------------------------------------
-        if (fVel < 1.0f)
-            m_vecVelocidad = glm::vec2(0.0f, 0.0f);
-        //------------------------------------------------------------------
-    }
-    else
-    {
-        m_parando = false;
-        m_tiempo = 0.0f;
-    }
-    //----------------------------------------------------------------------
-    return 0;
-}
-
-
-cstatic glm::vec2 sBall::calcIncremento(float fDeltaTime, glm::vec2 velBola)
-{
-    glm::vec2 inc = (velBola * fDeltaTime);
-    return inc;
-}
-
-
+/*------------------------------------------------------------------------*\
+|* update generico de las bolas
+\*------------------------------------------------------------------------*/
 int sBall::update(float fDeltaTime)
 {
     if (m_explotando)
@@ -153,31 +120,12 @@ int sBall::update(float fDeltaTime)
     sMath::setZero(m_vecVelocidad);
     if (!sMath::isZero(m_vecVelocidad))
     {
-        if (m_bolaId != 0 || (sGlobal::m_hayChoqueOrigen && m_bolaId==0))
-        {
-            if (sGlobal::m_hayGravedad)
-            {
-                float decGravedad = sGlobal::m_fGravedad * fDeltaTime * sGlobal::m_fFactorMaximizador;
-                // Solo en el eje Y:
-                glm::vec2 gravedad = glm::vec2(0.0, decGravedad);
-                // Debe venir negativa, porque el valor de la gravedad ya me viene negativa
-                m_vecVelocidad += gravedad;
-            }
-
-            if (sGlobal::m_hayFriccion)
-            {
-                float decFriccion = sGlobal::m_fFriccionAire * fDeltaTime;
-                // En el eje X y en el eje Y:
-                glm::vec2 friccion = { decFriccion, decFriccion };
-                // Debe venir negativa, porque el valor de la friccion ya me viene negativa
-                m_vecVelocidad += friccion;
-            }
-        }
+        aplicoGravedad(fDeltaTime);
+        aplicoFriccionAire(fDeltaTime);
 
         glm::vec2 inc = sBall::calcIncremento(fDeltaTime, m_vecVelocidad);
         m_posicion = m_posicion + inc;
 
-        // Hay que hacerlo en el momento: no podemos permitir que se hayan quedado fuera de los limites:
         checkPosicion(getWidth(), getHeight());
         checkParada(fDeltaTime);
     }
@@ -186,6 +134,39 @@ int sBall::update(float fDeltaTime)
         matarBola(fDeltaTime);
     }
 
+    return 0;
+}
+
+
+//--------------------------------------------------------------------------
+// Forzamos la parada
+// A partir del valor dado por sGlobal::m_fVelParada;
+//--------------------------------------------------------------------------
+int sBall::checkParada(float fDeltaTime)
+{
+    //----------------------------------------------------------------------
+    // Y ahora lo haremos tambien si estamos colisionando
+    // Estar en el suelo: (m_posicion.y < m_radio + 1.0f) ||
+    //----------------------------------------------------------------------
+    float fVel = sMath::modulo(m_vecVelocidad);
+    if (fVel < sGlobal::m_fVelParada)
+    {
+        if (!m_parando)
+        {
+            m_parando = true;
+        }
+        //------------------------------------------------------------------
+        // A la mierda: si estamos por debajo de 1.0f, velocidad a cero:
+        //------------------------------------------------------------------
+        m_vecVelocidad = glm::vec2(0.0f, 0.0f);
+        //------------------------------------------------------------------
+    }
+    else
+    {
+        m_parando = false;
+        m_tiempo = 0.0f;
+    }
+    //----------------------------------------------------------------------
     return 0;
 }
 
@@ -200,21 +181,17 @@ int sBall::matarBola(float fDeltaTime)
         m_tiempo = 0.0f;
     }
 
-    // Solo sino eres el Origen de los disparos:
-    if (m_bolaId > 0)
-    {
-        m_tiempo += fDeltaTime;
-        m_explotando = ((m_tiempo > sGlobal::m_fTiempoDestruccion) && m_bolaId > 0);
-    }
+    m_tiempo += fDeltaTime;
+    m_explotando = (m_tiempo > sGlobal::m_fTiempoDestruccion);
 
     return 0;
 }
 
 
-int sBall::render(float fDeltaTime)
+int sBall::render()
 {
     if (m_explotando)
-        render_explosion(fDeltaTime);
+        render_explosion();
     else
         render_normal();
 
@@ -244,7 +221,11 @@ void sBall::render_normal()
 }
 
 
-void sBall::render_explosion(float fDeltaTime)
+/*------------------------------------------------------------------------*\
+|* Crea la explosion
+|* y una vez creada renderiza la explosion segun el momento del tiempo
+\*------------------------------------------------------------------------*/
+void sBall::render_explosion()
 {
     /*--------------------------------------------------------------------*\ 
     |* Rompemos en trozos y todos se van alejando del centro.
@@ -256,7 +237,7 @@ void sBall::render_explosion(float fDeltaTime)
     \*--------------------------------------------------------------------*/
     if (m_pExplosion)
     {
-        m_pExplosion->render(fDeltaTime);
+        m_pExplosion->render();
     }
     else
     {
@@ -266,51 +247,63 @@ void sBall::render_explosion(float fDeltaTime)
 }
 
 
-void sBall::cambiaDir(eIncr incr, float fDeltaTime)
+/*------------------------------------------------------------------------*\
+|* Unificamos el calculo del decremeto de la Gravedad
+|* - para hacerlo siempre de la misma manera
+\*------------------------------------------------------------------------*/
+int sBall::aplicoGravedad(float fDeltaTime)
 {
-    float finc = 100.0f * fDeltaTime;
-    switch (incr)
+    if (sGlobal::m_hayGravedad)
     {
-        case eIncr::eSuma:
-            m_fdir += finc;
-            if (m_fdir > 360.0f-finc)
-                m_fdir = 0.0f;
-            break;
-
-        case eIncr::eResta:
-            m_fdir -= finc;
-            if (m_fdir < 0.0f)
-                m_fdir = 360.0f - finc;
-            break;
+        // Bien: se calcula el 'decremento' por gravedad.
+        // No se si quitar el 'sGlobal::m_fFactorMaximizador' ya que por culpa de los
+        // tiempos fDeltaTime los valores son muy pequeños:
+        // - volver a probar necesidad -
+        float decGravedad = sGlobal::m_fGravedad * fDeltaTime * sGlobal::m_fFactorMaximizador;
+        // Solo en el eje Y:
+        glm::vec2 gravedad = glm::vec2(0.0, decGravedad);
+        // Debe venir negativa, porque el valor de la gravedad ya me viene negativa
+        m_vecVelocidad += gravedad;
     }
+    return 0;
 }
 
 
-// Cambia la velocidad de inicio de las bolas
-void sBall::cambiaVel(eIncr incr, float fDeltaTime)
+/*------------------------------------------------------------------------*\
+|* Unificamos el calculo del decremeto de la Friccion del Aire
+|* - para hacerlo siempre de la misma manera
+\*------------------------------------------------------------------------*/
+int sBall::aplicoFriccionAire(float fDeltaTime)
 {
-    // Creia que tenia que ver con origen,
-    // aunque si, se podria haber puesto en cualquier parte
-    float finc = 100.0f * fDeltaTime;
-    switch (incr)
+    if (sGlobal::m_hayFriccion)
     {
-        case eIncr::eSuma:
-            sGlobal::m_fVelocidadInicial += finc;
-            if (sGlobal::m_fVelocidadInicial > sGlobal::m_fVelocidadMax)
-                sGlobal::m_fVelocidadInicial = sGlobal::m_fVelocidadMax;
-            break;
-
-        case eIncr::eResta:
-            sGlobal::m_fVelocidadInicial -= finc;
-            if (sGlobal::m_fVelocidadInicial < sGlobal::m_fVelocidadMin)
-                sGlobal::m_fVelocidadInicial = sGlobal::m_fVelocidadMin;
-            break;
+        // Bien: se calcula el 'decremento'
+        float decFriccion = sGlobal::m_fFriccionAire * fDeltaTime;
+        // En el eje X y en el eje Y:
+        glm::vec2 friccion = { decFriccion, decFriccion };
+        // Y el 'decremento' se 'suma': que en realidad estamos restando
+        m_vecVelocidad += friccion;
     }
+    return 0;
+}
+
+
+/*------------------------------------------------------------------------*\
+|* Unificamos el calculo del incremento
+|* - para llamar siempre a esta funcion tan simple y asegurarnos que en
+|*   todas parte el incremento se calcula siempre de la misma manera
+\*------------------------------------------------------------------------*/
+cstatic glm::vec2 sBall::calcIncremento(float fDeltaTime, glm::vec2 velBola)
+{
+    glm::vec2 inc = (velBola * fDeltaTime);
+    return inc;
 }
 
 
 /*------------------------------------------------------------------------*\
 |* Hacemos el uso de la instancia sGame:
+|* - para tener acceso a los variables de ancho y alto, que precisamente
+|*   son variables por culpa del 'onsize' de la ventana.
 \*------------------------------------------------------------------------*/
 int sBall::getWidth()
 {

@@ -73,13 +73,13 @@ int sRenderSystem::update(sGame* pGame, float fDeltaTime)
     m_pWindow->begin();     // Escritura/dibujado en Primer plano
     {
         showFps(m_pFonAgulon, fDeltaTime);
-        showOrigin(pGame, m_pFonArialMin);
+        showOrigin(pGame, m_pFonArialMax, m_pFonArialMin);
         showTest(pGame);
 
         auto& vecBolas = pGame->getVecBolas();
         for (auto* pBall : vecBolas)
         {
-            pBall->render(fDeltaTime);
+            pBall->render();
         }
 
         showHelp(pGame,m_pFonArialMax, m_pFonArialMin);
@@ -92,26 +92,25 @@ int sRenderSystem::update(sGame* pGame, float fDeltaTime)
 
 
 /*------------------------------------------------------------------------*/
-void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFon)
+void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFonMax, cFuente* pFonMin)
 {
-    if (!sGlobal::m_bmostrarInfo)
-        return;
-
-    if (pGame->hayHelp())
+    if (sGlobal::m_imostrarInfo < 1)
         return;
 
     int x = 20;
     int y = static_cast<int>(getHeight()-30);
 
-    mDo(pFon)->escribe(
+    mDo(pFonMin)->detalleTitulo(
         m_pWindow,
         glm::vec3(x, y, 0.0f),
         1.0f,
         cColor::vBlanco,
-        "Informacion:"
+        cColor::vAmarillo,
+        "Informacion:",
+        "%d", sGlobal::m_imostrarInfo
     );
 
-    mDo(pFon)->detalleTitulo(
+    mDo(pFonMin)->detalleTitulo(
         m_pWindow,
         mNextLine(0),
         1.0f, 
@@ -122,7 +121,7 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFon)
 
     float fdir = m_pOrigen->m_fdir;
 
-    mDo(pFon)->detalleTitulo(
+    mDo(pFonMin)->detalleTitulo(
         m_pWindow,
         mNextLine(0),
         1.0f,
@@ -131,8 +130,10 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFon)
         "Dir:",
         "%6.3f", fdir);
 
-    char vcValor[32];
+    if (sGlobal::m_imostrarInfo < 2)
+        return;
 
+    char vcValor[32];
     if (sGlobal::m_hayGravedad)
     {
         sprintf_s(vcValor, sizeof(vcValor), "%6.3f (solo eje Y)", sGlobal::m_fGravedad);
@@ -140,7 +141,7 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFon)
     else
         mCopia(vcValor, "---");
 
-    mDo(pFon)->detalleTitulo(
+    mDo(pFonMin)->detalleTitulo(
         m_pWindow,
         mNextLine(0),
         1.0f,
@@ -156,7 +157,7 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFon)
     else
         mCopia(vcValor, "---");
 
-    mDo(pFon)->detalleTitulo(
+    mDo(pFonMin)->detalleTitulo(
         m_pWindow,
         mNextLine(0),
         1.0f,
@@ -165,85 +166,6 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFon)
         (sGlobal::m_hayFriccion) ? "Hay friccion por aire:" : "sin friccion",
         vcValor);
 
-    // Velocidad del Origen de disparos:
-    float vel = sMath::modulo(m_pOrigen->m_vecVelocidad);
-    mDo(pFon)->detalleTitulo(
-        m_pWindow,
-        mNextLine(0),
-        1.0f,
-        cColor::vCyan,
-        cColor::vBlanco,
-        "Velocidad del Origen de Disparos:",
-        "%6.3f", vel);
-
-    mDo(pFon)->escribe(m_pWindow,
-        mNextLine(0),
-        1.0f,
-        cColor::vBlanco,
-        (sGlobal::m_hayChoqueOrigen) ?
-        "Le afectan los choques, la gravedad, y la friccion" :
-        "No le afectan, ni los choques, ni la gravedad, ni la friccion"
-    );
-
-    mDo(pFon)->escribe(m_pWindow,
-        mNextLine(0),
-        1.0f,
-        cColor::vBlanco,
-        "Cada rebote en las paredes le quita %4.2f de velocidad", (1.0f - sGlobal::m_fElasticidad)
-    );
-
-    mDo(pFon)->escribe(m_pWindow,
-        mNextLine(0),
-        1.0f,
-        cColor::vBlanco,
-        "Debajo de %4.2f de velocidad, se aplica un factor de frenado", sGlobal::m_fVelParada
-    );
-
-    mDo(pFon)->escribe(m_pWindow,
-        mNextLine(0),
-        1.0f,
-        cColor::vBlanco,
-        "si estamos colisionando o estamos en el suelo.", sGlobal::m_fVelParada
-    );
-
-    size_t numBolas = pGame->getVecBolas().size();
-
-    mDo(pFon)->detalleTitulo(
-        m_pWindow,
-        mNextLine(0),
-        1.0f,
-        cColor::vVerde,
-        cColor::vAmarillo,
-        "Bolas presentes:",
-        "%d", numBolas);
-
-    mDo(pFon)->detalleTituloSiguiente(
-        m_pWindow,
-        0, 0,
-        1.0f,
-        cColor::vVerde,
-        cColor::vAmarillo,
-        "  posibles:",
-        "%d", sGlobal::m_limBolas);
-
-    mDo(pFon)->detalleTitulo(
-        m_pWindow,
-        mNextLine(0),
-        1.0f,
-        cColor::vVerde,
-        cColor::vRojo,
-        "Cuando se paran, las bolas mueren en:",
-        "%4.2f segundos", sGlobal::m_fTiempoDestruccion);
-
-    mDo(pFon)->detalleTitulo(
-        m_pWindow,
-        mNextLine(0),
-        1.0f,
-        cColor::vVerde,
-        cColor::vRojo,
-        "Y cuando explotan, desaparecen en:",
-        "%4.2f segundos", sGlobal::m_fTiempoExplosion);
-
     sBall* pSelected = pGame->getSelected();
     if (pSelected)
     {
@@ -251,7 +173,7 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFon)
         {
             // Velocidad del Seleccionado:
             float vel = sMath::modulo(pSelected->m_vecVelocidad);
-            mDo(pFon)->detalleTitulo(
+            mDo(pFonMin)->detalleTitulo(
                 m_pWindow,
                 mNextLine(0),
                 1.0f,
@@ -262,7 +184,7 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFon)
 
             if (pSelected->m_tiempo > 0.0f)
             {
-                mDo(pFon)->detalleTitulo(
+                mDo(pFonMin)->detalleTitulo(
                     m_pWindow,
                     mNextLine(0),
                     1.0f,
@@ -272,7 +194,7 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFon)
 
                 if (pSelected->m_pExplosion && pSelected->m_pExplosion->m_tiempo)
                 {
-                    mDo(pFon)->detalleTitulo(
+                    mDo(pFonMin)->detalleTitulo(
                         m_pWindow,
                         mNextLine(0),
                         1.0f,
@@ -282,6 +204,91 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFon)
                 }
             }
         }
+    }
+
+    if (sGlobal::m_imostrarInfo < 3)
+        return;
+
+    if (!pGame->hayHelp())
+    {
+        // Velocidad del Origen de disparos:
+        float vel = sMath::modulo(m_pOrigen->m_vecVelocidad);
+        mDo(pFonMin)->detalleTitulo(
+            m_pWindow,
+            mNextLine(0),
+            1.0f,
+            cColor::vAmarillo,
+            cColor::vBlanco,
+            "Velocidad del Origen de Disparos:",
+            "%6.3f", vel);
+
+        mDo(pFonMin)->escribe(m_pWindow,
+            mNextLine(0),
+            1.0f,
+            cColor::vBlanco,
+            (sGlobal::m_hayChoqueOrigen) ?
+            "Le afectan los choques, la gravedad, y la friccion" :
+            "No le afectan, ni los choques, ni la gravedad, ni la friccion"
+        );
+
+        mDo(pFonMin)->escribe(m_pWindow,
+            mNextLine(0),
+            1.0f,
+            cColor::vBlanco,
+            "Cada rebote en las paredes le quita %4.2f de velocidad", (1.0f - sGlobal::m_fElasticidad)
+        );
+
+        mDo(pFonMin)->escribe(m_pWindow,
+            mNextLine(0),
+            1.0f,
+            cColor::vBlanco,
+            "Debajo de %4.2f de velocidad, se aplica un factor de frenado", sGlobal::m_fVelParada
+        );
+
+        mDo(pFonMin)->escribe(m_pWindow,
+            mNextLine(0),
+            1.0f,
+            cColor::vBlanco,
+            "si estamos colisionando o estamos en el suelo.", sGlobal::m_fVelParada
+        );
+
+        size_t numBolas = pGame->getVecBolas().size();
+
+        mDo(pFonMin)->detalleTitulo(
+            m_pWindow,
+            mNextLine(0),
+            1.0f,
+            cColor::vVerde,
+            cColor::vAmarillo,
+            "Bolas presentes:",
+            "%d", numBolas);
+
+        mDo(pFonMin)->detalleTituloSiguiente(
+            m_pWindow,
+            0, 0,
+            1.0f,
+            cColor::vVerde,
+            cColor::vAmarillo,
+            "  posibles:",
+            "%d", sGlobal::m_limBolas);
+
+        mDo(pFonMin)->detalleTitulo(
+            m_pWindow,
+            mNextLine(0),
+            1.0f,
+            cColor::vVerde,
+            cColor::vCyan,
+            "Cuando se paran, las bolas mueren en:",
+            "%4.2f segundos", sGlobal::m_fTiempoDestruccion);
+
+        mDo(pFonMin)->detalleTitulo(
+            m_pWindow,
+            mNextLine(0),
+            1.0f,
+            cColor::vVerde,
+            cColor::vCyan,
+            "Y cuando explotan, desaparecen en:",
+            "%4.2f segundos", sGlobal::m_fTiempoExplosion);
     }
 }
 
@@ -337,17 +344,33 @@ void sRenderSystem::showTest(sGame * pGame)
 }
 
 
-/*------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*\
+|* Me reservo como macros algunas funciones de escritura
+\*------------------------------------------------------------------------*/
 #define mEscribe \
     poFonResto->escribe(m_pWindow, mNextLine(0), 1.0f,
-/*------------------------------------------------------------------------*/
-//#define mSiguiente \
-//    poFonResto->detalleTituloSiguiente(m_pWindow, 30, 0, 1.0f,
-/*------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------*\
+|* #define mSiguiente \
+|*    poFonResto->detalleTituloSiguiente(m_pWindow, 30, 0, 1.0f,
+\*------------------------------------------------------------------------*/
 void sRenderSystem::showHelp(sGame* pGame, cFuente* poFonTitulo, cFuente* poFonResto)
 {
+    int xpausa = static_cast<int>((getWidth() / 8.0f) * 3.0f);         // ?
+    int ypausa = static_cast<int>((getHeight() - 30));
+
     if (pGame->hayHelp())
     {
+        if (pGame->hayPausa())
+        {
+            poFonResto->escribe(
+                m_pWindow,
+                glm::ivec3(xpausa, ypausa, 0),
+                1.0f,
+                cColor::vBlanco,
+                "Pausa Activa"
+            );
+        }
+
         float fx = (getWidth() / 8.0f) * 2.0f;
         float fy = (getHeight() / 8.0f) * 6.0f;
 
@@ -355,7 +378,7 @@ void sRenderSystem::showHelp(sGame* pGame, cFuente* poFonTitulo, cFuente* poFonR
         float xrect = fx - fMargen;
         float yrect = fy + fMargen;
         float fancho = (getWidth() / 2.0f) + (fMargen * 2.0f);
-        float falto = (getHeight() / 2.0f) + (fMargen * 2.0f);
+        float falto = ((getHeight() / 5.0f) * 3.0f) + (fMargen * 2.0f);
         // Profundidad del rectangulo transparente:
         float fDepth = -0.1f;
 
@@ -392,7 +415,12 @@ void sRenderSystem::showHelp(sGame* pGame, cFuente* poFonTitulo, cFuente* poFonR
         poFonResto->detalleTituloSiguiente(m_pWindow, 30, 0, 1.0f, cColor::vBlanco, cColor::vAmarillo, "Salir del programa.", "");
         /*----------------------------------------------------------------*/
         mEscribe cColor::vAmarillo, "I");
-        poFonResto->detalleTituloSiguiente(m_pWindow, 50, 0, 1.0f, cColor::vBlanco, cColor::vAmarillo, "Mostrar/Ocultar Info.", "");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 50, 0, 1.0f, cColor::vBlanco, cColor::vAmarillo,  "Cambia el nivel de informacion: 1, 2, 3, y 0 (No muestra Info)", 
+                                                                                                        "Nivel: %d", sGlobal::m_imostrarInfo);
+        if (sGlobal::m_imostrarInfo == 3)
+        {
+            mEscribe cColor::vBlanco, "              Con la ayuda Activa, no se muestra la info de nivel %d", sGlobal::m_imostrarInfo);
+        }
         /*----------------------------------------------------------------*/
         mEscribe cColor::vAmarillo, "Space");
         poFonResto->detalleTituloSiguiente(m_pWindow, 10, 0, 1.0f, cColor::vBlanco, cColor::vAmarillo, "Dispara una bola..", "");
@@ -400,14 +428,25 @@ void sRenderSystem::showHelp(sGame* pGame, cFuente* poFonTitulo, cFuente* poFonR
         mEscribe cColor::vAmarillo, "P");
         poFonResto->detalleTituloSiguiente(m_pWindow, 40, 0, 1.0f, cColor::vBlanco, cColor::vAmarillo, ".Activa/Desactiva pausa.", "");
         /*----------------------------------------------------------------*/
-        mEscribe cColor::vRojo, "G");
-        poFonResto->detalleTituloSiguiente(m_pWindow, 40, 0, 1.0f, cColor::vCyan, cColor::vAmarillo, ".Activa/Desactiva GRAVEDAD.", "");
+        mEscribe cColor::vCyan, "G");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 40, 0, 1.0f, cColor::vVerde, cColor::vAmarillo, ".Activa/Desactiva GRAVEDAD.", "");
         /*----------------------------------------------------------------*/
         mEscribe cColor::vVerde, "F");
         poFonResto->detalleTituloSiguiente(m_pWindow, 40, 0, 1.0f, cColor::vCyan, cColor::vAmarillo, ".Activa/Desactiva Friccion.", "");
         /*----------------------------------------------------------------*/
-        mEscribe cColor::vCyan      , "O          .Activa/Desactiva Colisiones Origen de Disparos.");
-        mEscribe cColor::vCyan      , "             Colisiona con las Bolas, le afecta la Gravedad, le afecta la Friccion.");
+        mEscribe cColor::vCyan, "O");
+        poFonResto->detalleTituloSiguiente(m_pWindow, 40, 0, 1.0f, cColor::vCyan, cColor::vAmarillo, ".Activa/Desactiva   Colisiones del Origen de Disparos.",
+                                                                                                     "%s", sGlobal::m_hayChoqueOrigen? "Activa": "");
+        mEscribe cColor::vCyan, "             Colisiona con las Bolas, le afecta la Gravedad, le afecta la Friccion.");
+        if (sGlobal::m_hayChoqueOrigen)
+        {
+            mEscribe cColor::vCyan, "             Necesitamos que este quieto. Si no tiene Velocidad no le afecta la gravedad.");
+            mEscribe cColor::vAmarillo, "             Pero si alguien choca con el, adquiere movimiento, y se cae por gravedad");
+        }
+        else
+        {
+            mEscribe cColor::vCyan, "             Necesitamos que este quieto.");
+        }
         /*----------------------------------------------------------------*/
         mEscribe cColor::vAmarillo, "R");
         poFonResto->detalleTituloSiguiente(m_pWindow, 40, 0, 1.0f, cColor::vBlanco, cColor::vAmarillo, ".Reset del Origen de Disparos: posicion y direccion.", "");
@@ -436,17 +475,25 @@ void sRenderSystem::showHelp(sGame* pGame, cFuente* poFonTitulo, cFuente* poFonR
     }
     else
     {
-        int x = static_cast<int>((getWidth() / 8.0f)*3.0f);         // ?
-        int y = static_cast<int>((getHeight() - 30));
-
         // Textura blanca transparente
         poFonResto->detalleTitulo(
             m_pWindow,
-            glm::ivec3(x, y, 0),
+            glm::ivec3(xpausa, ypausa, 0),
             1.0f,
             cColor::vAmarillo,
             cColor::vBlanco,
             "F1  ", "  Mostramos la Ayuda");
+
+        if (pGame->hayPausa())
+        {
+            poFonResto->escribe(
+                m_pWindow,
+                mNextLine(0),
+                1.0f,
+                cColor::vBlanco,
+                "        Pausa Activa"
+            );
+        }
     }
 }
 /*------------------------------------------------------------------------*/

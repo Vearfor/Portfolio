@@ -12,6 +12,17 @@
 
 
 /*------------------------------------------------------------------------*\
+|* Enumerados
+\*------------------------------------------------------------------------*/
+enum class eIncr
+{
+    eSuma,
+    eResta
+};
+/*------------------------------------------------------------------------*/
+
+
+/*------------------------------------------------------------------------*\
 |* struct sOrigen
 \*------------------------------------------------------------------------*/
 struct sOrigen
@@ -20,7 +31,14 @@ struct sOrigen
     sOrigen();
     ~sOrigen();
 
-    virtual int render(float fDeltaTime) override;
+    virtual void modifyByCollision(float oldVel, float fdir) override;
+    virtual int update(float fDeltaTime) override;
+    virtual int checkParada(float fDeltaTime) override;
+    virtual int matarBola(float fDeltaTime) override;
+    virtual int render() override;
+
+    void cambiaDir(eIncr incr, float fDeltaTime);
+    void cambiaVel(eIncr incr, float fDeltaTime);
 
     int izquierda(float fDeltaTime);
     int derecha(float fDeltaTime);

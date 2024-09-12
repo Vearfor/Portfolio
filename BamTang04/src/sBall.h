@@ -11,17 +11,6 @@
 
 
 /*------------------------------------------------------------------------*\
-|* Enumerados
-\*------------------------------------------------------------------------*/
-enum class eIncr
-{
-    eSuma,
-    eResta
-};
-/*------------------------------------------------------------------------*/
-
-
-/*------------------------------------------------------------------------*\
 |* struct sBall
 \*------------------------------------------------------------------------*/
 struct sRenderSystem;
@@ -32,17 +21,19 @@ struct sBall
     sBall();
     virtual ~sBall();
 
+    virtual void modifyByCollision(float oldVel, float fdir);
     virtual int update(float fDeltaTime);
-    virtual int render(float fDeltaTime);
-    virtual int checkLimites(float fDeltaTime, int width, int height);
-    virtual int checkPosicion(int width, int hight);
     virtual int checkParada(float fDeltaTime);
     virtual int matarBola(float fDeltaTime);
+    virtual int render();
+
+    int checkLimites(float fDeltaTime, int width, int height);
+    int checkPosicion(int width, int hight);
 
     void render_normal();
-    void render_explosion(float fDeltaTime);
-    void cambiaDir(eIncr incr, float fDeltaTime);
-    void cambiaVel(eIncr incr, float fDeltaTime);
+    void render_explosion();
+    int aplicoGravedad(float fDeltaTime);
+    int aplicoFriccionAire(float fDeltaTime);
 
     int m_bolaId{ -1 };
     glm::vec2 m_posicion{ 0.0f, 0.0f };
@@ -62,7 +53,7 @@ struct sBall
 
     static int s_countBolas;
 
-private:
+protected:
 
     int getWidth();
     int getHeight();

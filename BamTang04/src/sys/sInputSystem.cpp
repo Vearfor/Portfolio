@@ -47,7 +47,7 @@ int sInputSystem::update(sGame* pGame, float fDeltaTime)
 
         if (pTeclado->isUp('I'))
         {
-            sGlobal::m_bmostrarInfo = !sGlobal::m_bmostrarInfo;
+            sGlobal::m_imostrarInfo = ( ++sGlobal::m_imostrarInfo >3)? 0: sGlobal::m_imostrarInfo;
         }
 
         if (pTeclado->isUp('P'))

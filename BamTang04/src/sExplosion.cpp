@@ -67,7 +67,7 @@ int sExplosion::update(float fDeltaTime)
 }
 
 
-int sExplosion::render(float fDeltaTime)
+int sExplosion::render()
 {
     // Y en el render solo renderizar
     if (m_vecTrozo.size())

@@ -108,6 +108,7 @@
     </Link>
     <PostBuildEvent>
       <Command>$(SolutionDir)/comun/cmd/PostLinkGLEW.bat $(SolutionDir)\comun\OpenGL\Glew\lib\Win32\glew32d.dll $(SolutionDir)\MisExes</Command>
+      <Message>PostLinkado</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -132,6 +133,7 @@
     </Link>
     <PostBuildEvent>
       <Command>$(SolutionDir)/comun/cmd/PostLinkGLEW.bat $(SolutionDir)\comun\OpenGL\Glew\lib\Win32\glew32d.dll $(SolutionDir)\MisExes</Command>
+      <Message>PostLinkado</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

@@ -150,6 +150,29 @@ cstatic float sMath::corrigeDir(float dir)
 }
 
 
+//--------------------------------------------------------------------------
+// No se como llamarlo:
+// - a una cantidad 'todo' la reducimos por la cantidad 'tanto por uno a
+//   aConservar'
+//   A aConservar debe de ser menor que uno.
+//   Si fuese mayor que uno, aumentaria.
+//
+// De donde viene: 
+// La velocidad: la anterior repartida aplicando la reduccion de elasticidad:
+// Quitamos decremento, no multiplicamos:
+//
+//--------------------------------------------------------------------------
+cstatic float sMath::aplicaFactor(float todo, float aConservar)
+{
+    float reduccionDeTodo = 0.0f;
+
+    float quito = todo * (1 - aConservar);
+    reduccionDeTodo = todo - quito;
+
+    return reduccionDeTodo;
+}
+
+
 /*========================================================================*\
 |* Fin de sMath.cpp
 \*========================================================================*/

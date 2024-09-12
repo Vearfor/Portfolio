@@ -40,7 +40,7 @@ struct sGlobal
     // Deberiamos ser proporcionales
     // que el radio de las bolas nos parezca igual independientemente
     // de las dimensiones de la ventana
-    static bool m_bmostrarInfo;
+    static int m_imostrarInfo;
     static bool m_bmostrarFps;
     static float m_dirOrigen;
     static glm::vec2 m_posOrigen;

@@ -28,16 +28,22 @@ int sPhysicsSystem::update(sGame* pGame, float fDeltaTime)
     {
         if (vecBolas.size() > 0)
         {
+            //--------------------------------------------------------------
             // Movimiento de bolas
+            //--------------------------------------------------------------
             for (auto* pBall : vecBolas)
             {
                 pBall->update(fDeltaTime);
             }
+            //--------------------------------------------------------------
 
+            //--------------------------------------------------------------
             // Destruccion de bolas
+            //--------------------------------------------------------------
             while (pGame->hayDestruccion())
             {
-                // Nos volvemos a recorrer el vector para destruir las bolas que se hubieran parado:
+                // Nos volvemos a recorrer el vector para destruir las
+                // bolas que se hubieran parado:
                 for (int i = 0; i < vecBolas.size(); i++)
                 {
                     auto* pBall = vecBolas[i];
@@ -54,9 +60,11 @@ int sPhysicsSystem::update(sGame* pGame, float fDeltaTime)
                     }
                     pGame->setDestruccion(false);
                 }
-                // si Nos hemos salido con break, queda por destruir, debemos salir habiendo recorrido todos
+                // si Nos hemos salido con break, queda por destruir,
+                // debemos salir habiendo recorrido todos
                 // y que no hay ninguno pendiente de destruir.
             }
+            //--------------------------------------------------------------
         }
     }
     return 0;
