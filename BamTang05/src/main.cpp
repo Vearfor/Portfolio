@@ -23,6 +23,13 @@ int presentacion();
 //--------------------------------------------------------------------------
 
 
+//--------------------------------------------------------------------------
+// Globales
+//--------------------------------------------------------------------------
+bool hayDemo = false;
+//--------------------------------------------------------------------------
+
+
 int main(int iArgc, char* vcArgv[])
 {
     preinicio();
@@ -32,6 +39,8 @@ int main(int iArgc, char* vcArgv[])
 
     miError(parametros(iArgc, vcArgv));
     presentacion();
+
+    juego.demo(hayDemo);
 
     cTime time(60);
     for (juego.init(); juego.isRunning(); juego.eventos())
@@ -93,6 +102,18 @@ int parametros(int iArgc, char* vcArgv[])
     if (sGlobal::m_iDim % 2 == 0)
         return ayuda("el 'size' debe ser impar");
 
+    if (iArgc > 2)
+    {
+        if (!strcmp(vcArgv[2], "Demo"))
+        {
+            hayDemo = true;
+        }
+        else
+        {
+            return ayuda("el segundo parametro es 'Demo', no '%s'", vcArgv[2]);
+        }
+    }
+
     return 0;
 }
 
@@ -120,6 +141,10 @@ int ayuda(const char* pcFormat, ...)
     printf("                             (el enunciado no dice que haya limite, tampoco lo contrario)\n");
     printf("                             y debe ser impar\n");
     printf("                             (Superior a %d hacen que sean visualmente no manejables en la Consola)\n", kLim);
+    printf("\n");
+    printf("      %s  <size>  Demo       Ejecutamos una Demo.\n", sGlobal::vcNombrePrograma);
+    printf("                                        Cada % 3.1f segundos ejecutamos una tecla para mover nuestro cubo\n", sGlobal::m_fIntervaloDemo);
+    printf("                                        dentro del laberinto.\n");
     printf("\n");
     cConsola::PulsaTecla(" Pulsa tecla para terminar ");
     printf("\n");

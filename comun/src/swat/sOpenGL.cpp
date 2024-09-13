@@ -346,7 +346,9 @@ cstatic eMatrixModo sOpenGL::getMatrixModo(void)
 //--------------------------------------------------------------------------
 cstatic void sOpenGL::circulo(glm::vec3 centro, float fRadio, glm::vec4 vColor, float fRadioInt)
 {
-    glColor4f(vColor.r, vColor.g, vColor.b, vColor.a);
+    sOpenGL::Act_blend(vColor);
+    sOpenGL::color(vColor);
+    // glColor4f(vColor.r, vColor.g, vColor.b, vColor.a);
     sOpenGL::pushMatrix();
     {
         glTranslated(centro.x, centro.y, centro.z);
@@ -378,6 +380,7 @@ cstatic void sOpenGL::circulo(glm::vec3 centro, float fRadio, glm::vec4 vColor, 
         glEnd();
     }
     sOpenGL::popMatrix();
+    sOpenGL::Des_blend();
 }
 
 //--------------------------------------------------------------------------
@@ -385,7 +388,9 @@ cstatic void sOpenGL::circulo(glm::vec3 centro, float fRadio, glm::vec4 vColor, 
 //--------------------------------------------------------------------------
 cstatic void sOpenGL::flecha(glm::vec3 centro, float fradio, float fdir, glm::vec4 vColor)
 {
-    glColor4f(vColor.r, vColor.g, vColor.b, vColor.a);
+    sOpenGL::Act_blend(vColor);
+    sOpenGL::color(vColor);
+    // glColor4f(vColor.r, vColor.g, vColor.b, vColor.a);
     sOpenGL::pushMatrix();
     {
         float fOldValor;
@@ -415,6 +420,7 @@ cstatic void sOpenGL::flecha(glm::vec3 centro, float fradio, float fdir, glm::ve
         glLineWidth(fOldValor);
     }
     sOpenGL::popMatrix();
+    sOpenGL::Des_blend();
 }
 
 

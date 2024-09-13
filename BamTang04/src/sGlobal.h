@@ -46,7 +46,6 @@ struct sGlobal
     static glm::vec2 m_posOrigen;
     static glm::vec4 m_colorOrigen;
     static glm::vec4 m_colorFlecha;
-    static std::string m_sTexturaOrigen;
     static float m_fRadioOrigen;
     static float m_fRadio;
     static glm::vec4 m_colorBolas;
@@ -68,7 +67,8 @@ struct sGlobal
     |* El tiempo al aplicarlo esta dando valores muy bajos.
     \*--------------------------------------------------------------------*/
     static float m_fFactorMaximizador;      // segun toque para
-    static float m_fFactorReductor;         // reducir o aumentar
+    /*--------------------------------------------------------------------*/
+    // static float m_fFactorReductor;      // reducir o aumentar 
     /*--------------------------------------------------------------------*/
     static int m_windowCaptionSize;
     /*--------------------------------------------------------------------*/

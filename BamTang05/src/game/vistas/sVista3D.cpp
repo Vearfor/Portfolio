@@ -371,6 +371,20 @@ int sVista3D::update(float fDeltaTime)
         }
         //--------------------------------------------------------------
 
+        //--------------------------------------------------------------
+        // Keys for Demo
+        //--------------------------------------------------------------
+        if (pTeclado->isUp('P'))
+        {
+            m_pLaberinto->togglePausa();
+        }
+        //--------------------------------------------------------------
+        if (pTeclado->isUp('T'))
+        {
+            m_pLaberinto->stopDemo(pGameWindow);
+        }
+        //--------------------------------------------------------------
+
         // Hay que hacer reset para el siguiente control de eventos
         pTeclado->reset();
     }
@@ -433,7 +447,7 @@ int sVista3D::render()
         //------------------------------------------------------------------
         // Laberinto
         //------------------------------------------------------------------
-            renderLaberinto();
+        renderLaberinto();
         //------------------------------------------------------------------
 
         //------------------------------------------------------------------
@@ -557,6 +571,10 @@ int sVista3D::ayudaVista3D()
     cLog::print("\n");
     cLog::print("  - R:  reset, posicion inicial. Por si pierdes la referencia\n");
     cLog::print("\n");
+    cLog::print("  Modo Demo:\n");
+    cLog::print("  - P:  Activamos/Desactivamos pausa\n");
+    cLog::print("  - T:  Stop a la Demo\n");
+    cLog::print("\n");
     return 0;
 }
 //--------------------------------------------------------------------------
@@ -566,9 +584,11 @@ void sVista3D::controlFin()
 {
     if (m_pLaberinto->estaEnElFin() && !m_hemosLlegado)
     {
+        m_pLaberinto->limpiaMarcas();
+        m_pLaberinto->setPlayingDemo(false);
+        m_hemosLlegado = true;
         sGameWindow* pWin = dynamic_cast<sGameWindow*>(m_mainWindow);
         mDo(pWin)->OnSetFocus(m_pLaberinto);
-        m_hemosLlegado = true;
         cConio::SetColor(eTextColor::eTexBlanco);
         cLog::print("\n");
         cLog::print("     Hemos llegado al Final\n");

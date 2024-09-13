@@ -62,7 +62,7 @@ int sCollisionSystem::update(sGame* pGame, float fDeltaTime)
                             if (pBall1->m_bolaId == pBall2->m_bolaId)
                                 continue;
 
-                            if (!pBall2->m_check)
+                            if (!pBall2->m_check && !pBall2->m_explotando)
                             {
                                 if (checkCollision(fDeltaTime, pBall1, pBall2))
                                 {

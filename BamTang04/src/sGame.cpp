@@ -14,6 +14,7 @@
 #include <swat/sOpenGL.h>
 #include <swat/texturas/cGestorTexturas.h>
 #include <swat/texturas/cGestorFuentes.h>
+#include <swat/cColor.h>
 #include <tool/consola/cConsola.h>
 #include <tool/sMath.h>
 #include <tool/cTool.h>
@@ -61,12 +62,12 @@ sGame::~sGame()
 //  - ¿ podemos hacer transparente la fuente Agulon ? pregunta que va a
 //    quedar pendiente.
 //
-//  - si las colisiones hacen que no se mueva, Estan en colision permanente.
-//    Se mueven poco a poco, y se ponen
-//    detras(o delante) sin marcar la collision.
-//    Pero en realidad estan PARADOS
+//  - Al final:
+//    (si estan con un modulo inferiora 1 --> los paramos: velocidades a cero)
+//    y que empiece el mecanismo de destruccion de la bola
+//    Pasados 20 segundos, boom.
+//    Si alguien, mientras modifica la velocidad por encima de 1, se recupera. 
 // 
-//    (quizas la solucion sea: estan con un modulo inferiora 1, y estan colisionado --> los paramos: velocidades a cero)
 //
 
 
@@ -328,7 +329,7 @@ void sGame::shootBall()
         float yVel = sGlobal::m_fVelocidadInicial * sin(deg2rad(m_pOrigen->m_fdir));
 
         pBall->m_posicion = m_pOrigen->m_posicion + glm::vec2(xPos, yPos);
-        pBall->m_vecVelocidad = { xVel, yVel };
+        pBall->m_vecVelocidad = { xVel, yVel };       
 
         float fVel = sMath::modulo(pBall->m_vecVelocidad);
 
@@ -336,23 +337,17 @@ void sGame::shootBall()
         if (sGlobal::m_colorBolas.r == 1.0f && sGlobal::m_colorBolas.g == 0.0f && sGlobal::m_colorBolas.b == 0.0f)
         {
             sColor = "Cyan";
-            sGlobal::m_colorBolas.r = 0.0f;
-            sGlobal::m_colorBolas.g = 1.0f;
-            sGlobal::m_colorBolas.b = 1.0f;
+            sGlobal::m_colorBolas = cColor::vCyan;
         }
         else if (sGlobal::m_colorBolas.r == 0.0f && sGlobal::m_colorBolas.g == 1.0f && sGlobal::m_colorBolas.b == 1.0f)
         {
             sColor = "Yellow";
-            sGlobal::m_colorBolas.r = 1.0f;
-            sGlobal::m_colorBolas.g = 1.0f;
-            sGlobal::m_colorBolas.b = 0.0f;
+            sGlobal::m_colorBolas = cColor::vAmarillo;
         }
         else if (sGlobal::m_colorBolas.r == 1.0f && sGlobal::m_colorBolas.g == 1.0f && sGlobal::m_colorBolas.b == 0.0f)
         {
             sColor = "Red";
-            sGlobal::m_colorBolas.r = 1.0f;
-            sGlobal::m_colorBolas.g = 0.0f;
-            sGlobal::m_colorBolas.b = 0.0f;
+            sGlobal::m_colorBolas = cColor::vRojo;
         }
         pBall->m_color = sGlobal::m_colorBolas;
 

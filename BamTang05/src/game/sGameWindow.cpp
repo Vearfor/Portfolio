@@ -76,12 +76,17 @@ void sGameWindow::OnSetFocus(sLaberinto* pLab)
         nombre += vcSize;
         nombre += "    Pulsa Esc para salir. A,W,S,D para moverse.";
 
+        if (m_pLaberinto->isPlayingDemo())
+        {
+            nombre += "     [Estamos en DEMO]";
+        }
+
         if (m_pLaberinto->estaEnElFin())
         {
             nombre += "     [Hemos llegado al Final]";
         }
 
-        WCHAR wcNombre[LON_BUFF / 8];
+        WCHAR wcNombre[LON_BUFF / 4];
         cTool::copiaMultibyteToUnicode(nombre, wcNombre, sizeof(wcNombre));
         SetWindowText(m_hWindow, wcNombre);
 
@@ -107,6 +112,16 @@ void sGameWindow::OnKillFocus(sLaberinto* pLab)
         nombre += "    Size: ";
         nombre += vcSize;
         nombre += "    Toca la ventana para darle el foco";
+
+        if (m_pLaberinto->isPlayingDemo())
+        {
+            nombre += "     [Estamos en DEMO]";
+        }
+
+        if (m_pLaberinto->estaEnElFin())
+        {
+            nombre += "     [Hemos llegado al Final]";
+        }
 
         WCHAR wcNombre[LON_BUFF / 8];
         cTool::copiaMultibyteToUnicode(nombre, wcNombre, sizeof(wcNombre));

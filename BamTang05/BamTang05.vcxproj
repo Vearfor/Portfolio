@@ -231,6 +231,7 @@
     <ClCompile Include="..\comun\src\tool\strings\sString.cpp" />
     <ClCompile Include="src\game\laberinto\sLaberinto.cpp" />
     <ClCompile Include="src\game\laberinto\sMyMaze.cpp" />
+    <ClCompile Include="src\game\laberinto\sPos.cpp" />
     <ClCompile Include="src\game\sGame.cpp" />
     <ClCompile Include="src\game\sGameWindow.cpp" />
     <ClCompile Include="src\game\sGlobal.cpp" />

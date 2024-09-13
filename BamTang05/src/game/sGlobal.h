@@ -37,6 +37,7 @@ struct sGlobal
     static int m_iWidth;
     static int m_iHeight;
     static char vcNombrePrograma[LON_BUFF / 8];
+    static float m_fIntervaloDemo;
 };
 /*------------------------------------------------------------------------*/
 

@@ -32,8 +32,12 @@ public:
     //----------------------------------------------------------------------
     // Transparentes
     //----------------------------------------------------------------------
-    inline static const glm::vec4 vBlanco_T { 1.0f, 1.0f, 1.0f, 0.4f };
-    inline static const glm::vec4 vAzul_T   { 0.0f, 0.0f, 1.0f, 0.4f };
+    inline static const glm::vec4 vBlanco_T     { 1.0f, 1.0f, 1.0f, 0.4f };
+    inline static const glm::vec4 vAzul_T       { 0.0f, 0.0f, 1.0f, 0.4f };
+    inline static const glm::vec4 vVerde_T      { 0.0f, 1.0f, 0.0f, 0.4f };
+    inline static const glm::vec4 vRojo_T       { 1.0f, 0.0f, 0.0f, 0.4f };
+    inline static const glm::vec4 vAmarillo_T   { 1.0f, 1.0f, 0.0f, 0.4f };
+    inline static const glm::vec4 vCyan_T       { 0.0f, 1.0f, 1.0f, 0.4f };
     //----------------------------------------------------------------------
 };
 //--------------------------------------------------------------------------

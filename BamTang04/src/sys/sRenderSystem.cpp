@@ -242,14 +242,14 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFonMax, cFuente* pFonMin)
             mNextLine(0),
             1.0f,
             cColor::vBlanco,
-            "Debajo de %4.2f de velocidad, se aplica un factor de frenado", sGlobal::m_fVelParada
+            "Debajo de %4.2f de velocidad, se aplicaba un factor de frenado,", sGlobal::m_fVelParada
         );
 
         mDo(pFonMin)->escribe(m_pWindow,
             mNextLine(0),
             1.0f,
             cColor::vBlanco,
-            "si estamos colisionando o estamos en el suelo.", sGlobal::m_fVelParada
+            "pero se ha decidido forzar a que la velocidad sea de 0."
         );
 
         size_t numBolas = pGame->getVecBolas().size();

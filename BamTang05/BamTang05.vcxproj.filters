@@ -203,6 +203,9 @@
     <ClCompile Include="..\comun\src\tool\strings\sString.cpp">
       <Filter>Source\comun\tool\strings</Filter>
     </ClCompile>
+    <ClCompile Include="src\game\laberinto\sPos.cpp">
+      <Filter>Source\src\game\laberinto</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game\sGame.h">

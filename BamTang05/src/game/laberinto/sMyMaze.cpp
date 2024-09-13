@@ -3,6 +3,11 @@
 \*========================================================================*/
 
 #include "sMyMaze.h"
+#include "sPos.h"
+#include "../sGame.h"
+#include "../sRenderSystem.h"
+#include "../vistas/sVista3D.h"
+#include "../sGameWindow.h"
 #include <tool/cLog.h>
 #include <tool/nComun.h>
 #include <swat/sRenderObject.h>
@@ -10,15 +15,20 @@
 #include <cctype>
 
 
-sMyMaze::sMyMaze()
-    : sLaberinto("My Maze")
+/*------------------------------------------------------------------------*\
+|* Constructor & Destructor
+\*------------------------------------------------------------------------*/
+sMyMaze::sMyMaze(sGame* pGame)
+    : sLaberinto(pGame, "My Maze")
 {
     cLog::print(" quien: %s\n", m_quienSoy.c_str());
+    //m_posAnterior = { 1, 1, eSentido::eNone, "Anterior", 0, false, 0, 32 };
 }
 
 sMyMaze::~sMyMaze()
 {
 }
+/*------------------------------------------------------------------------*/
 
 
 /*========================================================================*\
@@ -27,10 +37,10 @@ sMyMaze::~sMyMaze()
 \*========================================================================*/
 sPos vDir[4] =
 {
-    { -1,  0, eSentido::eTop    , "Arriba"      , 0 , false, 0 },
-    {  0,  1, eSentido::eRight  , "Derecha"     , 1 , false, 0 },
-    {  1,  0, eSentido::eBot    , "Abajo"       , 2 , false, 0 },
-    {  0, -1, eSentido::eLeft   , "Izquierda"   , 3 , false, 0 },
+    { -1,  0, eSentido::eTop    , "Arriba"      , 0 , false, 0, 'W' },
+    {  0,  1, eSentido::eRight  , "Derecha"     , 1 , false, 0, 'D'},
+    {  1,  0, eSentido::eBot    , "Abajo"       , 2 , false, 0, 'S'},
+    {  0, -1, eSentido::eLeft   , "Izquierda"   , 3 , false, 0, 'A'},
 };
 
 
@@ -53,7 +63,7 @@ int sMyMaze::creaLaberinto()
     m_yoffset = 1 + m_alto_celda;
 
     m_index = 0;
-    sPos start = { 1, 1, eSentido::eNone, "Inicio", 0, false, 0 };
+    sPos start = { 1, 1, eSentido::eNone, "Inicio", 0, false, 0, 32 };
     m_vPos[m_index++] = start;
 
     while (m_index)
@@ -67,7 +77,7 @@ int sMyMaze::creaLaberinto()
     |* Prepara el bucle de busqueda del camino mas largo
     \*====================================================================*/
     // Empezamos en inicio: 'A':
-    m_current = { 1, 1, eSentido::eNone, "Inicio", 0, false, 0 };
+    m_current = { 1, 1, eSentido::eNone, "Inicio", 0, false, 0, 32 };
     m_vecPos.clear();
     m_vecPos.push_back(m_current);
     while (m_vecPos.size() > 0)
@@ -78,20 +88,8 @@ int sMyMaze::creaLaberinto()
     /*====================================================================*\
     |* limpio marcas del calculo  del camino mas largo
     \*====================================================================*/
-    for (int fila = 0; fila < m_size; fila++)
-    {
-        for (int columna = 0; columna < m_size; columna++)
-        {
-            if (m_matriz[fila][columna] != kMuro)
-                m_matriz[fila][columna] = kVacio;
-        }
-    }
-
-    // El primero se marca como inicio 'A'.
-    m_matriz[1][1] = kInicio;
-
-    // El ultimo se marca como inicio 'B'
-    m_matriz[m_last.m_fila][m_last.m_columna] = kFin;
+    limpiaMarcas();
+    /*====================================================================*/
 
     m_pFin->m_fila = m_last.m_fila;
     m_pFin->m_columna = m_last.m_columna;
@@ -155,7 +153,7 @@ int sMyMaze::creaLaberintoFrame()
                 sprintf_s(vcNext, sizeof(vcNext) - 1, "next %2d", m_index);
 
                 // Guardamos la nueva posicion valida
-                m_vPos[m_index++] = { nx, ny,  static_cast<eSentido>(idx[k]), vcNext, m_index-1, false, 0 };
+                m_vPos[m_index++] = { nx, ny,  static_cast<eSentido>(idx[k]), vcNext, m_index-1, false, 0, 32 };
             }
         }
         /*================================================================*/
@@ -232,14 +230,119 @@ int sMyMaze::calculaCaminoMasLargo()
                     m_matriz[m_last.m_fila][m_last.m_columna] = kFin;
                 }
             }
-            //else
-            //{
-            //    //cLog::print(" Hemos terminado: Este print no sale\n");
-            //}
         }
     }
 
     return 0;
+}
+
+
+//--------------------------------------------------------------------------
+// Busca la tecla mas apropiada para llegar a la celda final del
+// laberinto
+//--------------------------------------------------------------------------
+int sMyMaze::decideTecla()
+{
+    int tecla = 32;
+    int fila = m_pPunto->m_fila;
+    int columna = m_pPunto->m_columna;
+    std::vector<sPos> locVectorPos{};
+
+    for (int i = 0; i < 4; i++)
+    {
+        int ifila = vDir[i].m_fila;
+        int icolumna = vDir[i].m_columna;
+
+        if (m_matriz[fila + ifila][columna + icolumna] == kFin)
+        {
+            // Estupendo hemos llegado: esta es la tecla
+            tecla = vDir[i].m_tecla;
+            break;
+        }
+        else
+        if (m_matriz[fila + ifila][columna + icolumna] == kVacio)
+        {
+            sPos pos =
+            {
+                fila + ifila, 
+                columna + icolumna, 
+                vDir[i].m_sentido, 
+                vDir[i].m_nombre.c_str(), 
+                vDir[i].m_index, 
+                vDir[i].m_visitada, 
+                vDir[i].m_num_pasos,
+                vDir[i].m_tecla
+            };
+            locVectorPos.push_back(pos);
+        }
+    }
+
+    // Todavia tenemos que decidir
+    if (tecla == 32)
+    {
+        if (locVectorPos.size() > 0)
+        {
+            if (locVectorPos.size() > 1)
+            {
+                sPos masCercano = locVectorPos[0];
+                int diffila_cercano = m_size;
+                int difcolumna_cercano = m_size;
+                for (auto pos : locVectorPos)
+                {
+                    int diffila = abs(m_last.m_fila - pos.m_fila);
+                    int difcolumna = abs(m_last.m_columna - pos.m_columna);
+                    if (
+                            (diffila_cercano > diffila) ||
+                            (difcolumna_cercano > difcolumna)
+                       )
+                    {
+                        masCercano = pos;
+                        diffila_cercano = diffila;
+                        difcolumna_cercano = difcolumna;
+                    }
+                }
+                tecla = masCercano.m_tecla;
+                // Al haber mas de uno marcamos la vifurcacion:
+                // Y en sentido la decision de direccion que se tomo:
+                m_vecPos.push_back(sPos(fila, columna, masCercano.m_sentido, "Vifurcacion", 0, true, 0, 32));
+            }
+            else
+            {
+                tecla = locVectorPos[0].m_tecla;
+            }
+        }
+        else
+        {
+            // no hay salida nos vamos a la primera vifurcacion anterior
+            if (m_vecPos.size() > 0)
+            {
+                sPos lastVif = m_vecPos.back();
+                m_vecPos.pop_back();
+                m_pPunto->m_fila = lastVif.m_fila;
+                m_pPunto->m_columna = lastVif.m_columna;
+            }
+            else
+            {
+                // Si ya no hay mas vifurcaciones guradadas, hemos terminado,
+                // y parece que no hemos conseguido llegar al final
+                stopDemo(dynamic_cast<sGameWindow*>(m_pGame->getRender()->m_pVista3D->m_mainWindow));
+            }
+        }
+    }
+
+    if (tecla != 32)
+    {
+        eSentido sentAnterior = sPos::getSentidoAnterior(tecla);
+        if (sentAnterior != eSentido::eNone)
+        {
+            // De donde venimos ha siso visitada:
+            vDir[static_cast<int>(sentAnterior)].m_visitada = true;
+            // Marco el camino visitado
+            m_matriz[fila][columna] = (m_matriz[fila][columna] ==kVacio)? kNulo: m_matriz[fila][columna];
+        }
+    }
+
+    return tecla;
 }
 
 

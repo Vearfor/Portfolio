@@ -156,8 +156,6 @@ int sBall::checkParada(float fDeltaTime)
             m_parando = true;
         }
         //------------------------------------------------------------------
-        // A la mierda: si estamos por debajo de 1.0f, velocidad a cero:
-        //------------------------------------------------------------------
         m_vecVelocidad = glm::vec2(0.0f, 0.0f);
         //------------------------------------------------------------------
     }
@@ -215,7 +213,7 @@ void sBall::render_normal()
         if (pSelected->m_bolaId == m_bolaId)
         {
             float radio = m_radio * 1.5f;
-            sOpenGL::circulo(glm::vec3(m_posicion.x, m_posicion.y, 0.0f), radio, cColor::vAmarillo, radio - 1.0f);
+            sOpenGL::circulo(glm::vec3(m_posicion.x, m_posicion.y, 0.0f), radio, cColor::vBlanco, radio - 1.0f);
         }
     }
 }
@@ -272,11 +270,15 @@ int sBall::aplicoGravedad(float fDeltaTime)
 /*------------------------------------------------------------------------*\
 |* Unificamos el calculo del decremeto de la Friccion del Aire
 |* - para hacerlo siempre de la misma manera
+|* - es una furza contraria al movimiento
 \*------------------------------------------------------------------------*/
 int sBall::aplicoFriccionAire(float fDeltaTime)
 {
     if (sGlobal::m_hayFriccion)
     {
+        // Solo hay friccion si hay velocidad
+        float fdir = m_fdir + 180.0f;
+        fdir = (fdir > 360.0f) ? fdir - 360.0f : fdir;
         // Bien: se calcula el 'decremento'
         float decFriccion = sGlobal::m_fFriccionAire * fDeltaTime;
         // En el eje X y en el eje Y:

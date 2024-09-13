@@ -39,10 +39,12 @@ const char kNulo = 0;       // Pendiente de definir.
 // tenga acceso.
 //--------------------------------------------------------------------------
 struct sRenderObject;
+struct sGameWindow;
+struct sGame;
 //--------------------------------------------------------------------------
 struct sLaberinto
 {
-    sLaberinto(const char * pcSoy);
+    sLaberinto(sGame* pGame, const char* pcSoy);
     virtual ~sLaberinto();
 
     int createMaze2D(int size);
@@ -59,6 +61,7 @@ struct sLaberinto
     virtual int creaLaberinto() = 0;
     virtual int creaLaberintoFrame() = 0;
     virtual int calculaCaminoMasLargo() = 0;
+    virtual int decideTecla() = 0;
 
     int arriba();
     int derecha();
@@ -66,7 +69,14 @@ struct sLaberinto
     int izquierda();
 
     void checkHemosLlegado();
+    void stopDemo(sGameWindow* pGameWindow);
+    void limpiaMarcas();
+
+    void setPlayingDemo(bool playingDemo) { m_isPlayingDemo = playingDemo; }
     bool estaEnElFin() { return m_bEstaEnElFin; }
+    bool isPlayingDemo() { return m_isPlayingDemo; }
+    bool hayPausa() { return m_hayPausa; }
+    void togglePausa() { m_hayPausa = !m_hayPausa; }
 
     static void destruyeMatriz(char** matriz, int size);
     static char** getCopiaMatriz(char** src_matriz, int size);
@@ -82,8 +92,8 @@ protected:
     // variable, no fijo.
     // Es un array de 2 dimensiones de tamaño dinamico:
     // - un puntero que apuntará a un array de punteros:
-    //   que se puede traducir en un doble puntero a enteros.
-    // - de enteros o un enumerado que indique si estamos en muro o en vacio.
+    //   que se puede traducir en un doble puntero a enteros.false
+;    // - de enteros o un enumerado que indique si estamos en muro o en vacio.
     //   ... lo dejaremos como entero, para en pruebas ver que nos funcionan
     //   bien los contenidos de filas y columnas ... por ahora.
     char** m_matriz{ nullptr };
@@ -103,9 +113,19 @@ protected:
     sRenderObject* m_pObjCamara{ nullptr };
 
     bool m_bEstaEnElFin{ false };
+    bool m_hayPausa{ false };
+    bool m_isPlayingDemo{ false };
+
+    //sPos m_posAnterior{};
+    sGame* m_pGame;
+
+    // Para el calculo del camino mas largo:
+    std::vector<sPos> m_vecPos;
+    sPos m_current{ 1, 1 };
+    sPos m_last{ 1, 1 };
 
     int creaMatriz(int size);
-   
+
 };
 
 

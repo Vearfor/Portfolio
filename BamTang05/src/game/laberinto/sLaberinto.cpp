@@ -4,16 +4,19 @@
 
 
 #include "sLaberinto.h"
+#include "../sGameWindow.h"
 #include <tool/cLog.h>
 #include <tool/nComun.h>
+#include <tool/consola/cConio.h>
 #include <swat/sRenderObject.h>
 
 
-sLaberinto::sLaberinto(const char* pcSoy)
+sLaberinto::sLaberinto(sGame* pGame, const char* pcSoy)
     : m_quienSoy(pcSoy)
     , m_size(kMin + 2)
     , m_matriz(nullptr)
     , m_motor{}
+    , m_pGame(pGame)
 {
     // Iniciamos el motor aleatorio:
     m_motor.inicia();
@@ -122,6 +125,30 @@ char** sLaberinto::getCopiaMatriz(char** src_matriz, int size)
 }
 
 
+//--------------------------------------------------------------------------
+// Limpiamos las marcas que hemos dejado en el laberinto
+// - tanto por la busqueda del camino mas lejano
+// - como por la ejecucion de la demo del laberinto.
+//--------------------------------------------------------------------------
+void sLaberinto::limpiaMarcas()
+{
+    for (int fila = 0; fila < m_size; fila++)
+    {
+        for (int columna = 0; columna < m_size; columna++)
+        {
+            if (m_matriz[fila][columna] != kMuro)
+                m_matriz[fila][columna] = kVacio;
+        }
+    }
+
+    // El primero se marca como inicio 'A'.
+    m_matriz[1][1] = kInicio;
+
+    // El ultimo se marca como inicio 'B'
+    m_matriz[m_last.m_fila][m_last.m_columna] = kFin;
+}
+
+
 int sLaberinto::arriba()
 {
     if (m_pPunto)
@@ -132,10 +159,8 @@ int sLaberinto::arriba()
         char valor = m_matriz[fila - 1][columna];
         if (valor == kVacio || valor == kFin || valor == kInicio)
         {
-            //m_pPunto->m_columna--;
             m_pPunto->m_fila--;
         }
-        //cLog::print(" arriba:     [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
         checkHemosLlegado();
     }
     return 0;
@@ -152,10 +177,8 @@ int sLaberinto::derecha()
         char valor = m_matriz[fila][columna + 1];
         if (valor == kVacio || valor == kFin || valor == kInicio)
         {
-            // m_pPunto->m_fila++;
             m_pPunto->m_columna++;
         }
-        //cLog::print(" derecha:    [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
         checkHemosLlegado();
     }
     return 0;
@@ -172,10 +195,8 @@ int sLaberinto::abajo()
         char valor = m_matriz[fila + 1][columna];
         if (valor == kVacio || valor == kFin || valor == kInicio)
         {
-            // m_pPunto->m_columna++;
             m_pPunto->m_fila++;
         }
-        //cLog::print(" abajo:      [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
         checkHemosLlegado();
     }
     return 0;
@@ -192,10 +213,8 @@ int sLaberinto::izquierda()
         char valor = m_matriz[fila][columna - 1];
         if (valor == kVacio || valor == kFin || valor == kInicio)
         {
-            // m_pPunto->m_fila--;
             m_pPunto->m_columna--;
         }
-        //cLog::print(" izquierda:  [ %2d, %2d]\n", m_pPunto->m_fila, m_pPunto->m_columna);
         checkHemosLlegado();
     }
     return 0;
@@ -210,6 +229,18 @@ void sLaberinto::checkHemosLlegado()
     }
 }
 
+
+void sLaberinto::stopDemo(sGameWindow* pGameWindow)
+{
+    limpiaMarcas();
+    setPlayingDemo(false);
+    cConio::SetColor(eTextColor::eTexBlanco);
+    cLog::print("\n");
+    cLog::print("     Se ha cerrado la Demo\n");
+    cLog::print("\n");
+    cConio::SetColor(eTextColor::eTexNormal);
+    mDo(pGameWindow)->OnSetFocus(this);
+}
 
 
 /*========================================================================*\

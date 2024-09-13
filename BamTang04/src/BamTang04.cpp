@@ -47,6 +47,7 @@ int main()
 void presentacion()
 {
     cConio::SetColor(eTextColor::eTexAmarillo);
+    cLog::print("\n");
     cConio::Cls();
     cLog::print("\n");
     cLog::print(" Lo que hay que hacer:\n");
