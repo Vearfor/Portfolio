@@ -67,11 +67,11 @@ int sCollisionSystem::update(sGame* pGame, float fDeltaTime)
                                 if (checkCollision(fDeltaTime, pBall1, pBall2))
                                 {
                                     collision(pBall1, pBall2);
-                                    float fVel1 = sMath::modulo(pBall1->m_vecVelocidad);
-                                    float fVel2 = sMath::modulo(pBall2->m_vecVelocidad);
-                                    cLog::print(" Vel Bola %6.3f  ---  Vel Bola %6.3f\n",
-                                        fVel1,
-                                        fVel2);
+                                    //float fVel1 = sMath::modulo(pBall1->m_vecVelocidad);
+                                    //float fVel2 = sMath::modulo(pBall2->m_vecVelocidad);
+                                    //cLog::print(" Vel Bola %6.3f  ---  Vel Bola %6.3f\n",
+                                    //    fVel1,
+                                    //    fVel2);
                                     break;
                                 }
                             }
@@ -109,11 +109,10 @@ bool sCollisionSystem::checkCollision(float fDeltaTime, sBall* bola1, sBall* bol
         {
             bola1->m_estaColisionando = true;
             bola1->m_estaColisionando = true;
-
-            cLog::print(" Collision: Bola %3ld -- Bola %3ld     Delta: %6.4f\n",
-                bola1->m_bolaId,
-                bola2->m_bolaId,
-                fDeltaTime);
+            //cLog::print(" Collision: Bola %3ld -- Bola %3ld     Delta: %6.4f\n",
+            //    bola1->m_bolaId,
+            //    bola2->m_bolaId,
+            //    fDeltaTime);
             return true;
         }
     }

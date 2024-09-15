@@ -143,8 +143,8 @@ int ayuda(const char* pcFormat, ...)
     printf("                             (Superior a %d hacen que sean visualmente no manejables en la Consola)\n", kLim);
     printf("\n");
     printf("      %s  <size>  Demo       Ejecutamos una Demo.\n", sGlobal::vcNombrePrograma);
-    printf("                                        Cada % 3.1f segundos ejecutamos una tecla para mover nuestro cubo\n", sGlobal::m_fIntervaloDemo);
-    printf("                                        dentro del laberinto.\n");
+    printf("                                        Cada %4.2f segundos ejecutamos una tecla para mover nuestro cubo\n", sGlobal::m_fIntervaloDemo);
+    printf("                                        dentro del juego hasta la celda marcada como fin del laberinto\n");
     printf("\n");
     cConsola::PulsaTecla(" Pulsa tecla para terminar ");
     printf("\n");

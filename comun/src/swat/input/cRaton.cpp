@@ -5,6 +5,7 @@
 
 #include "cRaton.h"
 #include "../windows/sWindow.h"
+#include <tool/cLog.h>
 #include <windowsx.h>
 
 
@@ -46,6 +47,7 @@ cRaton::cRaton(int width, int height)
 cRaton::~cRaton()
 {
     liberaCursor();
+    cLog::print(" Destructor de cRaton\n");
 }
 //--------------------------------------------------------------------------
 

@@ -210,7 +210,7 @@ int presentacion()
     cLog::print("     Obligando a que sean mayores que 3 e impar.\n");
     cLog::print("     Y no se si aplicar un limite, se nos saldrian de la pantalla\n");
     cLog::print("     Un solo camino entre A y B. No puede haber mas de uno.\n");
-    cLog::print("     'A' estara en en el primer hueco de la esquina superior izquierda. Lo traduzco a la posicion (2.2)\n");
+    cLog::print("     'A' estara en en el primer hueco de la esquina superior izquierda.\n");
     cLog::print("     'B' al final de ese camino mas largo.\n");
     cLog::print("     Los caminos no pueden ser diagonales\n");
     cLog::print("\n");

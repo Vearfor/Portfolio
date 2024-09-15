@@ -136,7 +136,7 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFonMax, cFuente* pFonMin)
     char vcValor[32];
     if (sGlobal::m_hayGravedad)
     {
-        sprintf_s(vcValor, sizeof(vcValor), "%6.3f (solo eje Y)", sGlobal::m_fGravedad);
+        sprintf_s(vcValor, sizeof(vcValor), "%6.3f", sGlobal::m_fGravedad);
     }
     else
         mCopia(vcValor, "---");
@@ -152,7 +152,7 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFonMax, cFuente* pFonMin)
 
     if (sGlobal::m_hayFriccion)
     {
-        sprintf_s(vcValor, sizeof(vcValor), "%6.3f (en los dos ejes)", sGlobal::m_fFriccionAire);
+        sprintf_s(vcValor, sizeof(vcValor), "%6.3f", sGlobal::m_fFriccionAire);
     }
     else
         mCopia(vcValor, "---");
@@ -165,6 +165,26 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFonMax, cFuente* pFonMin)
         cColor::vBlanco,
         (sGlobal::m_hayFriccion) ? "Hay friccion por aire:" : "sin friccion",
         vcValor);
+
+    size_t numBolas = pGame->getVecBolas().size();
+
+    mDo(pFonMin)->detalleTitulo(
+        m_pWindow,
+        mNextLine(0),
+        1.0f,
+        cColor::vVerde,
+        cColor::vAmarillo,
+        "Bolas presentes:",
+        "%d", numBolas);
+
+    mDo(pFonMin)->detalleTituloSiguiente(
+        m_pWindow,
+        0, 0,
+        1.0f,
+        cColor::vVerde,
+        cColor::vAmarillo,
+        "  posibles:",
+        "%d", sGlobal::m_limBolas);
 
     sBall* pSelected = pGame->getSelected();
     if (pSelected)
@@ -180,7 +200,7 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFonMax, cFuente* pFonMin)
                 cColor::vCyan,
                 cColor::vBlanco,
                 "Seleccionado:",
-                "%ld   %6.3f", pSelected->m_bolaId, vel);
+                "%2ld:    V: %6.3f   Dir: %6.3f", pSelected->m_bolaId, vel, pSelected->m_fdir);
 
             if (pSelected->m_tiempo > 0.0f)
             {
@@ -251,26 +271,6 @@ void sRenderSystem::showOrigin(sGame* pGame, cFuente* pFonMax, cFuente* pFonMin)
             cColor::vBlanco,
             "pero se ha decidido forzar a que la velocidad sea de 0."
         );
-
-        size_t numBolas = pGame->getVecBolas().size();
-
-        mDo(pFonMin)->detalleTitulo(
-            m_pWindow,
-            mNextLine(0),
-            1.0f,
-            cColor::vVerde,
-            cColor::vAmarillo,
-            "Bolas presentes:",
-            "%d", numBolas);
-
-        mDo(pFonMin)->detalleTituloSiguiente(
-            m_pWindow,
-            0, 0,
-            1.0f,
-            cColor::vVerde,
-            cColor::vAmarillo,
-            "  posibles:",
-            "%d", sGlobal::m_limBolas);
 
         mDo(pFonMin)->detalleTitulo(
             m_pWindow,

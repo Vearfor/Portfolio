@@ -28,6 +28,10 @@ int sGlobal::m_iHeight = 768;
 |*        se lanzaran las bolas.
 |*
 |*     2: Muestra si hay Gravedad y muestra si hay Friccion
+|*
+|*        Se presenta tambien el numero de bolas existentes limitadas por
+|*        el maximo numero de bolas permitido.
+|*
 |*        Se pueden seleccionar bolas con el raton, y se puede mostrar la
 |*        bola selccionada: su identificador, y su modulo de velocidad.
 |*
@@ -49,9 +53,6 @@ int sGlobal::m_iHeight = 768;
 |*        Informa tambien, que para asegurarse la parada de las bolas,
 |*        por debajo de la Velocidad de Parada, se reducira las velocidad
 |*        de las bolas.
-|*
-|*        Se presenta tambien el numero de bolas existentes limitadas por
-|*        el maximo numero de bolas permitido.
 |*
 |*        Se avisa de que cuando las bolas paran, seran destruidas en un
 |*        tiempo dado. Y que expllosion durante el cual se eliminan durara
@@ -145,7 +146,7 @@ int sGlobal::m_limBolas = 60;
 |* - m_fVelocidadMin: es el minimo fijo
 |* - m_fVelocidadMax: es el maximo fijo
 \*------------------------------------------------------------------------*/
-float sGlobal::m_fVelocidadInicial = 150.0f;
+float sGlobal::m_fVelocidadInicial = 200.0f;
 float sGlobal::m_fVelocidadMin = 30.0f;
 float sGlobal::m_fVelocidadMax = 500.0f;
 
@@ -170,13 +171,10 @@ float sGlobal::m_fGravedad      = - 9.8f;       // aumenta 9.8 metros por
 
 /*------------------------------------------------------------------------*\
 |* Valor de la Friccion en el Aire
-|* - es un valor contrario al movimiento. Solo se produce si hay movimiento
-|*   es mucho mas que un simple -1, -1 en cada eje.
-|*   es un vector contrario a tu fdir con un modulo dado por este valor.
-|*   Hay que aplicarlo correctamente.
+|* - es un valor contrario al movimiento.
+|* - Solo se produce si hay movimiento
 \*------------------------------------------------------------------------*/
-float sGlobal::m_fFriccionAire  = - 1.0f;       // quita 1.0 metros por
-                                                // segundo
+float sGlobal::m_fFriccionAire  = - 0.2f;
 
 /*------------------------------------------------------------------------*\
 |* Bajamos la velocidad en cada rebote y en cada choque con otras bolas: 
@@ -218,14 +216,22 @@ int sGlobal::m_windowCaptionSize = 40;
 /*------------------------------------------------------------------------*\
 |* Por debajo de esta velocidad se aplica la parada a la bola.
 |* Esta queda en cero, y se empieza a sumar el tiempo de destruccion
+|*
+|* Estaba pensando aplicar la parada despues de estar por debajo
+|* de la velocidad dada cuando:
+|*   - estemos en el suelo
+|*   - estemos colisionando.
+|* Pero no lo tenemos claro, por ahora no.
+|* Lo aplicamos aún asi, porque es dificil llegar al cero.
+|* Y las pelotas, terminan colisionando, pero eternamente MEZCLADAS !!
 \*------------------------------------------------------------------------*/
-float sGlobal::m_fVelParada = 1.0f;
+float sGlobal::m_fVelParada = 2.0f;
 
 /*------------------------------------------------------------------------*\
 |* Este es el tiempo de destruccion, una vez parada la bola.
 |* Cuando este se cumple la bola se destruye.
 \*------------------------------------------------------------------------*/
-float sGlobal::m_fTiempoDestruccion = 20.0f;
+float sGlobal::m_fTiempoDestruccion = 10.0f;
 
 /*------------------------------------------------------------------------*\
 |* Tiempo durante el cuanl el objeto explosion de la bola a destruir

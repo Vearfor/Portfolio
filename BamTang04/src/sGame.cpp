@@ -65,6 +65,8 @@ sGame::~sGame()
 //  - Al final:
 //    (si estan con un modulo inferiora 1 --> los paramos: velocidades a cero)
 //    y que empiece el mecanismo de destruccion de la bola
+//      - cuando estemos en el suelo
+//      - cuando estemos colisionando
 //    Pasados 20 segundos, boom.
 //    Si alguien, mientras modifica la velocidad por encima de 1, se recupera. 
 // 
@@ -330,6 +332,7 @@ void sGame::shootBall()
 
         pBall->m_posicion = m_pOrigen->m_posicion + glm::vec2(xPos, yPos);
         pBall->m_vecVelocidad = { xVel, yVel };       
+        pBall->m_fdir = m_pOrigen->m_fdir;
 
         float fVel = sMath::modulo(pBall->m_vecVelocidad);
 
@@ -400,9 +403,11 @@ bool sGame::select(glm::vec2 posRaton)
 {
     bool selected = false;
 
-    m_pSelected = selectBall(posRaton);
-    if (m_pSelected)
+    sBall * pSelected = selectBall(posRaton);
+    if (pSelected)
     {
+        mDo(m_pSelected)->m_soyElSeleccionado = false;
+        m_pSelected = pSelected;
         if (m_pSelected->m_bolaId == 0)
         {
             m_pOrigen->m_posicion =
@@ -411,7 +416,16 @@ bool sGame::select(glm::vec2 posRaton)
                 m_pRender->getHeight() - posRaton.y
             };
         }
+        else
+        {
+            m_pSelected->m_soyElSeleccionado = true;
+        }
         selected = true;
+    }
+    else
+    {
+        mDo(m_pSelected)->m_soyElSeleccionado = false;
+        m_pSelected = nullptr;
     }
     return selected;
 }

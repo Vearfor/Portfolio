@@ -64,12 +64,16 @@ int sBall::checkLimites(float fDeltaTime, int width, int height)
     {
         float velx = sMath::aplicaFactor(m_vecVelocidad.x, sGlobal::m_fElasticidad);
         m_vecVelocidad.x = -velx;
+        // Importante: se nos olvidaba recalcular el angulo en cada cambio
+        m_fdir = sMath::getAngulo(m_vecVelocidad);
     }
 
     if ((m_posicion.y + inc.y > height - m_radio) || (m_posicion.y + inc.y < m_radio))
     {
         float vely = sMath::aplicaFactor(m_vecVelocidad.y, sGlobal::m_fElasticidad);
         m_vecVelocidad.y = -vely;
+        // Importante: se nos olvidaba recalcular el angulo en cada cambio
+        m_fdir = sMath::getAngulo(m_vecVelocidad);
     }
 
     return 0;
@@ -149,7 +153,14 @@ int sBall::checkParada(float fDeltaTime)
     // Estar en el suelo: (m_posicion.y < m_radio + 1.0f) ||
     //----------------------------------------------------------------------
     float fVel = sMath::modulo(m_vecVelocidad);
-    if (fVel < sGlobal::m_fVelParada)
+    if (
+            fVel < sGlobal::m_fVelParada
+        //&&
+        //    (
+        //        m_posicion.y < m_radio + 1.0f ||
+        //        m_estaColisionando
+        //    )
+       )
     {
         if (!m_parando)
         {
@@ -253,6 +264,10 @@ int sBall::aplicoGravedad(float fDeltaTime)
 {
     if (sGlobal::m_hayGravedad)
     {
+        //------------------------------------------------------------------
+        // Si la velocidad fuese cero, seria correcto continuar:
+        // seria el caso en el cual nos sueltan en el aire con velocidad 0
+        //------------------------------------------------------------------
         // Bien: se calcula el 'decremento' por gravedad.
         // No se si quitar el 'sGlobal::m_fFactorMaximizador' ya que por culpa de los
         // tiempos fDeltaTime los valores son muy pequeños:
@@ -262,6 +277,8 @@ int sBall::aplicoGravedad(float fDeltaTime)
         glm::vec2 gravedad = glm::vec2(0.0, decGravedad);
         // Debe venir negativa, porque el valor de la gravedad ya me viene negativa
         m_vecVelocidad += gravedad;
+        m_fdir = sMath::getAngulo(m_vecVelocidad);
+        //------------------------------------------------------------------
     }
     return 0;
 }
@@ -270,21 +287,33 @@ int sBall::aplicoGravedad(float fDeltaTime)
 /*------------------------------------------------------------------------*\
 |* Unificamos el calculo del decremeto de la Friccion del Aire
 |* - para hacerlo siempre de la misma manera
-|* - es una furza contraria al movimiento
 \*------------------------------------------------------------------------*/
 int sBall::aplicoFriccionAire(float fDeltaTime)
 {
     if (sGlobal::m_hayFriccion)
     {
-        // Solo hay friccion si hay velocidad
-        float fdir = m_fdir + 180.0f;
-        fdir = (fdir > 360.0f) ? fdir - 360.0f : fdir;
-        // Bien: se calcula el 'decremento'
-        float decFriccion = sGlobal::m_fFriccionAire * fDeltaTime;
-        // En el eje X y en el eje Y:
-        glm::vec2 friccion = { decFriccion, decFriccion };
-        // Y el 'decremento' se 'suma': que en realidad estamos restando
-        m_vecVelocidad += friccion;
+        float fVel = sMath::modulo(m_vecVelocidad);
+        //------------------------------------------------------------------
+        // si ya estamos en 0, poco mas podremos hacer
+        // aunque no creo que llegemos a eso aqui, creo
+        // De todas formas, la friccion, por definicion, solo aparece si
+        // nos movemos.
+        // Por lo cual sera correcto no hacer nada.
+        //------------------------------------------------------------------
+        if (fVel > 0.0f)
+        {
+            // Se calcula el 'decremento'
+            float decFriccion = sGlobal::m_fFriccionAire * fDeltaTime;
+            // Velocidad final: la que tiene menos el decremento (que ya es negativo):
+            // el 'decremento' se 'suma': que en realidad estamos restando
+            float fVelFinal = fVel + decFriccion;
+            // Si menor que 0: 0.0f. La friccion habra provocado parada
+            fVelFinal = (fVelFinal < 0.0f) ? 0.0f : fVelFinal;
+            float xDec = fVelFinal * cos(deg2rad(m_fdir));
+            float yDec = fVelFinal * sin(deg2rad(m_fdir));
+            m_vecVelocidad = { xDec, yDec };
+        }
+        //------------------------------------------------------------------
     }
     return 0;
 }

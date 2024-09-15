@@ -48,6 +48,7 @@ struct sBall
     bool m_destruir{ false };
     float m_tiempo{ 0.0f };
     sExplosion* m_pExplosion{ nullptr };
+    bool m_soyElSeleccionado = false;
 
     static glm::vec2 calcIncremento(float fDeltaTime, glm::vec2 velBola);
 

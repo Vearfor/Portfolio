@@ -119,6 +119,7 @@ cTeclado::cTeclado	( void )
 
 cTeclado::~cTeclado	( void )
 {
+    cLog::print(" Destructor de cTeclado\n");
 }
 
 
