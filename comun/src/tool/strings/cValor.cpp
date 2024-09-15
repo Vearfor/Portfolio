@@ -71,7 +71,7 @@ void cValor::cargaString(const char * pcValor)
     m_eTipo = eTipoValor::eSTRING;
     std::string * psValor = new std::string(pcValor);
     m_uValor.psValor = psValor;
-    m_sNoString = "";
+    m_sNoString.load("");
 }
 
 
@@ -100,7 +100,7 @@ void cValor::copiaInterna(const cValor & oValor)
 {
     m_eTipo = oValor.m_eTipo;
     mCopia(m_vcOrigen, oValor.m_vcOrigen);
-    m_sNoString = "";
+    m_sNoString.load("");
 
     switch (m_eTipo)
     {
@@ -203,7 +203,7 @@ void cValor::inicioValor(int iValor)
     m_uValor.lValor = iValor;
     mCopia(m_vcOrigen, "inicioValor int");
 
-    m_sNoString = "";
+    m_sNoString.load("");
 }
 
 
@@ -216,7 +216,7 @@ void cValor::inicioValor(double dValor)
     m_uValor.dValor = dValor;
     mCopia(m_vcOrigen, "inicioValor double");
 
-    m_sNoString = "";
+    m_sNoString.load("");
 }
 
 
@@ -226,7 +226,7 @@ void cValor::inicioValor(bool bValor)
     m_uValor.bValor = bValor;
     mCopia(m_vcOrigen, "inicioValor bool");
 
-    m_sNoString = "";
+    m_sNoString.load("");
 }
 
 
@@ -238,7 +238,7 @@ void cValor::inicioValor(const std::string & sValor)
 
 void cValor::inicioValor(const char * pcValor)
 {
-    m_sNoString = "";
+    m_sNoString.load("");
     if (pcValor == NULL)
     {
         m_eTipo = eTipoValor::eLONG;
@@ -291,7 +291,7 @@ void cValor::reset ( int iValor )
     m_eTipo = eTipoValor::eLONG;
     m_uValor.lValor = iValor;
 
-    m_sNoString = "";
+    m_sNoString.load("");
     m_sNoString.clear();    // ¿Esto hace lo mismo?
 
     mCopia(m_vcOrigen, "reset int");
@@ -304,7 +304,7 @@ void cValor::reset ( double dValor )
     m_eTipo = eTipoValor::eDOUBLE;
     m_uValor.dValor = dValor;
 
-    m_sNoString = "";
+    m_sNoString.load("");
     m_sNoString.clear();    // ¿Esto hace lo mismo?
 
     mCopia(m_vcOrigen, "reset double");
@@ -328,7 +328,7 @@ void cValor::setValor ( int p_iValor )
     deleteString();
 	m_eTipo = eTipoValor::eLONG;
 	m_uValor.lValor = p_iValor;
-    m_sNoString = "";
+    m_sNoString.load("");
     mCopia(m_vcOrigen, "Entero");
 }
 
@@ -337,7 +337,7 @@ void cValor::setValor ( long p_lValor )
     deleteString();
 	m_eTipo = eTipoValor::eLONG;
 	m_uValor.lValor = p_lValor;
-    m_sNoString = "";
+    m_sNoString.load("");
     mCopia(m_vcOrigen, "Long");
 }
 
@@ -346,7 +346,7 @@ void cValor::setValor ( bool p_bValor )
     deleteString();
 	m_eTipo = eTipoValor::eBOOL;
 	m_uValor.bValor = p_bValor;
-    m_sNoString = "";
+    m_sNoString.load("");
     mCopia(m_vcOrigen, "Bool");
 }
 
@@ -355,7 +355,7 @@ void cValor::setValor ( double p_dValor )
     deleteString();
 	m_eTipo = eTipoValor::eDOUBLE;
 	m_uValor.dValor = p_dValor;
-    m_sNoString = "";
+    m_sNoString.load("");
     mCopia(m_vcOrigen, "Double");
 }
 
@@ -364,7 +364,7 @@ void cValor::setValor(void * p_vValor)
     deleteString();
     m_eTipo = eTipoValor::eVOID;
     m_uValor.pVoid = p_vValor;
-    m_sNoString = "";
+    m_sNoString.load("");
     mCopia(m_vcOrigen, "Puntero");
 }
 
@@ -575,32 +575,32 @@ const char * cValor::toString ( sString & sReserva, const char * pcFormat )
     switch(m_eTipo)
     {
 		case eTipoValor::eSTRING:
-            sFormato = (pcFormat)? pcFormat: "%s";
+            sFormato.load( (pcFormat)? pcFormat: "%s");
             sReserva.format(sFormato.c_str(), (m_uValor.psValor) ? m_uValor.psValor->c_str() : "nulo");
             break;
 
 		case eTipoValor::eDOUBLE:
-            sFormato = (pcFormat)? pcFormat: "%f";
+            sFormato.load( (pcFormat)? pcFormat: "%f");
             sReserva.format(sFormato.c_str(), m_uValor.dValor);
 			break;
 
 		case eTipoValor::eLONG:
-            sFormato = (pcFormat)? pcFormat: "%ld";
+            sFormato.load( (pcFormat)? pcFormat: "%ld");
             sReserva.format(sFormato.c_str(), m_uValor.lValor);
 			break;
 
 		case eTipoValor::eBOOL:
-            sFormato = (pcFormat) ? pcFormat : "%s";
+            sFormato.load((pcFormat) ? pcFormat : "%s");
             sReserva.format(sFormato.c_str(), msTrue(m_uValor.bValor));
 			break;
 
 		case eTipoValor::eLISTA:
-            sFormato = (pcFormat) ? pcFormat : "<lista>";
+            sFormato.load( (pcFormat) ? pcFormat : "<lista>");
             sReserva.format(sFormato.c_str());
 			break;
 
 		case eTipoValor::eVOID:
-            sFormato = (pcFormat) ? pcFormat : "<void>";
+            sFormato.load( (pcFormat) ? pcFormat : "<void>");
             sReserva.format(sFormato.c_str());
 			break;
 

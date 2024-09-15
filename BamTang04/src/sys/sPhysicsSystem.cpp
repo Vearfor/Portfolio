@@ -44,7 +44,7 @@ int sPhysicsSystem::update(sGame* pGame, float fDeltaTime)
             {
                 // Nos volvemos a recorrer el vector para destruir las
                 // bolas que se hubieran parado:
-                for (int i = 0; i < vecBolas.size(); i++)
+                for (size_t i = 0; i < vecBolas.size(); i++)
                 {
                     auto* pBall = vecBolas[i];
                     if (pBall->m_destruir)

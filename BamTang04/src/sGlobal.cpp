@@ -102,7 +102,7 @@ glm::vec2 sGlobal::m_posOrigen
 /*------------------------------------------------------------------------*\
 |* Color de la Bola del Origen de los Disparos.
 \*------------------------------------------------------------------------*/
-glm::vec4 sGlobal::m_colorOrigen{ 0.3f, 1.0f, 0.1f, 1.0f };
+glm::vec4 sGlobal::m_colorOrigen{ 0.4f, 1.0f, 0.1f, 1.0f };
 
 /*------------------------------------------------------------------------*\
 |* Color de la Flecha del Origen de los Disparos.
@@ -174,7 +174,7 @@ float sGlobal::m_fGravedad      = - 9.8f;       // aumenta 9.8 metros por
 |* - es un valor contrario al movimiento.
 |* - Solo se produce si hay movimiento
 \*------------------------------------------------------------------------*/
-float sGlobal::m_fFriccionAire  = - 0.2f;
+float sGlobal::m_fFriccionAire  = - 0.2f;       // digamos quitamos 0.2 m/s
 
 /*------------------------------------------------------------------------*\
 |* Bajamos la velocidad en cada rebote y en cada choque con otras bolas: 
@@ -209,21 +209,26 @@ float sGlobal::m_fFactorMaximizador = 4.0f;
 |*   funcionamiento del programe)
 |*
 |* Utilizo este valor para corregir la seleccion de la bola por el raton
-|* al incrementar este valor en la posicion y del raton
+|*
+|* TODO:
+|* De todas formas, LA SELECCION de las bolas, a veces ESTA FALLANDO
+|* seleccionando la equivocada. Hay que revisar la seleccion de las bolas
+|*
 \*------------------------------------------------------------------------*/
 int sGlobal::m_windowCaptionSize = 40;
 
 /*------------------------------------------------------------------------*\
+|* Velocidad de Parada:
 |* Por debajo de esta velocidad se aplica la parada a la bola.
 |* Esta queda en cero, y se empieza a sumar el tiempo de destruccion
 |*
-|* Estaba pensando aplicar la parada despues de estar por debajo
-|* de la velocidad dada cuando:
+|* Estaba pensando aplicar la parada (por debajo de esta velocidad de
+|* parada) cuando:
 |*   - estemos en el suelo
 |*   - estemos colisionando.
 |* Pero no lo tenemos claro, por ahora no.
-|* Lo aplicamos aún asi, porque es dificil llegar al cero.
-|* Y las pelotas, terminan colisionando, pero eternamente MEZCLADAS !!
+|* Si aplicamos la parada, porque es dificil llegar al cero.
+|* Y las pelotas, terminan colisionando eternamente MEZCLADAS !!
 \*------------------------------------------------------------------------*/
 float sGlobal::m_fVelParada = 2.0f;
 
@@ -234,30 +239,36 @@ float sGlobal::m_fVelParada = 2.0f;
 float sGlobal::m_fTiempoDestruccion = 10.0f;
 
 /*------------------------------------------------------------------------*\
-|* Tiempo durante el cuanl el objeto explosion de la bola a destruir
-|* Hace sus updates y renders. Cumplido este tiempo, la bola, si, se
+|* Tiempo durante el cual el objeto explosion de la bola a destruir,
+|* hace sus updates y renders. Cumplido este tiempo, la bola, si, se
 |* elimina del m_vecBolas de sGame.
+|*
+|* Estaba en 10, lo bajamos a 5. Las bolas desaparecian, pero todavia no
+|* se habian destruido.
 \*------------------------------------------------------------------------*/
-float sGlobal::m_fTiempoExplosion = 10.0f;
+float sGlobal::m_fTiempoExplosion = 5.0f;
 
 /*------------------------------------------------------------------------*\
 |* Flag que indica los dos modos de actuar de la bola del Origen de los
 |* Disparos:
 |*
 |* - Inactiva: las bolas pueden colisionar con el Origen de los Disparos,
-|*             pero no le afectan en absoluto.
+|*             pero no le afectan en absoluto. No se mueve.
 |*             Basicamente, una piedra inamobible.
 |*             En este estado no le afecta ni la Gravedad, ni la Friccion
 |*             del aire.
 |*             Aunque puedes mover la bola con las teclas de direccion:
-|*             Left-Up-Right-Down
+|*             'Left'-'Up'-'Right'-'Down'
 |*
 |* - Activa:   Aqui si le afecta todo.
 |*             Las colisiones con las otras bolas modificaran velocidad y
 |*             direccion.
 |*             Si estara afectado por la Gravedad y la Friccion del Aire.
 |*
-|* Se activa/desactiva con la letra O
+|* Se activa/desactiva con la letra 'O'.
+|* Con la tecla 'R' (reset) se situa en la posiion inicial.
+|* Con la tecla 'S' (stop) se para la velocidad (no te esta rebotando por)
+|* las paredes)
 |*
 \*------------------------------------------------------------------------*/
 bool sGlobal::m_hayChoqueOrigen = false;

@@ -220,7 +220,7 @@ int sGame::createFuentes(sGameWindow* pWindow)
 //--------------------------------------------------------------------------
 int sGame::createOrigin()
 {
-    if (m_vecBolas.size() < sGlobal::m_limBolas)
+    if (static_cast<int>(m_vecBolas.size()) < sGlobal::m_limBolas)
     {
         m_pOrigen = new sOrigen();
         m_pOrigen->m_posicion = sGlobal::m_posOrigen;
@@ -319,7 +319,7 @@ cstatic sGame* sGame::instancia()
 
 void sGame::shootBall()
 {
-    if (m_vecBolas.size() < sGlobal::m_limBolas && !hayPausa())
+    if (static_cast<int>(m_vecBolas.size()) < sGlobal::m_limBolas && !hayPausa())
     {
         sBall* pBall = new sBall();
         pBall->m_radio = sGlobal::m_fRadio;
@@ -337,7 +337,7 @@ void sGame::shootBall()
         float fVel = sMath::modulo(pBall->m_vecVelocidad);
 
         std::string sColor = "";
-        if (sGlobal::m_colorBolas.r == 1.0f && sGlobal::m_colorBolas.g == 0.0f && sGlobal::m_colorBolas.b == 0.0f)
+        if (sGlobal::m_colorBolas.r == 0.0f && sGlobal::m_colorBolas.g == 1.0f && sGlobal::m_colorBolas.b == 0.0f)
         {
             sColor = "Cyan";
             sGlobal::m_colorBolas = cColor::vCyan;
@@ -351,6 +351,11 @@ void sGame::shootBall()
         {
             sColor = "Red";
             sGlobal::m_colorBolas = cColor::vRojo;
+        }
+        else if (sGlobal::m_colorBolas.r == 1.0f && sGlobal::m_colorBolas.g == 0.0f && sGlobal::m_colorBolas.b == 0.0f)
+        {
+            sColor = "Verde";
+            sGlobal::m_colorBolas = cColor::vVerde;
         }
         pBall->m_color = sGlobal::m_colorBolas;
 

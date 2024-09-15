@@ -494,7 +494,7 @@ cstatic void cGestorFuentes::arriba()
 
 cstatic void cGestorFuentes::abajo()
 {
-	if (iInicio + cGestorFuentes::KNUM_FUENTES_TEST < m_poInstancia->m_mapFuentes.size())
+	if (iInicio + cGestorFuentes::KNUM_FUENTES_TEST < static_cast<int>(m_poInstancia->m_mapFuentes.size()))
 		iInicio += cGestorFuentes::KNUM_FUENTES_TEST;
 }
 
@@ -504,7 +504,7 @@ cstatic void cGestorFuentes::PruebaFuentes(sWindow* poWindow, int iFuenteTest)
 	sString frase;
 	float x = 20;
 	float y = 30;
-	size_t iNum = m_poInstancia->m_mapFuentes.size();
+	int iNum = static_cast<int>(m_poInstancia->m_mapFuentes.size());
 
 	cFuente* poFuenteDef = cGestorFuentes::m_poInstancia->getFuente(iFuenteTest);
 	if (!poFuenteDef)

@@ -69,6 +69,7 @@ int sInputSystem::update(sGame* pGame, float fDeltaTime)
         {
             pOrigen->m_posicion = sGlobal::m_posOrigen;
             pOrigen->m_fdir = sGlobal::m_dirOrigen;
+            pOrigen->m_vecVelocidad = { 0.0f, 0.0f };
         }
 
         if (pTeclado->isUp('S'))

@@ -48,13 +48,13 @@ int sCollisionSystem::update(sGame* pGame, float fDeltaTime)
             if (vecBolas.size() > 1)
             {
                 // Bola contra Bola:
-                for (int i = 0; i < vecBolas.size(); i++)
+                for (size_t i = 0; i < vecBolas.size(); i++)
                 {
                     sBall* pBall1 = vecBolas[i];
                     if (!pBall1->m_check && !sMath::isZero(pBall1->m_vecVelocidad))
                     {
                         //--------------------------------------------------
-                        for (int j = 0; j < vecBolas.size(); j++)
+                        for (size_t j = 0; j < vecBolas.size(); j++)
                         {
                             sBall* pBall2 = vecBolas[j];
 

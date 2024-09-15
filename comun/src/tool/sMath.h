@@ -74,7 +74,7 @@ struct _mExport sMath
 {
     static glm::vec3 normalize(glm::vec3 vector);
     static float getFactorReduccion(float fFactorDecr, float fDeltaTime);
-    static float* getMatriz(glm::mat4 mat);
+    static float* getMatriz(glm::mat4& mat);
 
     static glm::vec2 setZero(glm::vec2 vec);
     static glm::vec3 setZero(glm::vec3 vec);

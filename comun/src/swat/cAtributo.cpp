@@ -73,7 +73,7 @@ cValor & cAtributo::getValorOrigen(void)
 
 void cAtributo::setOrigen(char * pcOrigen)
 {
-    m_sOrigen = pcOrigen;
+    m_sOrigen.load(pcOrigen);
     if (!m_sOrigen.empty())
     {
         cToken oTok;
@@ -83,14 +83,14 @@ void cAtributo::setOrigen(char * pcOrigen)
         pcCad = oTok.Str(pcOrigen, 0, "=");
         if (pcCad && oTok.hasToken())
         {
-            m_sNombre = pcCad;
+            m_sNombre.load(pcCad);
             m_sNombre.trim();
 
             pcCad = oTok.Str();
             if (pcCad && oTok.esFin())
             {
                 sString sValor;
-                sValor = pcCad;
+                sValor.load(pcCad);
                 sValor.trim();
                 sValor.trim('\"');
 
@@ -104,7 +104,7 @@ void cAtributo::setOrigen(char * pcOrigen)
         {
             sString sValor;
 
-            m_sNombre = "unknown";
+            m_sNombre.load("unknown");
             sValor.format("[%s]", m_sOrigen.c_str());
 
             setValor(sValor);

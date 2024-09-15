@@ -37,7 +37,7 @@ cstatic float sMath::getFactorReduccion(float fFactorDecr, float fDeltaTime)
 
 
 //--------------------------------------------------------------------------
-cstatic float* sMath::getMatriz(glm::mat4 mat)
+cstatic float* sMath::getMatriz(glm::mat4& mat)
 {
     return (float*) &mat;
 }

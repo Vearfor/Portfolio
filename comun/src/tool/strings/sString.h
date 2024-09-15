@@ -52,7 +52,7 @@ struct _mExport sString
 
     int lon() { return m_lon; }
 
-    int load(const char* pcBuffer, int longitud);
+    int load(const char* pcBuffer, int longitud = -1);
     int limpia();
     sString& format(const char* pcFormat, ...);
     sString& format(TVaList& stList, const char* pcFormat);
@@ -63,6 +63,8 @@ struct _mExport sString
     //----------------------------------------------------------------------
     // Sobrecarga de operadores
     //----------------------------------------------------------------------
+    // Release x64: warning por posible recursividad y desbordamiento de
+    // pila
     sString& operator = (const char* pcCad);
     //----------------------------------------------------------------------
 };

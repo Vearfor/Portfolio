@@ -1,5 +1,8 @@
 /*========================================================================*\
 |* sString.cpp
+|*
+|* Vamos a tener que hacerlo como lo teniamos en OrionWork: cString
+|* Lo vamos a fusilar, porque, en principio, funcionaba.
 \*========================================================================*/
 
 
@@ -14,7 +17,14 @@ int sString::load(const char* pcBuffer, int longitud)
 {
     limpia();
     *this = pcBuffer;
-    m_lon = (int)strlen(pcBuffer);
+    if (longitud < 1)
+    {
+        m_lon = (int)strlen(pcBuffer);
+    }
+    else
+    {
+        m_lon = longitud;
+    }
     return 0;
 }
 
@@ -54,14 +64,15 @@ sString& sString::format(TVaList& tList, const char* pcFormat)
     if (mNoVacia(pcFormat))
     {
         int lonFinal = sString::longitud(tList.stList, pcFormat);
+        int lonmas1 = lonFinal + 1;
         if (lonFinal > 0)
         {
-            char* pcBuffer = new char[lonFinal + 1];
-            pcBuffer[lonFinal] = 0;
+            char* pcBuffer = new char[lonmas1];
+            pcBuffer[lonmas1] = 0;
             if (pcBuffer)
             {
                 // Y ahora si copiamos
-                lonFinal = vsnprintf_s(pcBuffer, lonFinal + 1, lonFinal, pcFormat, tList.stList);
+                lonFinal = vsnprintf_s(pcBuffer, lonmas1, lonFinal, pcFormat, tList.stList);
                 load(pcBuffer, lonFinal);
                 delete[] pcBuffer;
             }
