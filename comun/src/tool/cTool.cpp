@@ -231,7 +231,7 @@ void cTool::trim(char* pcCadena, char cBlancos)
     {
         // Por detras.
         //------------------------------------------------------------------
-        int i, k, j; 
+        size_t i, k, j;
         size_t iLen, iLen1 = (int)strlen(pcCadena);
 
         for (
