@@ -44,7 +44,7 @@ sString & cAtributo::getNombre(void)
 
 void cAtributo::setValor(sString & sValor)
 {
-    m_oValor.setValor(sValor.c_str());
+    m_oValor.setValor(sValor.cad());
 }
 
 
@@ -62,7 +62,7 @@ cValor & cAtributo::getValor(void)
 
 void cAtributo::setValorOrigen(sString & sValor)
 {
-    m_oValorOrigen.setValor(sValor.c_str());
+    m_oValorOrigen.setValor(sValor.cad());
 }
 
 cValor & cAtributo::getValorOrigen(void)
@@ -74,7 +74,7 @@ cValor & cAtributo::getValorOrigen(void)
 void cAtributo::setOrigen(char * pcOrigen)
 {
     m_sOrigen.load(pcOrigen);
-    if (!m_sOrigen.empty())
+    if (!m_sOrigen.esVacia())
     {
         cToken oTok;
         char * pcCad;
@@ -105,7 +105,7 @@ void cAtributo::setOrigen(char * pcOrigen)
             sString sValor;
 
             m_sNombre.load("unknown");
-            sValor.format("[%s]", m_sOrigen.c_str());
+            sValor.format("[%s]", m_sOrigen.cad());
 
             setValor(sValor);
         }

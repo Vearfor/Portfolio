@@ -18,7 +18,7 @@
 //--------------------------------------------------------------------------
 #include "sString.h"
 #include <tool/nComun.h>
-#include <string>
+// #include <string>
 //--------------------------------------------------------------------------
 
 
@@ -63,7 +63,7 @@ union UValor
 	bool bValor;
 	long lValor;
 	double dValor;
-	std::string* psValor;
+	sString* psValor;
 	void* pLista;
 	void* pVoid;
 
@@ -91,7 +91,7 @@ class _mExport cValor
     void inicioValor(int iValor = 0);
     void inicioValor(double dValor);
     void inicioValor(bool bValor);
-    void inicioValor(const std::string & sValor);
+    void inicioValor(const sString & sValor);
     void inicioValor(const char * pcValor);
 
     void copiaInterna(const cValor & oValor);
@@ -105,7 +105,7 @@ public:
     cValor  ( double dValor );
     cValor  ( bool bValor );
     cValor  ( const char * pcValor );
-    cValor  ( const std::string & oString );
+    cValor  ( const sString & oString );
 	cValor	( const cValor & oOrigen );
 	virtual ~cValor	(void);
 

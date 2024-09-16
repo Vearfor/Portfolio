@@ -43,6 +43,12 @@ public:
     static bool esNumero(const char* pcCadena);
     static bool esFloat(const char* pcCadena);
     //----------------------------------------------------------------------
+    static int mayusculas(char* pcCadena);
+    static int mayusculas(char* pcCadena, int iLon);
+    //--------------------------------------------------
+    static int minusculas(char* pcCadena);
+    static int minusculas(char* pcCadena, int iLon);
+    //----------------------------------------------------------------------
 };
 //==========================================================================
 

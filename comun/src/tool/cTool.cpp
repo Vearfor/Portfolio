@@ -169,7 +169,9 @@ void cTool::getCaminoFichero(const char* pcFichero, char* pcSalida, int iSizeSal
         pcRes = pcCad;
     }
     //---------------------------------------------------
-    strncpy_s(pcSalida, iSizeSalida, (const char*)vcDir, iSizeSalida - 1);
+    // strncpy_s(pcSalida, iSizeSalida, (const char*)vcDir, iSizeSalida - 1);
+    int iSizemenos1 = iSizeSalida - 1;
+    strncpy_s(pcSalida, iSizeSalida, vcDir, iSizemenos1);
     //---------------------------------------------------
 }
 
@@ -179,7 +181,7 @@ void cTool::getNombreFichero(const char* pcPathFichero, char* pcSalida, int iSiz
     char* pcCad, * pcRes, * pcTok;
     char	vcCadena[LON_BUFF];
 
-
+    pcTok = nullptr;
     memset(pcSalida, 0, iSizeSalida);
     //---------------------------------------------------
     // El nombre del fichero es la Ultima cadena
@@ -187,13 +189,14 @@ void cTool::getNombreFichero(const char* pcPathFichero, char* pcSalida, int iSiz
     //---------------------------------------------------
     mCopia(vcCadena, pcPathFichero);
     trim(vcCadena, '"');
-    for (pcRes = NULL, pcCad = strtok_s(vcCadena, "/\\", &pcTok); pcCad; pcCad = strtok_s(NULL, "/\\", &pcTok))
+    for (pcRes = nullptr, pcCad = strtok_s(vcCadena, "/\\", &pcTok); pcCad; pcCad = strtok_s(NULL, "/\\", &pcTok))
     {
         pcRes = pcCad;
     }
     if (pcRes)
     {
-        strncpy_s(pcSalida, iSizeSalida, pcRes, iSizeSalida - 1);
+        int sizemenos1 = iSizeSalida - 1;
+        strncpy_s(pcSalida, iSizeSalida, pcRes, sizemenos1);
     }
     //---------------------------------------------------
 }
@@ -218,7 +221,8 @@ void cTool::trim(char* pcCadena, char cBlancos)
     {
         // Por detras.
         //------------------------------------------------------------------
-        int i, k, j, iLen, iLen1 = (int)strlen(pcCadena);
+        int i, k, j; 
+        size_t iLen, iLen1 = (int)strlen(pcCadena);
 
         for (
             i = 1;
@@ -232,15 +236,16 @@ void cTool::trim(char* pcCadena, char cBlancos)
             pcCadena[iLen1 - i] = 0;
         }
         // Nueva longitud
-        iLen = (int)strlen(pcCadena);
+        iLen = strlen(pcCadena);
 
         // Por delante
         //------------------------------------------------------------------
         // char * pcCopia = (char *) mNew(char,iLen+1,"Copia uTrim");
-        char* pcCopia = new char[iLen + 1];
+        int lonmas1 = (int)iLen + 1;
+        char* pcCopia = new char[lonmas1];
         if (pcCopia)
         {
-            memset(pcCopia, 0, iLen + 1);
+            memset(pcCopia, 0, lonmas1);
             for (
                 j = 0;
                 j < iLen &&
@@ -256,7 +261,7 @@ void cTool::trim(char* pcCadena, char cBlancos)
                 pcCopia[k] = pcCadena[i];
             }
             iLen = (int)strlen(pcCopia);
-            strncpy_s(pcCadena, iLen + 1, pcCopia, iLen);
+            strncpy_s(pcCadena, lonmas1, pcCopia, iLen);
             delete[] pcCopia;
         }
         //------------------------------------------------------------------
@@ -457,6 +462,72 @@ bool cTool::esFloat(const char* p_pcCadena)
     return false;
 }
 
+
+//--------------------------------------------------------------------------
+//  Convierte toda una cadena a mayusculas,
+//--------------------------------------------------------------------------
+cstatic int cTool::mayusculas(char* p_pcCadena)
+{
+    if (mNoVacia(p_pcCadena))
+    {
+        int i, iLon = (int)strlen(p_pcCadena);
+
+        for (i = 0; i < iLon; i++)
+        {
+            p_pcCadena[i] = toupper(p_pcCadena[i]);
+        }
+    }
+    return 0;
+}
+
+
+cstatic int cTool::mayusculas(char* p_pcCadena, int iLon)
+{
+    if (mNoVacia(p_pcCadena))
+    {
+        int i;
+
+        for (i = 0; i < iLon; i++)
+        {
+            p_pcCadena[i] = toupper(p_pcCadena[i]);
+        }
+    }
+    return 0;
+}
+
+
+//--------------------------------------------------------------------------
+//  Convierte toda una cadena a mayusculas,
+//--------------------------------------------------------------------------
+cstatic int cTool::minusculas(char* p_pcCadena)
+{
+    if (mNoVacia(p_pcCadena))
+    {
+        int i, c, iLon = (int)strlen(p_pcCadena);
+
+        for (i = 0; i < iLon; i++)
+        {
+            c = tolower(p_pcCadena[i]);
+            p_pcCadena[i] = c;
+        }
+    }
+    return 0;
+}
+
+
+cstatic int cTool::minusculas(char* p_pcCadena, int iLon)
+{
+    if (mNoVacia(p_pcCadena))
+    {
+        int i;
+
+        for (i = 0; i < iLon; i++)
+        {
+            p_pcCadena[i] = tolower(p_pcCadena[i]);
+        }
+    }
+    return 0;
+}
 
 
 /*========================================================================*\

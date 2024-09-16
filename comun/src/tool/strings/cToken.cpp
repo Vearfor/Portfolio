@@ -113,7 +113,8 @@ int	cToken::CopiaLista	( const char ** p_ppcSep, int iNumSep )
 			}
 		}
 
-        ppcSep = new char * [iNSep + 1];
+		int iSepmas1 = iNSep + 1;
+        ppcSep = new char * [iSepmas1];
         miNulo(ppcSep);
         // setNew(ppcSep, "Lista separadores");
 
@@ -124,10 +125,10 @@ int	cToken::CopiaLista	( const char ** p_ppcSep, int iNumSep )
 				iLen = (int) strlen((char *) p_ppcSep[i]);
 				mInicio(vcMens);
 				sprintf_s(vcMens, sizeof(vcMens), "Separador %d", i);
-                ppcSep[i] = new char[iLen + 1];
+				int ilonmas1 = iLen + 1;
+                ppcSep[i] = new char[ilonmas1];
 				miNulo(ppcSep[i]);
-                // setNew(ppcSep[i], vcMens);
-				strncpy_s(ppcSep[i], iLen+1, p_ppcSep[i], iLen);
+				strncpy_s(ppcSep[i], ilonmas1, p_ppcSep[i], iLen);
 			}
 		}
 		ppcSep[iNSep]=NULL;
@@ -152,7 +153,7 @@ int	cToken::Resultado	( int p_iPosAnt )
 		char  * pcCad;
         long    lLonFinal;
 
-		pcCad = (char *) m_poBuffer->c_str() + m_iPuntero;
+		pcCad = (char *) m_poBuffer->cad() + m_iPuntero;
         lLonFinal = m_poBuffer->lon() - m_iPuntero;    // Longitud hasta el final del buffer
 		m_poToken->load(pcCad, lLonFinal);
 		m_bFin = true;
@@ -187,7 +188,7 @@ char * cToken::Str	( const char * pcBuffer, int iLon, const char ** ppcSep, int 
 {
 	mpError(Inicia(pcBuffer,iLon,ppcSep,iNumSep));
 
-	char  *	pcOrigen	= (char *) m_poBuffer->c_str();
+	char  *	pcOrigen	= (char *) m_poBuffer->cad();
 	int		iLongitud	= m_poBuffer->lon();
 	int		i, iCurAnt, iLonComentario;
     bool    bDentroComentario;
@@ -229,7 +230,7 @@ char * cToken::Str	( const char * pcBuffer, int iLon, const char ** ppcSep, int 
 	}
 	Resultado(iCurAnt);
 
-	return (char *) m_poToken->c_str();
+	return (char *) m_poToken->cad();
 }
 
 
@@ -342,7 +343,7 @@ char * cToken::getToken	( void )
 
 	if (m_poToken)
 	{
-		pcToken = (char *) m_poToken->c_str();
+		pcToken = (char *) m_poToken->cad();
 	}
 
 	return pcToken;
@@ -454,7 +455,7 @@ char  * cToken::getFinal ( void )
 {
     char  * pcCad;
 
-    pcCad = (char *) m_poBuffer->c_str() + m_iPuntero;
+    pcCad = (char *) m_poBuffer->cad() + m_iPuntero;
 
     return pcCad;
 }
@@ -465,7 +466,7 @@ char  * cToken::getFinal ( void )
 \*==========================================================================*/
 char  * cToken::getBuffer   ( void )
 {
-    return (char *) m_poBuffer->c_str();
+    return (char *) m_poBuffer->cad();
 }
 
 

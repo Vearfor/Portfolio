@@ -529,7 +529,7 @@ cstatic void cGestorFuentes::PruebaFuentes(sWindow* poWindow, int iFuenteTest)
 			frase.format(":%3d:%s: Con eñe ¡valores! y ¿Funciona?", iIndex, poFuente->getNombre());
 			poFuente->setX(x);
 			poFuente->setY(y);
-			poFuente->escribe(poWindow, mNextLine(0.0f), 1.0f, cColor::vAmarillo, frase.c_str());
+			poFuente->escribe(poWindow, mNextLine(0.0f), 1.0f, cColor::vAmarillo, frase.cad());
 			x = poFuente->getX();
 			y = poFuente->getY() + 30.0f;
 		}
