@@ -23,10 +23,12 @@ Presentacion
 - **BamTang02**  Laberinto
   
 - **BamTang03**  Laberinto 2D
+  + Tenemos una 'demo' preparada que se lanza con:    **bamtang03.exe** <*size*> **Demo**   Siendo <size> la dimension del laberinto. Se puede poner por ejemplo: **bamtan03 21 Demo**
+  + Los hemos limitado a 25, porque cuando se mostraba en la consola el ocupaba toda la pantalla.
   
 - **BamTang05**  Laberinto 3D
-  + Tenemos una 'demo' preparada que se lanza con:    **bamtang05.exe** <*size*> **Demo**   Siendo <size> la dimension del laberinto. Se puede poner por ejemplo: **bamtan05 21 Demo**
-  + Los hemos limitado a 25, porque cuando se mostraba en la consola el ocupaba toda la pantalla.
+  + Al igual que en BamTang03, hemos dejado tambien la misma opcion de 'demo'. Por ejemplo: **bamtan05 21 Demo**
+  + Se han quedado con la limitacion de 25.
   + Hemos utilizado la misma carpeta que **'comun/src'** que luego utiliza **'ConsoleApplication1'**.
   
 - ***ConsoleApplication1*** para certificar pruebas de concepto.
