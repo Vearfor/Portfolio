@@ -20,7 +20,7 @@ struct sVistaConsola
     ~sVistaConsola();
 
     virtual int inicia(sLaberinto* lab) override;
-    virtual int update() override;
+    virtual int update(float fDeltaTime) override;
     virtual int dibuja(sLaberinto* lab) override;
     virtual int mainLoop(sLaberinto* lab) override;
 

@@ -8,7 +8,6 @@
 //--------------------------------------------------------------------------
 #include "sLaberinto.h"
 #include "sPos.h"
-//#include <unordered_map>
 //--------------------------------------------------------------------------
 
 
@@ -27,8 +26,8 @@ struct sMyMaze
 
     virtual int creaLaberinto() override;
     virtual int calculaCaminoMasLargo() override;
-
     virtual int creaLaberintoFrame() override;
+    virtual int decideTecla() override;
 
 private:
 
@@ -43,11 +42,6 @@ private:
     int m_yoffset{ 0 };
     int m_ancho_celda{ 1 };
     int m_alto_celda{ 1 };
-
-    // Para el calculo del camino mas largo:
-    std::vector<sPos> m_vecPos;
-    sPos m_current{ 1, 1 };
-    sPos m_last{ 1, 1 };
 };
 
 

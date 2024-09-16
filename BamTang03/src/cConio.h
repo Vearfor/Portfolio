@@ -45,7 +45,7 @@ enum eTextColor
 //--------------------------------------------------------------------------
 class cShell;
 //--------------------------------------------------------------------------
-class _mExport cConio
+class cConio
 {
 	static  bool    m_bIniciado;
     static  HANDLE  m_hInHandle;

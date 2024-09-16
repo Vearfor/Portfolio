@@ -17,6 +17,7 @@
 const uint16_t kWidth = 800;                // 1024;
 const uint16_t kHeight = 600;               // 768;
 const uint16_t kCelda = 25;                 //
+const float kIntervaloDemo = 0.25f;         //
 //--------------------------------------------------------------------------
 // const std::string kPathLetraA = "../BamTang03/recursos/letraA_negro.png";
 //--------------------------------------------------------------------------
@@ -49,22 +50,22 @@ struct sVistaSDL
 
     sLaberinto* m_sLaberinto{ nullptr };
 
-    // Hay que tener en cuenta que lo estamos haciendo mal, hay que separar de las vistas
-    // los contenidos/datos centrales del Laberinto
-    sRenderObject* m_pPunto{ nullptr };
-    // El render object sera el personaje que esta dentro del laberinto y debería estar fuera de la vista !!!
-
     cTextura* m_pLetraA{ nullptr };
     cTextura* m_pLetraB{ nullptr };
     cTextura* m_pMuro{ nullptr };
     cTextura* m_pVacio{ nullptr };
     cTextura* m_pMarca{ nullptr };
 
+    bool m_hayDemo{ false };
+    float m_ftimeDemo{ 10.0f * kIntervaloDemo };
+
+    bool m_hemosLlegado{ false };
+
     sVistaSDL();
     ~sVistaSDL();
 
     virtual int inicia(sLaberinto* lab) override;
-    virtual int update() override;
+    virtual int update(float fDeltaTime) override;
     virtual int dibuja(sLaberinto* lab) override;
     virtual int mainLoop(sLaberinto* lab) override;
 
@@ -78,6 +79,11 @@ struct sVistaSDL
 
     void OnSetFocus();
     void OnKillFocus();
+
+    int playingDemo(float fDeltaTime);
+    void playAction();
+    int demo(bool hayDemo);
+    void controlFin();
 };
 //--------------------------------------------------------------------------
 

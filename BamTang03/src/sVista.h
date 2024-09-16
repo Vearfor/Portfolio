@@ -18,7 +18,7 @@ struct sVista
 {
     // En origen pense que solo estas
     virtual int inicia(sLaberinto* lab) = 0;
-    virtual int update() = 0;
+    virtual int update(float fDeltaTime) = 0;
     virtual int dibuja(sLaberinto* lab) = 0;
 
     // Pero al final necesito un mainloop

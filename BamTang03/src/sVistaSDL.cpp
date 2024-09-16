@@ -3,12 +3,14 @@
 \*========================================================================*/
 
 #include "sVistaSDL.h"
-#include "nComun.h"
-#include "cLog.h"
-#include "cConsola.h"
 #include "cTextura.h"
 #include "sMyMaze.h"
 #include "sRenderObject.h"
+#include "cLog.h"
+#include "cConsola.h"
+#include "cConio.h"
+#include "cTime.h"
+#include "nComun.h"
 #include <SDL3/SDL.h>
 
 
@@ -26,6 +28,8 @@ int sVistaSDL::inicia(sLaberinto* lab)
 {
     m_sLaberinto = lab;
 
+    m_sLaberinto->setPlayingDemo(m_hayDemo);
+
     miError(initSDL() || createWindow(&m_pWindow, &m_pRenderer));
     // Establecemos el color de fondo
     SDL_SetRenderDrawColor(m_pRenderer, 0x00, 0x00, 0xff, 0x00);
@@ -37,22 +41,13 @@ int sVistaSDL::inicia(sLaberinto* lab)
     m_pVacio    = new cTextura(kPathVacio.c_str());
     m_pMarca    = new cTextura(kPathPunto.c_str());
 
-    // Y el render object no debe pertenecer a la vista:
-    m_pPunto  = new sRenderObject(kPathPuntoAmarillo.c_str());
-
-    // No es el sitio: lo reorganizaremos de otra manera, pero metemos las condiciones del Laberinto aqui para que el 'punto'
-    // sepa las condiciones del laberinto.
-    m_pPunto->setLaberinto(lab);
-    m_pPunto->m_fila = 1;
-    m_pPunto->m_columna = 1;
-
     miError(
         m_pLetraA->init(m_pRenderer)    ||
         m_pLetraB->init(m_pRenderer)    ||
         m_pMuro->init(m_pRenderer)      ||
         m_pVacio->init(m_pRenderer)     ||
         m_pMarca->init(m_pRenderer)     ||
-        m_pPunto->init(m_pRenderer)
+        m_sLaberinto->getPunto()->init(m_pRenderer)
     );
     return 0;
 }
@@ -92,10 +87,12 @@ int sVistaSDL::createWindow(SDL_Window** pWindow, SDL_Renderer** pRenderer)
         kWidth, kHeight,
         0,
         pWindow, pRenderer);
+
     if (*pWindow == NULL) {
         cLog::error(" CreateWindow Error: Window could not be created! SDL_Error: %s\n", SDL_GetError());
         return -1;
     }
+
     if (*pRenderer == NULL) {
         cLog::error(" CreateWindow Error: Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
         return -1;
@@ -106,9 +103,6 @@ int sVistaSDL::createWindow(SDL_Window** pWindow, SDL_Renderer** pRenderer)
 
 int sVistaSDL::libera()
 {
-    // El render se borra,:
-    delete m_pPunto;
-
     // Las texturas tambien se borran:
     delete m_pMarca;
     delete m_pVacio;
@@ -134,21 +128,28 @@ int sVistaSDL::libera()
 }
 
 
-int sVistaSDL::update()
+int sVistaSDL::update(float fDeltaTime)
 {
+    (
+        playingDemo(fDeltaTime)     // ||
+    );
     return 0;
 }
 
 
 int sVistaSDL::mainLoop(sLaberinto* lab)
 {
+    cTime time(60);
+
     bool mustQuit = !!inicia(lab);
 
     while (!mustQuit)
     {
-        update();
+        update(time.getDeltaTime());
         dibuja(lab);
         mustQuit = eventos();
+
+        time.espera(true);
     }
     return 0;
 }
@@ -171,7 +172,7 @@ bool sVistaSDL::eventos()
                 mustQuit = true;
                 break;
 
-            //case SDL_EVENT_KEY_DOWN:
+            // case SDL_EVENT_KEY_DOWN:
             case SDL_EVENT_KEY_UP:
                 switch (e.key.key)
                 {
@@ -182,27 +183,35 @@ bool sVistaSDL::eventos()
                     case SDLK_A:
                     case SDLK_LEFT:
                         // izquierda
-                        m_pPunto->izquierda();
+                        m_sLaberinto->getPunto()->izquierda();
                         break;
                     case SDLK_W:
                     case SDLK_UP:
                         // arriba
-                        m_pPunto->arriba();
+                        m_sLaberinto->getPunto()->arriba();
                         break;
                     case SDLK_S:
                     case SDLK_DOWN:
                         // abajo
-                        m_pPunto->abajo();
+                        m_sLaberinto->getPunto()->abajo();
                         break;
                     case SDLK_D:
                     case SDLK_RIGHT:
                         // derecha
-                        m_pPunto->derecha();
+                        m_sLaberinto->getPunto()->derecha();
                         break;
 
                     case SDLK_SPACE:
-                        m_sLaberinto->creaLaberintoFrame();
+                        //m_sLaberinto->creaLaberintoFrame();
                         //m_sLaberinto->calculaCaminoMasLargo();
+                        break;
+
+                    case SDLK_P:
+                        m_sLaberinto->togglePausa();
+                        break;
+
+                    case SDLK_T:
+                        m_sLaberinto->stopDemo();
                         break;
 
                     default:
@@ -224,6 +233,8 @@ bool sVistaSDL::eventos()
         }
     }
 
+    controlFin();
+
     return mustQuit;
 }
 
@@ -234,15 +245,23 @@ void sVistaSDL::OnSetFocus()
     if (m_sLaberinto)
         size = m_sLaberinto->getSize();
 
-    char vcSize[8];
-    sprintf_s(vcSize, sizeof(vcSize) - 1, "%2d", size);
 
     std::string nombre = cConsola::getNombreProceso();
-    nombre += "    Size: ";
-    nombre += vcSize;
-    nombre += "    Pulsa Esc para salir. A,W,S,D para moverse.";
+    //nombre += "    Size: ";
+    //char vcSize[8];
+    //sprintf_s(vcSize, sizeof(vcSize) - 1, "%2d", size);
+    //nombre += vcSize;
+    nombre += " Esc: Salir.  Pulsa: A,W,S,D moverse.";
 
-    // cLog::print(" ganamos el foco: \n");
+    if (m_sLaberinto->isPlayingDemo())
+    {
+        nombre += "     [Estamos en DEMO]";
+    }
+
+    if (m_sLaberinto->estaEnElFin())
+    {
+        nombre += "     [Hemos llegado al Final]";
+    }
 
     SDL_SetWindowTitle(m_pWindow, nombre.c_str());
 }
@@ -262,7 +281,15 @@ void sVistaSDL::OnKillFocus()
     nombre += vcSize;
     nombre += "    Toca la ventana para darle el foco";
 
-    // cLog::print(" perdemos el foco: \n");
+    if (m_sLaberinto->isPlayingDemo())
+    {
+        nombre += "     [Estamos en DEMO]";
+    }
+
+    if (m_sLaberinto->estaEnElFin())
+    {
+        nombre += "     [Hemos llegado al Final]";
+    }
 
     SDL_SetWindowTitle(m_pWindow, nombre.c_str());
 }
@@ -296,8 +323,8 @@ int sVistaSDL::dibuja(sLaberinto* lab)
         }
     }
 
-    calculaRect(m_pPunto->m_fila, m_pPunto->m_columna, size, &rectDest);
-    m_pPunto->render(m_pRenderer, &rectDest);
+    calculaRect(m_sLaberinto->getPunto()->m_fila, m_sLaberinto->getPunto()->m_columna, size, &rectDest);
+    m_sLaberinto->getPunto()->render(m_pRenderer, &rectDest);
 
     SDL_RenderPresent(m_pRenderer);
     SDL_Delay(1);
@@ -353,6 +380,83 @@ void sVistaSDL::calculaRect(int fila, int columna, int size, SDL_FRect* pOutRect
     pOutRect->h = kCelda;
 }
 
+
+/*------------------------------------------------------------------------*\
+|* Metodos para la Demo
+\*------------------------------------------------------------------------*/
+int sVistaSDL::demo(bool hayDemo)
+{
+    m_hayDemo = hayDemo;
+    return 0;
+}
+
+
+int sVistaSDL::playingDemo(float fDeltaTime)
+{
+    if (!m_sLaberinto->hayPausa())
+    {
+        if (m_sLaberinto->isPlayingDemo() && !m_sLaberinto->estaEnElFin())
+        {
+            if (m_ftimeDemo > kIntervaloDemo)
+            {
+                // Es la primera vez que haya un periodo de inicio mayor:
+                m_ftimeDemo = -(kIntervaloDemo * 5);
+            }
+
+            m_ftimeDemo += fDeltaTime;
+
+            if (m_ftimeDemo > kIntervaloDemo)
+            {
+                m_ftimeDemo = 0;
+                playAction();
+            }
+        }
+    }
+    return 0;
+}
+
+
+void sVistaSDL::playAction()
+{
+    // Decidimos que se hace y actua:
+    int tecla;
+    tecla = m_sLaberinto->decideTecla();
+    switch (tecla)
+    {
+        case 'A':
+            m_sLaberinto->getPunto()->izquierda();
+            break;
+        case 'W':
+            m_sLaberinto->getPunto()->arriba();
+            break;
+        case 'D':
+            m_sLaberinto->getPunto()->derecha();
+            break;
+        case 'S':
+            m_sLaberinto->getPunto()->abajo();
+            break;
+        default:
+            break;
+    }
+}
+/*------------------------------------------------------------------------*/
+
+
+void sVistaSDL::controlFin()
+{
+    if (m_sLaberinto->estaEnElFin() && !m_hemosLlegado)
+    {
+        m_sLaberinto->limpiaMarcas();
+        m_sLaberinto->setPlayingDemo(false);
+        m_hemosLlegado = true;
+        OnSetFocus();
+        cConio::SetColor(eTextColor::eTexBlanco);
+        cLog::print("\n");
+        cLog::print("     Hemos llegado al Final\n");
+        cLog::print("\n");
+        cConio::SetColor(eTextColor::eTexNormal);
+    }
+}
 
 /*========================================================================*\
 |* Fin de sVistaSDL.cpp

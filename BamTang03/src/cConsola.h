@@ -47,7 +47,7 @@ enum eCursor
 //--------------------------------------------------------------------------
 // class
 //--------------------------------------------------------------------------
-class _mExport cConsola
+class cConsola
 {
     static  eModConsola m_eModo;
     static  bool        m_bActiva;

@@ -38,6 +38,9 @@ const char kNulo = 0;       // Pendiente de definir.
 // Así que meteremos en la parte privada aquello que no queremos que se
 // tenga acceso.
 //--------------------------------------------------------------------------
+struct sRenderObject;
+struct sVistaSDL;
+//--------------------------------------------------------------------------
 struct sLaberinto
 {
     sLaberinto(const char * pcSoy);
@@ -47,11 +50,24 @@ struct sLaberinto
 
     char** getMatriz() const { return m_matriz; }
     int getSize() { return m_size; }
+    sRenderObject* getPunto() { return m_pPunto; }
 
     virtual int creaLaberinto() = 0;
     virtual int calculaCaminoMasLargo() = 0;
-
     virtual int creaLaberintoFrame() = 0;
+    virtual int decideTecla() = 0;
+
+    void checkHemosLlegado();
+    void stopDemo();
+    void limpiaMarcas();
+
+    void setPlayingDemo(bool playingDemo) { m_isPlayingDemo = playingDemo; }
+    bool estaEnElFin() { return m_bEstaEnElFin; }
+    bool isPlayingDemo() { return m_isPlayingDemo; }
+    bool hayPausa() { return m_hayPausa; }
+    void togglePausa() { m_hayPausa = !m_hayPausa; }
+
+    void setVistaSDL(sVistaSDL* pVista) { m_pVistaSDL = pVista; }
 
     static void destruyeMatriz(char** matriz, int size);
     static char** getCopiaMatriz(char** src_matriz, int size);
@@ -74,7 +90,27 @@ protected:
     char** m_matriz{ nullptr };
     cRandom m_motor;
 
+    // El objeto que se iba a utilizar para marcar el fin:
+    sRenderObject* m_pFin{ nullptr };
+
+    // Hay que tener en cuenta que lo estamos haciendo mal, hay que separar de las vistas
+    // los contenidos/datos centrales del Laberinto
+    sRenderObject* m_pPunto{ nullptr };
+    // El render object sera el personaje que esta dentro del laberinto y debería estar fuera de la vista !!!
+
     int creaMatriz(int size);
+
+    bool m_bEstaEnElFin{ false };
+    bool m_hayPausa{ false };
+    bool m_isPlayingDemo{ false };
+
+    // Para el calculo del camino mas largo:
+    std::vector<sPos> m_vecPos;
+    sPos m_current{ 1, 1 };
+    sPos m_last{ 1, 1 };
+
+    // Para las llamadas finales a la Vista SDL
+    sVistaSDL* m_pVistaSDL{ nullptr };
 };
 
 

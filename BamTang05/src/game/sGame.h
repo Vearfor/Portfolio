@@ -29,10 +29,6 @@ private:
     int playingDemo(float fDeltaTime);
     void playAction();
 
-    //cInputHandler* m_pHandler{ nullptr };
-    //cKeyboard* m_pKeyboard{ nullptr };
-    //int initKeyboard();
-
 public:
 
     sGame();
@@ -45,9 +41,6 @@ public:
     int render();
     void demo(bool hayDemo);
     sRenderSystem* getRender();
-    //bool isPlayingDemo() { return m_isPlayingDemo; }
-    //void togglePausa() { m_hayPausa = !m_hayPausa; }
-    //bool hayPausa() { return m_hayPausa; }
 };
 
 /*------------------------------------------------------------------------*\

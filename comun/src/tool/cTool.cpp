@@ -19,8 +19,18 @@ bool cTool::m_bDisplay = false;
 
 //--------------------------------------------------------------------------
 // Habra funciones para copiar Unicode, pero por ahora nos las vamos
-// fabricando. En base a 'la cuenta de la vieja
+// fabricando. En base a 'la cuenta de la vieja'
 // Primero hago a este vacio (no vamos a hacer appends ocultos)
+// 
+// Recuerda que generalmente estabamos con 'multibyte' en todos los
+// proyectos, pero ahora se me han quedado con UNICODE.
+// 
+// el caso es que cuando he tenido cadenas UNICODE con estas funciones
+// nos han hecho las transformaciones, y han ido de puta madre (termino
+// tecnico habitual)
+// 
+// No tengo mucha idea, pero casi mejor.
+// 
 //--------------------------------------------------------------------------
 int cTool::copiaUnicodeToMultibyte(const WCHAR * unicodeSrc, std::string & multibyteDest)
 {

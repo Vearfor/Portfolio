@@ -39,11 +39,19 @@ bool isBlank(char pCar);
 //--------------------------------------------------------------------------
 // Globales
 //--------------------------------------------------------------------------
+/*------------------------------------------------------------------------*\
+|* m_iWidth y m_iHeight: son el ancho y el alto iniciales de la ventana
+|* principal.
+|* Estos permanecen fijos. Luego el evento OnSize de la ventana podria
+|* tomar nuevos valores.
+|* Por ello se toman los valores directamente de la ventana.
+\*------------------------------------------------------------------------*/
 int g_iDim = 5;
 sLaberinto* g_pLaberinto = nullptr;
 sVista* g_pVista = nullptr;
 sVistaSDL* g_pVistaSDL = nullptr;
 char vcNombrePrograma[LON_BUFF / 8];
+bool g_hayDemo = false;
 //--------------------------------------------------------------------------
 
 
@@ -110,6 +118,18 @@ int parametros(int iArgc, char* vcArgv[])
     if (g_iDim % 2 == 0)
         return ayuda("el 'size' debe ser impar");
 
+    if (iArgc > 2)
+    {
+        if (!strcmp(vcArgv[2], "Demo"))
+        {
+            g_hayDemo = true;
+        }
+        else
+        {
+            return ayuda("el segundo parametro es 'Demo', no '%s'", vcArgv[2]);
+        }
+    }
+
     return 0;
 }
 
@@ -137,6 +157,10 @@ int ayuda(const char* pcFormat, ...)
     printf("                             (el enunciado no dice que haya limite, tampoco lo contrario)\n");
     printf("                             y debe ser impar\n");
     printf("                             (Superior a %d hacen que sean visualmente no manejables en la Consola)\n", kLim);
+    printf("\n");
+    printf("      %s  <size>  Demo       Ejecutamos una Demo.\n", vcNombrePrograma);
+    printf("                                        Cada %4.2f segundos ejecutamos una tecla para mover nuestro circulo\n", kIntervaloDemo);
+    printf("                                        dentro del juego hasta la celda marcada como fin del laberinto\n");
     printf("\n");
     cConsola::PulsaTecla(" Pulsa tecla para terminar ");
     printf("\n");
@@ -185,7 +209,7 @@ int drawMaze2D()
 
     miError(
         g_pVista->inicia(g_pLaberinto) ||
-        g_pVista->update() ||
+        g_pVista->update(1.0f) ||
         g_pVista->dibuja(g_pLaberinto)
     );
 
@@ -199,8 +223,13 @@ int drawMaze2D()
         cLog::error(" drawMaze2D: Error: new sVistaSDL\n");
         return -1;
     }
+    // Construida la VistaSDL, se la introducimos a nuestro laberinto:
+    g_pLaberinto->setVistaSDL(g_pVistaSDL);
 
-    miError(g_pVistaSDL->mainLoop(g_pLaberinto));
+    miError(
+        g_pVistaSDL->demo(g_hayDemo)    ||
+        g_pVistaSDL->mainLoop(g_pLaberinto)
+    );
 
     return 0;
 }

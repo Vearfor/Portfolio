@@ -31,7 +31,7 @@ int sVistaConsola::inicia(sLaberinto* lab)
     return 0;
 }
 
-int sVistaConsola::update()
+int sVistaConsola::update(float fDeltaTime)
 {
     return 0;
 }
@@ -51,7 +51,7 @@ int sVistaConsola::mainLoop(sLaberinto* lab)
     // ahora, lo mismo de siempre:
     miError(
         inicia(lab) ||
-        update() ||
+        update(1.0f) ||
         dibuja(lab)
     );
 
