@@ -454,14 +454,14 @@ int sVista3D::render()
         // Object Camara
         //------------------------------------------------------------------
         // Set View
-        m_view = glm::mat4(1.0f);
-        m_pMainShader->SetUniform(m_loc_view, m_view);
+        //m_view = glm::mat4(1.0f);
+        //m_pMainShader->SetUniform(m_loc_view, m_view);
 
-        // Set projection ortho
-        m_orthoProjection = m_mainWindow->getOrthoProjection();
-        m_pMainShader->SetUniform(m_loc_projection, m_orthoProjection);
+        //// Set projection ortho
+        //m_orthoProjection = m_mainWindow->getOrthoProjection();
+        //m_pMainShader->SetUniform(m_loc_projection, m_orthoProjection);
 
-        m_pLaberinto->getObjectCamara()->render(m_pMainShader, m_loc_model, m_floorPos);
+        //m_pLaberinto->getObjectCamara()->render(m_pMainShader, m_loc_model, m_floorPos);
         //------------------------------------------------------------------
     }
 
