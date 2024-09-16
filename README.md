@@ -43,7 +43,7 @@ Si pudiera tener la frase que os convenciera ..., que más os puedo decir.
   + Es casi un mini motor de videojuegos ya que tiene todo el conocimiento que he ido agrupando a lo largo de los años.
   + Es el mismo código que luego esta en la carpeta **'comun/src'**.
   
-- **BamTang04**  Físicas. Hay defectos en las colisiones, pero espero poder aprender de vosotros. ***Y tengo que dar por terminado el trabajo, porque sino estaría en un proceso de mejora interminable***.
+- **BamTang04**  Físicas. ***Y tengo que dar por terminado el trabajo, porque sino estaría en un proceso de mejora interminable***.
   + Ya utiliza la librería **'suat'**.
  
 Insisto, **BamTang05** y **ConsoleApplication1** matienen en comun la carpeta **comun/src**, el mismo código que ya hemos metido en **suat.dll**.
