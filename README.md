@@ -49,5 +49,5 @@ Si pudiera tener la frase que os convenciera ..., que más os puedo decir.
 Insisto, **BamTang05** y **ConsoleApplication1** matienen en comun la carpeta **comun/src**, el mismo código que ya hemos metido en **suat.dll**.
 Ha sido un proceso de mejora continua que culmina al final en esta 'dll'.
 He puesto el trabajo de Físicas, **BamTamg04**, al final, porque ha sido el último que he realizado.
-Todo está para que funciones con el **Visual Studio 2019**.
+Todo está para que funcione con el **Visual Studio 2019**.
 Y todo esta agrupado en una única solución: **'TestBamTang.sln'**.
