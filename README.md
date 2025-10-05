@@ -22,6 +22,8 @@ Si pudiera tener la frase que os convenciera ..., que más os puedo decir.
 
 **TestBamTang.sln**:  Solucion de Visual Studio 2019. Y estos son las carpetas de los proyectos:
 - **BamTang01**  Cypher
+
+    ![Cypher](/imagener/BamTang01.png)
   
 - **BamTang02**  Laberinto
   
