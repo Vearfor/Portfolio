@@ -26,6 +26,8 @@ Si pudiera tener la frase que os convenciera ..., que más os puedo decir.
     ![Cypher](/Imagenes/BamTang01.png)
   
 - **BamTang02**  Laberinto
+
+    ![Cypher](/Imagenes/BamTang02.png)
   
 - **BamTang03**  Laberinto 2D
   + Tenemos una 'demo' preparada que se lanza con:    **bamtang03.exe** <*size*> **Demo**   Siendo <size> la dimensión del laberinto. Se puede poner por ejemplo: **bamtan03 21 Demo**
