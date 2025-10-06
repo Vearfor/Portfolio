@@ -20,20 +20,20 @@ Presentación
   
 - **BamTang02**  Laberinto
 
-    ![Cypher](/Imagenes/BamTang02.png)
+    ![Cypher](/TestBamTang/Imagenes/BamTang02.png)
   
 - **BamTang03**  Laberinto 2D
   + Tenemos una 'demo' preparada que se lanza con:    **bamtang03.exe** <*size*> **Demo**   Siendo <size> la dimensión del laberinto. Se puede poner por ejemplo: **bamtan03 21 Demo**
   + Los hemos limitado a 25, porque cuando se mostraba en la consola el ocupaba toda la pantalla.
 
-    ![Cypher](/Imagenes/BamTang03.png)
+    ![Cypher](/TestBamTang/Imagenes/BamTang03.png)
   
 - **BamTang05**  Laberinto 3D
   + Al igual que en BamTang03, hemos dejado tambien la misma opción de 'demo'. Por ejemplo: **bamtan05 21 Demo**
   + Se han quedado con la limitación de 25.
   + Hemos utilizado la misma carpeta que **'comun/src'** que luego utiliza **'ConsoleApplication1'**.
 
-    ![Cypher](/Imagenes/BamTang05.png)
+    ![Cypher](/TestBamTang/Imagenes/BamTang05.png)
   
 - ***ConsoleApplication1*** para certificar pruebas de concepto.
   + Hemos utilizado la misma carpeta que **'comun/src'** que luego utiliza **'Bamtan05'**.
@@ -47,7 +47,7 @@ Presentación
 - **BamTang04**  Físicas. ***Y tengo que dar por terminado el trabajo, porque sino estaría en un proceso de mejora interminable***.
   + Ya utiliza la librería **'suat'**.
 
-    ![Cypher](/Imagenes/BamTang04.png)
+    ![Cypher](/TestBamTang/Imagenes/BamTang04.png)
     
 Insisto, **BamTang05** y **ConsoleApplication1** matienen en comun la carpeta **comun/src**, el mismo código que ya hemos metido en **suat.dll**.
 Ha sido un proceso de mejora continua que culmina al final en esta 'dll'.
