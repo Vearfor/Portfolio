@@ -39,6 +39,8 @@ Si pudiera tener la frase que os convenciera ..., que más os puedo decir.
   + Al igual que en BamTang03, hemos dejado tambien la misma opción de 'demo'. Por ejemplo: **bamtan05 21 Demo**
   + Se han quedado con la limitación de 25.
   + Hemos utilizado la misma carpeta que **'comun/src'** que luego utiliza **'ConsoleApplication1'**.
+
+    ![Cypher](/Imagenes/BamTang05.png)
   
 - ***ConsoleApplication1*** para certificar pruebas de concepto.
   + Hemos utilizado la misma carpeta que **'comun/src'** que luego utiliza **'Bamtan05'**.
