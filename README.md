@@ -12,48 +12,57 @@ Presentación
   - Si pudiera tener la frase que os convenciera ..., que más os puedo decir.
   - Y antes que volver a probar en un nuevo trabajo que no me llene, que no me satisfaga, quiero probar de una vez por todas a trabajar en/con VideoJuegos.
 
+Esto en principio va a ser un borrador.
+Querremos tener uno presentable.
+Visitaremos:
+https://github.com/durgeshsamariya/awesome-github-profile-readme-templates/tree/master/templates
 
-**TestBamTang.sln**:  Solucion original de Visual Studio 2019, ya la hemos pasado a 2022. Y estos son las carpetas de los proyectos:
-- **BamTang01**  Cypher
+Curriculum
+  - Carpeta en la que mantendremos los curriculums actualizados.
 
-    ![Cypher](/TestBamTang/Imagenes/BamTang01.png)
+TestBamTang
+  - Carpeta en la que tenemos los ejercicios resueltos de los propuestos por **Bamtang**.
+    + **TestBamTang.sln**:  Solucion original de Visual Studio 2019, ya la hemos pasado a 2022. Y estos son las carpetas de los proyectos:
+      - **BamTang01**  Cypher
+
+        ![Cypher](/TestBamTang/Imagenes/BamTang01.png)
   
-- **BamTang02**  Laberinto
+      - **BamTang02**  Laberinto
 
-    ![Cypher](/TestBamTang/Imagenes/BamTang02.png)
+        ![Cypher](/TestBamTang/Imagenes/BamTang02.png)
   
-- **BamTang03**  Laberinto 2D
-  + Tenemos una 'demo' preparada que se lanza con:    **bamtang03.exe** <*size*> **Demo**   Siendo <size> la dimensión del laberinto. Se puede poner por ejemplo: **bamtan03 21 Demo**
-  + Los hemos limitado a 25, porque cuando se mostraba en la consola el ocupaba toda la pantalla.
+      - **BamTang03**  Laberinto 2D
+        + Tenemos una 'demo' preparada que se lanza con:    **bamtang03.exe** <*size*> **Demo**   Siendo <size> la dimensión del laberinto. Se puede poner por ejemplo: **bamtan03 21 Demo**
+        + Los hemos limitado a 25, porque cuando se mostraba en la consola el ocupaba toda la pantalla.
 
-    ![Cypher](/TestBamTang/Imagenes/BamTang03.png)
+        ![Cypher](/TestBamTang/Imagenes/BamTang03.png)
   
-- **BamTang05**  Laberinto 3D
-  + Al igual que en BamTang03, hemos dejado tambien la misma opción de 'demo'. Por ejemplo: **bamtan05 21 Demo**
-  + Se han quedado con la limitación de 25.
-  + Hemos utilizado la misma carpeta que **'comun/src'** que luego utiliza **'ConsoleApplication1'**.
-
-    ![Cypher](/TestBamTang/Imagenes/BamTang05.png)
+      - **BamTang05**  Laberinto 3D
+        + Al igual que en BamTang03, hemos dejado tambien la misma opción de 'demo'. Por ejemplo: **bamtan05 21 Demo**
+        + Se han quedado con la limitación de 25.
+        + Hemos utilizado la misma carpeta que **'comun/src'** que luego utiliza **'ConsoleApplication1'**.
+      
+          ![Cypher](/TestBamTang/Imagenes/BamTang05.png)
   
-- ***ConsoleApplication1*** para certificar pruebas de concepto.
-  + Hemos utilizado la misma carpeta que **'comun/src'** que luego utiliza **'Bamtan05'**.
-  + Todo esto era preparatorio para la construcción de la libreria **'suat'**, que utilizaba el mismo codigo.
-
-- **suat**.      Proyecto para la librería dinámica **'suat.dll'**.
-  + He agrupado en ella todo el codigo que he ido utilizando en todos los proyectos.
-  + Es casi un mini motor de videojuegos ya que tiene todo el conocimiento que he ido agrupando a lo largo de los años.
-  + Es el mismo código que luego esta en la carpeta **'comun/src'**.
+      - ***ConsoleApplication1*** para certificar pruebas de concepto.
+        + Hemos utilizado la misma carpeta que **'comun/src'** que luego utiliza **'Bamtan05'**.
+        + Todo esto era preparatorio para la construcción de la libreria **'suat'**, que utilizaba el mismo codigo.
+      
+      - **suat**.      Proyecto para la librería dinámica **'suat.dll'**.
+        + He agrupado en ella todo el codigo que he ido utilizando en todos los proyectos.
+        + Es casi un mini motor de videojuegos ya que tiene todo el conocimiento que he ido agrupando a lo largo de los años.
+        + Es el mismo código que luego esta en la carpeta **'comun/src'**.
   
-- **BamTang04**  Físicas. ***Y tengo que dar por terminado el trabajo, porque sino estaría en un proceso de mejora interminable***.
-  + Ya utiliza la librería **'suat'**.
-
-    ![Cypher](/TestBamTang/Imagenes/BamTang04.png)
-    
-Insisto, **BamTang05** y **ConsoleApplication1** matienen en comun la carpeta **comun/src**, el mismo código que ya hemos metido en **suat.dll**.
-Ha sido un proceso de mejora continua que culmina al final en esta 'dll'.
-He puesto el trabajo de Físicas, **BamTamg04**, al final, porque ha sido el último que he realizado.
-Todo está para que funcione con el **Visual Studio 2019**. Y ya la hemmos pasado a **Visual Studio 2022**.
-Y todo esta agrupado en una única solución: **'TestBamTang.sln'**.
+      - **BamTang04**  Físicas. ***Y tengo que dar por terminado el trabajo, porque sino estaría en un proceso de mejora interminable***.
+        + Ya utiliza la librería **'suat'**.
+      
+          ![Cypher](/TestBamTang/Imagenes/BamTang04.png)
+          
+      Insisto, **BamTang05** y **ConsoleApplication1** matienen en comun la carpeta **comun/src**, el mismo código que ya hemos metido en **suat.dll**.
+      Ha sido un proceso de mejora continua que culmina al final en esta 'dll'.
+      He puesto el trabajo de Físicas, **BamTamg04**, al final, porque ha sido el último que he realizado.
+      Todo está para que funcione con el **Visual Studio 2019**. Y ya la hemmos pasado a **Visual Studio 2022**.
+      Y todo esta agrupado en una única solución: **'TestBamTang.sln'**.
 
 Espero que os aproveche.
 Hasta pronto.
