@@ -20,7 +20,7 @@ Si pudiera tener la frase que os convenciera ..., que más os puedo decir.
   - He agregado mi Cv en la carpeta de Curriculum.
 
 
-**TestBamTang.sln**:  Solucion de Visual Studio 2019. Y estos son las carpetas de los proyectos:
+**TestBamTang.sln**:  Solucion original de Visual Studio 2019, ya la hemos pasado a 2022. Y estos son las carpetas de los proyectos:
 - **BamTang01**  Cypher
 
     ![Cypher](/Imagenes/BamTang01.png)
