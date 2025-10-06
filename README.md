@@ -4,20 +4,13 @@ Presentación
   Me apasiona programar, y me apasionaría poder hacerlo en el mundo de los VideoJuegos.
   He intentado entrar en el mundo del desarrollo de los VideoJuegos desde hace mas de 20 años.
   Pero no creía en principio que mis habilidades pudieran cubrir las necesidades actuales de los juegos contemporaneos.
-  Pensaba que tendría que tener conociminetos profundos en el desarrollo con motores gráficos estilo Unity o UnReal, que no tendría la experiencia y capacidad demostrada para poder trabajar en ello.
-  
-  - Pero cuando he visto los ejercicios propuestos en esta empresa vuestra, **BAMTANG**, he visto que era capaz de hacerlos todos ellos, y que mis capacidades actuales podrían superar las espectativas y podría estar cumpliendo mi sueño.
-  - Así que me he animado a probar.
-Reconozco que no tengo todo el conocimiento para poder resolver todos los problemas.
-Reconozco que las soluciones que podría tener ahora las tengo obsoletas.
-Tengo que aprender, mejorar, seguir en un proceso de cambio profundo.
-Pero que queréis sino, en realidad es lo que he hecho durante toda mi vida profesional
-Me encantaría. Me apasionan. Quiero aprender, y seguir mejorando.
-Si pudiera tener la frase que os convenciera ..., que más os puedo decir.
-  
-  - Y antes que volver a probar en un nuevo trabajo que no me llene, que no me satisfaga, quiero probar de una vez por todas a trabajar en/con VideoJuegos.
+  Pensaba que tendría que tener conociminetos profundos en el desarrollo con motores gráficos estilo *Unity* o *UnReal*, que no tendría la experiencia y capacidad demostrada para poder trabajar en ello.
 
-  - He agregado mi Cv en la carpeta de Curriculum.
+  - La base de este Portfolio fue el responder a una serie de ejercicios que la empresa de videojuegos **BAMTANG** proponía como tests para poder trabajar con ellos. Los ejercicios propuestos, fáciles o difíciles, eran asequibles con mis capacidades. Y pensé que para entrar en el mundo de los videojuegos, con mis capacidades de programación, no tendría que estar aprendiendo *Unity* o *UnReal*. Así que probé a realizarlos, y de aquí salió un repositorio para mostrar a la empresa **https://github.com/Vearfor/TestBamTang.git** de la cual nunca tube respuesta.
+  - Se que en esta profesión tenemos que seguir aprendiendo y evolucionando. Eso es lo divertido. En realidad que profesiones no son así. Siempre tenemos que evolucionar y seguir aprendiendo, y seguir mejorando.
+  - Me encantaría trabajar en el mundo de los videojuegos. Me apasionan. Quiero aprender, y seguir mejorando.
+  - Si pudiera tener la frase que os convenciera ..., que más os puedo decir.
+  - Y antes que volver a probar en un nuevo trabajo que no me llene, que no me satisfaga, quiero probar de una vez por todas a trabajar en/con VideoJuegos.
 
 
 **TestBamTang.sln**:  Solucion original de Visual Studio 2019, ya la hemos pasado a 2022. Y estos son las carpetas de los proyectos:
