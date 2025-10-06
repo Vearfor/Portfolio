@@ -1,5 +1,5 @@
 Presentación
-  - Soy **Enrique Rocafull**.
+  - Soy **Enrique Rocafull Ortiz**.
   
   Me apasiona programar, y me apasionaría poder hacerlo en el mundo de los VideoJuegos.
   He intentado entrar en el mundo del desarrollo de los VideoJuegos desde hace mas de 20 años.
