@@ -63,3 +63,5 @@ Todo está para que funcione con el **Visual Studio 2019**. Y ya la hemmos pasad
 Y todo esta agrupado en una única solución: **'TestBamTang.sln'**.
 
 Espero que os aproveche.
+Hasta pronto.
+
