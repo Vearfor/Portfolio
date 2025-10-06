@@ -53,7 +53,9 @@ Si pudiera tener la frase que os convenciera ..., que más os puedo decir.
   
 - **BamTang04**  Físicas. ***Y tengo que dar por terminado el trabajo, porque sino estaría en un proceso de mejora interminable***.
   + Ya utiliza la librería **'suat'**.
- 
+
+    ![Cypher](/Imagenes/BamTang04.png)
+    
 Insisto, **BamTang05** y **ConsoleApplication1** matienen en comun la carpeta **comun/src**, el mismo código que ya hemos metido en **suat.dll**.
 Ha sido un proceso de mejora continua que culmina al final en esta 'dll'.
 He puesto el trabajo de Físicas, **BamTamg04**, al final, porque ha sido el último que he realizado.
