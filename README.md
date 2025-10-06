@@ -16,7 +16,7 @@ Presentación
 **TestBamTang.sln**:  Solucion original de Visual Studio 2019, ya la hemos pasado a 2022. Y estos son las carpetas de los proyectos:
 - **BamTang01**  Cypher
 
-    ![Cypher](/Imagenes/BamTang01.png)
+    ![Cypher](/TestBamTang/Imagenes/BamTang01.png)
   
 - **BamTang02**  Laberinto
 
