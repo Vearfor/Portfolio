@@ -15,7 +15,11 @@ Presentación
 Esto en principio va a ser un borrador.
 Querremos tener uno presentable.
 Visitaremos:
-https://github.com/durgeshsamariya/awesome-github-profile-readme-templates/tree/master/templates
+- Plantillas: https://github.com/durgeshsamariya/awesome-github-profile-readme-templates/tree/master/templates 
+- Botones: https://dev.to/enjoy_/150-badges-for-github-pnk
+- Iconos tecnología https://github.com/tandpfun/skill-iconos
+- Emojis https://gist.github.com/rxaviers/7360908
+- ..
 
 Curriculum
   - Carpeta en la que mantendremos los curriculums actualizados.
