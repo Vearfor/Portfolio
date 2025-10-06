@@ -32,6 +32,8 @@ Si pudiera tener la frase que os convenciera ..., que más os puedo decir.
 - **BamTang03**  Laberinto 2D
   + Tenemos una 'demo' preparada que se lanza con:    **bamtang03.exe** <*size*> **Demo**   Siendo <size> la dimensión del laberinto. Se puede poner por ejemplo: **bamtan03 21 Demo**
   + Los hemos limitado a 25, porque cuando se mostraba en la consola el ocupaba toda la pantalla.
+
+    ![Cypher](/Imagenes/BamTang03.png)
   
 - **BamTang05**  Laberinto 3D
   + Al igual que en BamTang03, hemos dejado tambien la misma opción de 'demo'. Por ejemplo: **bamtan05 21 Demo**
