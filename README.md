@@ -1,7 +1,8 @@
 # Soy **Enrique Rocafull Ortiz**.
 
 ### Perdonad, pero tengo el portfolio en construccion .. poco a poco ..
-  
+
+  Programador o Ingeniero de Desarrollo (lo que mas bonito os suene) Senior con más de 20 años de experiencia en el desarrollo de aplicaciones en C, C++ y C#. Profesional titulado *Licenciado en Informática* por la *Universidad Politécnica de Madrid*.
   Me apasiona programar, y me apasionaría poder hacerlo en el mundo de los VideoJuegos.
   He intentado entrar en el mundo del desarrollo de los VideoJuegos desde hace mas de 20 años.
   Pero no creía en principio que mis habilidades pudieran cubrir las necesidades actuales de los juegos contemporaneos.
