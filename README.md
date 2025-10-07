@@ -1,4 +1,5 @@
 # Soy **Enrique Rocafull Ortiz**.
+## Perdonad, pero tengo el portfolio en construccion .. poco a poco ..
   
   Me apasiona programar, y me apasionaría poder hacerlo en el mundo de los VideoJuegos.
   He intentado entrar en el mundo del desarrollo de los VideoJuegos desde hace mas de 20 años.
