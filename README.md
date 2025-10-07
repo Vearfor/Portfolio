@@ -9,7 +9,7 @@
   Pero no creía en principio que mis habilidades pudieran cubrir las necesidades actuales de los juegos contemporaneos.
   Pensaba que tendría que tener conociminetos profundos en el desarrollo con motores gráficos estilo *Unity* o *UnReal*, que no tendría la experiencia y capacidad demostrada para poder trabajar en ello.
 
-  - La base de este Portfolio fue el responder a una serie de ejercicios que la empresa de videojuegos **BAMTANG** proponía como tests para poder trabajar con ellos. Los ejercicios propuestos, fáciles o difíciles, eran asequibles con mis capacidades. Y pensé que para entrar en el mundo de los videojuegos, con mis capacidades de programación, no tendría que estar aprendiendo *Unity* o *UnReal*. Así que probé a realizarlos, y de aquí salió un repositorio para mostrar a la empresa **https://github.com/Vearfor/TestBamTang.git** de la cual nunca tube respuesta.
+  - La base de este Portfolio fue el responder a una serie de ejercicios que la empresa de videojuegos **BAMTANG** proponía como tests para poder trabajar con ellos. Los ejercicios propuestos, fáciles o difíciles, eran asequibles con mis capacidades. Y pensé que para entrar en el mundo de los videojuegos, con mis capacidades de programación, no tendría que estar aprendiendo *Unity* o *UnReal*. Así que probé a realizarlos, y de aquí salió un repositorio para mostrar a la empresa de la cual nunca tube respuesta.
   - Se que en esta profesión tenemos que seguir aprendiendo y evolucionando. Eso es lo divertido. En realidad que profesiones no son así. Siempre tenemos que evolucionar y seguir aprendiendo, y seguir mejorando.
   - Me encantaría trabajar en el mundo de los videojuegos. Me apasionan. Quiero aprender, y seguir mejorando.
   - Si pudiera tener la frase que os convenciera ..., que más os puedo decir.
@@ -29,6 +29,7 @@ Curriculum
 
 TestBamTang
   - Carpeta en la que tenemos los ejercicios resueltos de los propuestos por **Bamtang**.
+  - El código estará evolucionado del enlace público que deje para BamTang: ***https://github.com/Vearfor/TestBamTang.git***. Aunque básicamnete es el mismo.
     + **TestBamTang.sln**:  Solucion original de Visual Studio 2019, ya la hemos pasado a 2022. Y estos son las carpetas de los proyectos:
       - **BamTang01**  Cypher
 
