@@ -1,5 +1,5 @@
 # Soy **Enrique Rocafull Ortiz**.
-#### Perdonad, pero tengo el portfolio en construccion .. poco a poco ..
+#### `#000000` Perdonad, pero tengo el portfolio en construccion .. poco a poco .. `#ffffff`
   
 
   Me apasiona programar, y me apasionaría poder hacerlo en el mundo de los VideoJuegos.
