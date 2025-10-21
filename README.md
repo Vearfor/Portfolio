@@ -25,10 +25,10 @@ Visitaremos:
 - ..
 - 
 
-Curriculum
+**Curriculum**
   - Carpeta en la que mantendremos los curriculums actualizados.
 
-TestBamTang
+**TestBamTang**
   - Carpeta en la que tenemos los ejercicios resueltos de los propuestos por **Bamtang**.
   - El código estará evolucionado del enlace público que deje para BamTang: ***https://github.com/Vearfor/TestBamTang.git***. Aunque básicamnete es el mismo.
     + **TestBamTang.sln**:  Solucion original de Visual Studio 2019, ya la hemos pasado a 2022. Y estos son las carpetas de los proyectos:
