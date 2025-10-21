@@ -10,19 +10,20 @@
   Pensaba que tendría que tener conociminetos profundos en el desarrollo con motores gráficos estilo *Unity* o *UnReal*, que no tendría la experiencia y capacidad demostrada para poder trabajar en ello.
 
   - La base de este Portfolio fue el repositorio que construí para responder a una serie de ejercicios que la empresa de videojuegos **BAMTANG** proponía como tests para poder trabajar con ellos. Los ejercicios propuestos, fáciles o difíciles, eran asequibles con mis capacidades. Y pensé que para entrar en el mundo de los videojuegos, con mis capacidades de programación, no tendría que estar aprendiendo *Unity* o *UnReal*. Así que probé a realizarlos, y de aquí salió un repositorio para mostrar a la empresa de la cual nunca tube respuesta.
-  - Se que en esta profesión tenemos que seguir aprendiendo y evolucionando. Eso es lo divertido. En realidad que profesiones no son así. Siempre tenemos que evolucionar y seguir aprendiendo, y seguir mejorando.
+  - Se que en esta profesión tenemos que seguir aprendiendo y evolucionando. Eso es lo divertido. En realidad, ¿qué profesiones no son así? Siempre tenemos que evolucionar y seguir aprendiendo, y seguir mejorando.
   - Me encantaría trabajar en el mundo de los videojuegos. Me apasionan. Quiero aprender, y seguir mejorando.
   - Si pudiera tener la frase que os convenciera ..., que más os puedo decir.
   - Y antes que volver a probar en un nuevo trabajo que no me llene, que no me satisfaga, quiero probar de una vez por todas a trabajar en/con VideoJuegos.
 
 Esto en principio va a ser un borrador.
-Querremos tener uno presentable.
+Querremos tener un Portfolio presentable.
 Visitaremos:
 - Plantillas: https://github.com/durgeshsamariya/awesome-github-profile-readme-templates/tree/master/templates 
 - Botones: https://dev.to/enjoy_/150-badges-for-github-pnk
 - Iconos tecnología https://github.com/tandpfun/skill-iconos
 - Emojis https://gist.github.com/rxaviers/7360908
 - ..
+- 
 
 Curriculum
   - Carpeta en la que mantendremos los curriculums actualizados.
