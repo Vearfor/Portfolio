@@ -69,14 +69,5 @@
 Espero que os aproveche.
 
 
-Esto en principio es un borrador.
-Querremos tener un Portfolio presentable.
-Visitaremos:
-- Plantillas: https://github.com/durgeshsamariya/awesome-github-profile-readme-templates/tree/master/templates 
-- Botones: https://dev.to/enjoy_/150-badges-for-github-pnk
-- Iconos tecnología https://github.com/tandpfun/skill-iconos
-- Emojis https://gist.github.com/rxaviers/7360908
-- ..
-
 Hasta pronto.
 
