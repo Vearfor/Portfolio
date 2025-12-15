@@ -15,7 +15,7 @@
   - Si pudiera tener la frase que os convenciera ..., que más os puedo decir.
   - Y antes que volver a probar en un nuevo trabajo que no me llene, que no me satisfaga, quiero probar de una vez por todas a trabajar en/con VideoJuegos.
 
-### Esto sigue sindo un Borrador ###
+### Esto sigue siendo un Borrador ###
 - 
 
 **Curriculum**
