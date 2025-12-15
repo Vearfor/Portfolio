@@ -15,14 +15,7 @@
   - Si pudiera tener la frase que os convenciera ..., que más os puedo decir.
   - Y antes que volver a probar en un nuevo trabajo que no me llene, que no me satisfaga, quiero probar de una vez por todas a trabajar en/con VideoJuegos.
 
-Esto en principio va a ser un borrador.
-Querremos tener un Portfolio presentable.
-Visitaremos:
-- Plantillas: https://github.com/durgeshsamariya/awesome-github-profile-readme-templates/tree/master/templates 
-- Botones: https://dev.to/enjoy_/150-badges-for-github-pnk
-- Iconos tecnología https://github.com/tandpfun/skill-iconos
-- Emojis https://gist.github.com/rxaviers/7360908
-- ..
+### Esto sigue sindo un Borrador ###
 - 
 
 **Curriculum**
@@ -74,5 +67,16 @@ Visitaremos:
       Y todo esta agrupado en una única solución: **'TestBamTang.sln'**.
 
 Espero que os aproveche.
+
+
+Esto en principio es un borrador.
+Querremos tener un Portfolio presentable.
+Visitaremos:
+- Plantillas: https://github.com/durgeshsamariya/awesome-github-profile-readme-templates/tree/master/templates 
+- Botones: https://dev.to/enjoy_/150-badges-for-github-pnk
+- Iconos tecnología https://github.com/tandpfun/skill-iconos
+- Emojis https://gist.github.com/rxaviers/7360908
+- ..
+
 Hasta pronto.
 
